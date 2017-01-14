@@ -22,11 +22,13 @@ CLI for prettier-eslint
 
 ## The problem
 
-
+You have a bunch of files that you want to format using [`prettier-eslint`][prettier-eslint].
+But `prettier-eslint` can only operate on strings.
 
 ## This solution
 
-
+This is a [CLI](https://en.wikipedia.org/wiki/Command-line_interface) that allows you to use
+`prettier-eslint` on one or multiple files.
 
 ## Installation
 
@@ -34,20 +36,45 @@ This module is distributed via [npm][npm] which is bundled with [node][node] and
 be installed as one of your project's `devDependencies`:
 
 ```
-npm install --save-dev prettier-eslint-cli
+yarn add --dev prettier-eslint-cli
 ```
+
+> If you're still using the `npm` client: `npm install --save-dev prettier-eslint-cli`
 
 ## Usage
 
+Typically you'll use this in your [npm scripts][npm scripts] (or [package scripts][package scripts]):
 
+```json
+{
+  "scripts": {
+    "format": "prettier-eslint src/**/*.js"
+  }
+}
+```
 
-## Inspiration
+This will format all `.js` files in the `src` directory. The argument you pass to the CLI
+is a [glob][glob] and you can pass as many as you wish.
 
+You can also pass options:
 
+### CLI Options
 
-## Other Solutions
+#### --log
 
+If `prettier-eslint` encounters an error formatting a file, it logs an error to the console.
+`prettier-eslint-cli` disables this behavior by default. You can turn it on with `--log`.
 
+#### --eslint-config-path
+
+By default `prettier-eslint` will search for the relevant config for each file. You can bypass
+this by providing the path to your eslint configuration file with `--eslint-config-path`.
+
+#### --prettier-options-path
+
+By default `prettier-eslint` will determine the `prettierOptions` to use based on the `eslintConfig`.
+If you'd like to provide options explicitly, you can provide a path to a `.json` file with
+`--prettier-options-path`.
 
 ## Contributors
 
@@ -96,3 +123,7 @@ MIT
 [twitter-badge]: https://img.shields.io/twitter/url/https/github.com/kentcdodds/prettier-eslint-cli.svg?style=social
 [emojis]: https://github.com/kentcdodds/all-contributors#emoji-key
 [all-contributors]: https://github.com/kentcdodds/all-contributors
+[prettier-eslint]: https://github.com/kentcdodds/prettier-eslint
+[npm scripts]: https://docs.npmjs.com/misc/scripts
+[package scripts]: https://github.com/kentcdodds/p-s
+[glob]: https://github.com/isaacs/node-glob
