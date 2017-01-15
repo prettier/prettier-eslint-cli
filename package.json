@@ -19,8 +19,9 @@
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
   "dependencies": {
+    "glob": "^7.1.1",
     "pify": "^2.3.0",
-    "prettier-eslint": "^1.0.1",
+    "prettier-eslint": "^2.0.1",
     "yargs": "^6.6.0"
   },
   "devDependencies": {

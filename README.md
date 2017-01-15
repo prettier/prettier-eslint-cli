@@ -65,17 +65,6 @@ You can also pass options:
 If `prettier-eslint` encounters an error formatting a file, it logs an error to the console.
 `prettier-eslint-cli` disables this behavior by default. You can turn it on with `--log`.
 
-#### --eslint-config-path
-
-By default `prettier-eslint` will search for the relevant config for each file. You can bypass
-this by providing the path to your eslint configuration file with `--eslint-config-path`.
-
-#### --prettier-options-path
-
-By default `prettier-eslint` will determine the `prettierOptions` to use based on the `eslintConfig`.
-If you'd like to provide options explicitly, you can provide a path to a `.json` file with
-`--prettier-options-path`.
-
 ## Contributors
 
 Thanks goes to these people ([emoji key][emojis]):

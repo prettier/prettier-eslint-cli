@@ -10,7 +10,7 @@ module.exports = {
     },
     build: {
       description: 'delete the dist directory and run babel to build the files',
-      script: 'rimraf dist && babel --copy-files --out-dir dist --ignore *.test.js src',
+      script: 'rimraf dist && babel --copy-files --out-dir dist --ignore *.test.js,__mocks__ src',
     },
     lint: {
       description: 'lint the entire project',
