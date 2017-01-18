@@ -1,4 +1,4 @@
-exports[`file contents: prettier-eslint cli-test/fixtures/*1.js cli-test/fixtures/*2.js 1`] = `
+exports[`file contents: prettier-eslint cli-test/fixtures/example1.js cli-test/fixtures/example2.js 1`] = `
 Object {
   "example1Result": "const {example1} = baz.bar
 ",
@@ -9,13 +9,14 @@ Object {
 }
 `;
 
-exports[`stdout: prettier-eslint --help 1`] = `
+exports[`stdout: --help 1`] = `
 "Usage: src/index.js <globs>...
 
 Options:
   -h, --help      Show help                                            [boolean]
   --version       Show version number                                  [boolean]
   --log           Show logs                                     [default: false]
+  --stdin         Accept input via stdin                        [default: false]
   --eslintPath    The path to the eslint module to use
     [default: \"<projectRootDir>/node_modules/eslint\"]
   --prettierPath  The path to the prettier module to use
@@ -24,12 +25,12 @@ Options:
 "
 `;
 
-exports[`stdout: prettier-eslint --version 1`] = `
+exports[`stdout: --version 1`] = `
 "0.0.0-semantically-released
 "
 `;
 
-exports[`stdout: prettier-eslint cli-test/fixtures/*1.js cli-test/fixtures/*2.js 1`] = `
+exports[`stdout: prettier-eslint cli-test/fixtures/example1.js cli-test/fixtures/example2.js 1`] = `
 "success formatting 2 files with prettier-eslint ✨
 "
 `;

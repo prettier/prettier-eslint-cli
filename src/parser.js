@@ -12,6 +12,10 @@ const parser = yargs
       default: false,
       describe: 'Show logs',
     },
+    stdin: {
+      default: false,
+      describe: 'Accept input via stdin',
+    },
     eslintPath: {
       default: getPathInHostNodeModules('eslint'),
       describe: 'The path to the eslint module to use',
