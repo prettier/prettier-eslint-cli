@@ -20,6 +20,20 @@ const parser = yargs
       default: getPathInHostNodeModules('prettier'),
       describe: 'The path to the prettier module to use',
     },
+    // TODO: if we allow people to to specify a config path,
+    // we need to read that somehow. These can come invarious
+    // formats and we'd have to work out `extends` somehow as well.
+    // I don't know whether ESLint exposes a way to do this...
+    // Contributions welcome!
+    // eslintConfigPath: {
+    //   describe: 'Path to the eslint config to use for eslint --fix',
+    // },
+    // TODO: would this be just a JSON file? There's never going to be
+    // a `.prettierrc`: https://github.com/jlongster/prettier/issues/154
+    // so we'll have to be careful how we do this (if we do it at all).
+    // prettierOptions: {
+    //   describe: 'Path to the prettier config to use',
+    // },
   })
 
 export default parser
