@@ -15,7 +15,7 @@ const BABEL_BIN_PATH = require.resolve('babel-cli/bin/babel-node')
 
 test('prettier-eslint --help', () => {
   return runPrettierESLintCLI('--help').then(stdout => {
-    expect(stdout).toMatchSnapshot('stdout: prettier-eslint --help')
+    expect(relativeizePath(stdout)).toMatchSnapshot('stdout: prettier-eslint --help')
   })
 })
 
@@ -73,10 +73,14 @@ function runPrettierESLintCLI(args = '', cwd = process.cwd()) {
 
     child.on('close', () => {
       if (stderr) {
-        reject(stderr)
+        reject(relativeizePath(stderr))
       } else {
-        resolve(stdout)
+        resolve(relativeizePath(stdout))
       }
     })
   })
+}
+
+function relativeizePath(stringWithAbsolutePaths) {
+  return stringWithAbsolutePaths.replace(new RegExp(path.resolve(__dirname, '../../'), 'g'), '<projectRootDir>')
 }

@@ -5,8 +5,12 @@ module.exports = {
       script: 'git-cz',
     },
     test: {
-      default: `jest --coverage`,
-      watch: 'jest --watch',
+      default: `nps --parallel test.unit,test.cli`,
+      unit: {
+        script: 'jest --coverage',
+        description: 'Run the unit tests',
+        watch: 'jest --watch',
+      },
       cli: {
         script: 'jest --config=cli-test/jest.config.json',
         description: 'The E2E tests for the full CLI',
