@@ -9,7 +9,9 @@ jest.mock('fs')
 
 beforeEach(() => {
   console.log = jest.fn()
+  console.error = jest.fn()
   formatMock.mockClear()
+  fsMock.writeFile.mockClear()
 })
 
 test('sanity test', async () => {
@@ -58,6 +60,7 @@ test('should accept stdin', async () => {
       text: mockGetStdin.stdin.trim(), // the trim is part of the test
     }),
   )
+  expect(console.log).toHaveBeenCalledTimes(1)
   expect(console.log).toHaveBeenCalledWith('MOCK_OUTPUT for stdin')
 })
 
@@ -65,4 +68,34 @@ test('will write to files if that is specified', async () => {
   const fileGlob = 'src/**/1*.js'
   await formatFiles({_: [fileGlob], write: true})
   expect(fsMock.writeFile).toHaveBeenCalledTimes(4)
+})
+
+test('handles stdin errors gracefully', async () => {
+  mockGetStdin.stdin = 'MOCK_SYNTAX_ERROR'
+  await formatFiles({stdin: true})
+  expect(console.error).toHaveBeenCalledTimes(1)
+})
+
+test('handles file errors gracefully', async () => {
+  const globs = ['files-with-syntax-errors/*.js', 'src/**/1*.js']
+  await formatFiles({_: globs, write: true})
+  expect(fsMock.writeFile).toHaveBeenCalledTimes(4)
+  expect(console.log).toHaveBeenCalledTimes(2)
+  expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/success.*4.*files/))
+  expect(console.log).toHaveBeenCalledWith(expect.stringMatching(/failure.*2.*files/))
+})
+
+test('does not print success if there were no successful files', async () => {
+  await formatFiles({_: ['no-match/*.js']})
+  expect(console.log).not.toHaveBeenCalledWith(expect.stringMatching(/success/))
+})
+
+test('fails gracefully if something odd happens', async () => {
+  await formatFiles({_: ['throw-error/*.js']})
+  expect(console.error).toHaveBeenCalledTimes(1)
+  expect(console.error).toHaveBeenCalledWith(
+    expect.stringMatching(/prettier-eslint-cli/),
+    expect.stringMatching(/unhandled error/),
+    expect.stringMatching(/something weird happened/),
+  )
 })

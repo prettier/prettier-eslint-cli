@@ -31,6 +31,6 @@ exports[`stdout: --version 1`] = `
 `;
 
 exports[`stdout: prettier-eslint cli-test/fixtures/example1.js cli-test/fixtures/example2.js 1`] = `
-"success formatting 2 files with prettier-eslint ✨
+"success formatting 2 files with prettier-eslint
 "
 `;

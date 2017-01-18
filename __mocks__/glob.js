@@ -1,4 +1,5 @@
 module.exports = jest.fn(function mockGlob(globString, options, callback) {
+  /* eslint complexity:0 */
   if (globString.includes('1')) {
     callback(null, [
       fredProject('index.js'),
@@ -19,6 +20,15 @@ module.exports = jest.fn(function mockGlob(globString, options, callback) {
       fredProject('foo/node_modules/stuff2.js'),
       fredProject('foo/node_modules/stuff3.js'),
     ])
+  } else if (globString.includes('files-with-syntax-errors')) {
+    callback(null, [
+      fredProject('syntax-error1.js'),
+      fredProject('syntax-error2.js'),
+    ])
+  } else if (globString.includes('no-match')) {
+    callback(null, [])
+  } else if (globString.includes('throw-error')) {
+    callback(new Error('something weird happened'))
   } else {
     throw new Error(`Your test globString: "${globString}" doesn't have associated mock data.`)
   }
