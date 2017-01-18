@@ -60,10 +60,25 @@ You can also pass options:
 
 ### CLI Options
 
+Everything other than the flags listed below will be considered a file glob and used to find
+files to format. By default, `glob` will ignore `**/node_modules/**` unless the glob you provide
+includes the string `node_modules`.
+
+> **NOTE:** It is recommended that you keep your files under source control and committed
+> before running `prettier-eslint` as it will overwrite your files!
+
 #### --log
 
 If `prettier-eslint` encounters an error formatting a file, it logs an error to the console.
 `prettier-eslint-cli` disables this behavior by default. You can turn it on with `--log`.
+
+#### --eslint-path
+
+Forwarded as the `eslintPath` option to `prettier-eslint`
+
+#### --prettier-path
+
+Forwarded as the `prettierPath` option to `prettier-eslint`
 
 ## Contributors
 
