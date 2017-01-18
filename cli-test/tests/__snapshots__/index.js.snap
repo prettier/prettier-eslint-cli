@@ -1,0 +1,28 @@
+exports[`file contents: prettier-eslint cli-test/fixtures/*1.js cli-test/fixtures/*2.js 1`] = `
+Object {
+  "example1Result": "const {example1} = baz.bar
+",
+  "example2Result": "function example2(thing) {
+  return thing
+}
+",
+}
+`;
+
+exports[`stdout: prettier-eslint --help 1`] = `
+"Usage: src/index.js <globs>...
+
+Options:
+  -h, --help  Show help                                                [boolean]
+  --version   Show version number                                      [boolean]
+  --log, -l   Show logs
+
+"
+`;
+
+exports[`stdout: prettier-eslint --version 1`] = `
+"0.0.0-semantically-released
+"
+`;
+
+exports[`stdout: prettier-eslint cli-test/fixtures/*1.js cli-test/fixtures/*2.js 1`] = `""`;

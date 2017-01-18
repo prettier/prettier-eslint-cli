@@ -20,8 +20,8 @@
   "license": "MIT",
   "dependencies": {
     "glob": "^7.1.1",
-    "pify": "^2.3.0",
     "prettier-eslint": "^2.0.1",
+    "rxjs": "^5.0.3",
     "yargs": "^6.6.0"
   },
   "devDependencies": {
@@ -40,9 +40,12 @@
     "jest-cli": "^18.1.0",
     "opt-cli": "^1.5.1",
     "p-s": "^3.0.3",
+    "pify": "^2.3.0",
     "rimraf": "^2.5.4",
     "semantic-release": "^6.3.3",
-    "validate-commit-msg": "^2.8.2"
+    "spawn-command": "^0.0.2-1",
+    "validate-commit-msg": "^2.8.2",
+    "yargs-parser": "^4.2.1"
   },
   "eslintConfig": {
     "extends": [

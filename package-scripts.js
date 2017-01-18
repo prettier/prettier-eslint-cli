@@ -7,6 +7,11 @@ module.exports = {
     test: {
       default: `jest --coverage`,
       watch: 'jest --watch',
+      cli: {
+        script: 'jest --config=cli-test/jest.config.json',
+        description: 'The E2E tests for the full CLI',
+        watch: 'nps test.cli --watch',
+      },
     },
     build: {
       description: 'delete the dist directory and run babel to build the files',

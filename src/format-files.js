@@ -1,11 +1,11 @@
 import fs from 'fs'
-import format from 'prettier-eslint'
-import pify from 'pify'
 import glob from 'glob'
+import Rx from 'rxjs/Rx'
+import format from 'prettier-eslint'
 
-const pReadFile = pify(fs.readFile)
-const pWriteFile = pify(fs.writeFile)
-const pGlob = pify(glob)
+const rxGlob = Rx.Observable.bindNodeCallback(glob)
+const rxReadFile = Rx.Observable.bindNodeCallback(fs.readFile)
+const rxWriteFile = Rx.Observable.bindNodeCallback(fs.writeFile)
 
 export default formatFilesFromArgv
 
@@ -14,17 +14,21 @@ async function formatFilesFromArgv({
   log: enableLog,
 }) {
   const options = {disableLog: !enableLog}
-  const filesPromises = fileGlobs.map(fileGlob => pGlob(fileGlob))
-  // TODO: handle errors!
-  const allFiles = await Promise.all(filesPromises)
-  const flatFiles = [].concat(...allFiles)
-  const uniqueFiles = Array.from(new Set(flatFiles))
-  const formatPromises = uniqueFiles.map(file => formatFile(file, options))
-  await Promise.all(formatPromises)
+  const concurrentGlobs = 3
+  const concurrentFormats = 10
+  return Rx.Observable.from(fileGlobs)
+    .mergeMap(fileGlob => rxGlob(fileGlob), null, concurrentGlobs)
+    .concatAll()
+    .distinct()
+    .mergeMap(filePath => formatFile(filePath, options), null, concurrentFormats)
+    .subscribe()
 }
 
-async function formatFile(filePath, options) {
-  const text = await pReadFile(filePath, 'utf8')
-  const formatted = format({text, filePath, ...options})
-  await pWriteFile(filePath, formatted)
+function formatFile(filePath, options) {
+  return rxReadFile(filePath, 'utf8')
+    .map(text => format({text, filePath, ...options}))
+    .mergeMap(formatted => (
+      rxWriteFile(filePath, formatted)
+        .map(() => filePath)
+    ))
 }
