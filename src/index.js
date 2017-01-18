@@ -1,4 +1,4 @@
-///usr/bin/env node
+#!/usr/bin/env node
 
 import parser from './parser'
 import formatFiles from './format-files'
