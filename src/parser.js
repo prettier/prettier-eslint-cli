@@ -14,7 +14,7 @@ const parser = yargs
     },
     stdin: {
       default: false,
-      describe: 'Accept input via stdin',
+      describe: 'Read input via stdin',
     },
     eslintPath: {
       default: getPathInHostNodeModules('eslint'),
@@ -23,6 +23,10 @@ const parser = yargs
     prettierPath: {
       default: getPathInHostNodeModules('prettier'),
       describe: 'The path to the prettier module to use',
+    },
+    write: {
+      default: false,
+      describe: 'Edit the file in-place (beware!)',
     },
     // TODO: if we allow people to to specify a config path,
     // we need to read that somehow. These can come invarious

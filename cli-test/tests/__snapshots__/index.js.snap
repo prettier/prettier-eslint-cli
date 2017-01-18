@@ -16,11 +16,12 @@ Options:
   -h, --help      Show help                                            [boolean]
   --version       Show version number                                  [boolean]
   --log           Show logs                                     [default: false]
-  --stdin         Accept input via stdin                        [default: false]
+  --stdin         Read input via stdin                          [default: false]
   --eslintPath    The path to the eslint module to use
     [default: \"<projectRootDir>/node_modules/eslint\"]
   --prettierPath  The path to the prettier module to use
   [default: \"<projectRootDir>/node_modules/prettier\"]
+  --write         Edit the file in-place (beware!)              [default: false]
 
 "
 `;
