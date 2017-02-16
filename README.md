@@ -50,7 +50,7 @@ Typically you'll use this in your [npm scripts][npm scripts] (or [package script
 ```json
 {
   "scripts": {
-    "format": "prettier-eslint 'src/**/*.js'"
+    "format": "prettier-eslint \"src/**/*.js\""
   }
 }
 ```
@@ -105,7 +105,7 @@ itself (a common use-case) then add `--write`. You should quote your globs, othe
 ```json
 {
   "scripts": {
-    "format": "prettier-eslint --write 'src/**/*.js'"
+    "format": "prettier-eslint --write \"src/**/*.js\""
   }
 }
 ```
