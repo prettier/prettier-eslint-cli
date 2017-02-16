@@ -50,7 +50,7 @@ Typically you'll use this in your [npm scripts][npm scripts] (or [package script
 ```json
 {
   "scripts": {
-    "format": "prettier-eslint src/**/*.js"
+    "format": "prettier-eslint 'src/**/*.js'"
   }
 }
 ```
@@ -100,7 +100,15 @@ includes the string `node_modules`.
 #### --write
 
 By default `prettier-eslint` will simply log the formatted version to the terminal. If you want to overwrite the file
-itself (a common use-case) then add `--write`.
+itself (a common use-case) then add `--write`. You should quote your globs, otherwise your terminal will expand the glob before it gets to `prettier-eslint` (which can have unexpected results):
+
+```json
+{
+  "scripts": {
+    "format": "prettier-eslint --write 'src/**/*.js'"
+  }
+}
+```
 
 > **NOTE:** It is recommended that you keep your files under source control and committed
 > before running `prettier-eslint --write` as it will overwrite your files!
