@@ -54,6 +54,15 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/103008?v=3",
       "profile": "https://frank.taillandier.me",
       "contributions": []
+    },
+    {
+      "login": "sheerun",
+      "name": "Adam Stankiewicz",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/292365?v=3",
+      "profile": "http://sheerun.net",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
