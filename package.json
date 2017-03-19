@@ -47,7 +47,7 @@
     "commitizen": "^2.9.6",
     "cz-conventional-changelog": "^2.0.0",
     "eslint": "^3.16.1",
-    "eslint-config-kentcdodds": "^11.1.0",
+    "eslint-config-kentcdodds": "^12.0.0",
     "husky": "^0.13.1",
     "jest-cli": "^19.0.2",
     "opt-cli": "^1.5.1",
