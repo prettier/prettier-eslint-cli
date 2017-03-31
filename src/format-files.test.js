@@ -128,6 +128,13 @@ test('forwards logLevel onto prettier-eslint', async () => {
   expect(formatMock).toHaveBeenCalledWith(options)
 })
 
+test('forwards prettierLast onto prettier-eslint', async () => {
+  await formatFiles({_: ['src/**/1*.js'], prettierLast: true})
+  expect(formatMock).toHaveBeenCalledWith(
+    expect.objectContaining({prettierLast: true}),
+  )
+})
+
 test('wont save file if contents did not change', async () => {
   const fileGlob = 'no-change/*.js'
   await formatFiles({_: [fileGlob], write: true})

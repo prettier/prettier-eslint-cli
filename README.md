@@ -95,6 +95,7 @@ Options:
   --log-level, -l  The log level to use
         [choices: "silent", "error", "warn", "info", "debug", "trace"] [default:
                                                                          "warn"]
+  --prettier-last  Run prettier last                  [boolean] [default: false]
 ```
 
 #### <globs>
@@ -147,6 +148,15 @@ default, `prettier-eslint-cli` will exclude files if they are matched by a
 `.eslintignore`. Add this flag to disable this behavior.
 
 > Note: You can also set the `LOG_LEVEL` environment variable to control logging in `prettier-eslint`
+
+#### --prettier-last
+
+By default, `prettier-eslint-cli` will run `prettier` first, then `eslint --fix`. This is great if
+you want to use `prettier`, but override some of the styles you don't like using `eslint --fix`.
+
+An alternative approach is to use different tools for different concerns. If you provide the
+argument `--pretter-last`, it will run `eslint --fix` first, then `prettier`. This allows you to
+use `eslint` to look for bugs and/or bad practices, and use `prettier` to enforce code style.
 
 ## Related
 

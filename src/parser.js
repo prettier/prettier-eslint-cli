@@ -49,6 +49,11 @@ const parser = yargs
       alias: 'l',
       default: 'warn',
     },
+    'prettier-last': {
+      describe: 'Run prettier last',
+      default: false,
+      type: 'boolean',
+    },
     // TODO: if we allow people to to specify a config path,
     // we need to read that somehow. These can come invarious
     // formats and we'd have to work out `extends` somehow as well.
