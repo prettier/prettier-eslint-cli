@@ -36,10 +36,16 @@ async function formatFilesFromArgv(
     prettierPath,
     ignore: ignoreGlobs = [],
     eslintIgnore: applyEslintIgnore = true,
+    prettierLast,
   },
 ) {
   logger.setLevel(logLevel)
-  const prettierESLintOptions = {logLevel, eslintPath, prettierPath}
+  const prettierESLintOptions = {
+    logLevel,
+    eslintPath,
+    prettierPath,
+    prettierLast,
+  }
   const cliOptions = {write}
   if (stdin) {
     return formatStdin(prettierESLintOptions)
