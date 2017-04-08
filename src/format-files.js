@@ -126,7 +126,7 @@ function formatFilesFromGlobs(
 
     function onComplete() {
       if (successes.length) {
-        console.log(
+        console.error(
           messages.success({
             success: chalk.green('success'),
             count: successes.length,
@@ -136,7 +136,7 @@ function formatFilesFromGlobs(
       }
       if (failures.length) {
         process.exitCode = 1
-        console.log(
+        console.error(
           messages.failure({
             failure: chalk.red('failure'),
             count: failures.length,
@@ -145,7 +145,7 @@ function formatFilesFromGlobs(
         )
       }
       if (unchanged.length) {
-        console.log(
+        console.error(
           messages.unchanged({
             unchanged: chalk.gray('unchanged'),
             count: unchanged.length,
