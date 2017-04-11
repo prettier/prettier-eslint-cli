@@ -1,5 +1,5 @@
-module.exports = jest.fn(async function mockGetStdin() {
-  return module.exports.stdin
+module.exports = jest.fn(function mockGetStdin() {
+  return Promise.resolve(module.exports.stdin)
 })
 
 module.exports.stdin = ''

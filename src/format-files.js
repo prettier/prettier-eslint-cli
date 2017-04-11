@@ -26,7 +26,7 @@ const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
 export default formatFilesFromArgv
 
-async function formatFilesFromArgv(
+function formatFilesFromArgv(
   {
     _: fileGlobs,
     logLevel = logger.getLevel(),
@@ -76,7 +76,7 @@ async function formatStdin(prettierESLintOptions) {
   }
 }
 
-async function formatFilesFromGlobs(
+function formatFilesFromGlobs(
   fileGlobs,
   ignoreGlobs,
   cliOptions,
