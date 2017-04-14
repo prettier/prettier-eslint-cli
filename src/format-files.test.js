@@ -23,11 +23,12 @@ test('sanity test', async () => {
   expect(fsMock.readFile).toHaveBeenCalledTimes(6)
   expect(formatMock).toHaveBeenCalledTimes(6)
   expect(fsMock.writeFile).toHaveBeenCalledTimes(0)
-  expect(console.log).toHaveBeenCalledTimes(7)
+  expect(console.log).toHaveBeenCalledTimes(6)
+  expect(console.error).toHaveBeenCalledTimes(1)
   const mockOutput = expect.stringMatching(/MOCK_OUTPUT.*index.js/)
   const successOutput = expect.stringMatching(/success.*6.*files/)
   expect(console.log).toHaveBeenCalledWith(mockOutput)
-  expect(console.log).toHaveBeenCalledWith(successOutput)
+  expect(console.error).toHaveBeenCalledWith(successOutput)
 })
 
 test('glob call inclues an ignore of node_modules', async () => {
@@ -80,11 +81,11 @@ test('handles file errors gracefully', async () => {
   const globs = ['files-with-syntax-errors/*.js', 'src/**/1*.js']
   await formatFiles({_: globs, write: true})
   expect(fsMock.writeFile).toHaveBeenCalledTimes(4)
-  expect(console.log).toHaveBeenCalledTimes(2)
+  expect(console.error).toHaveBeenCalledTimes(4)
   const successOutput = expect.stringMatching(/success.*4.*files/)
   const failureOutput = expect.stringMatching(/failure.*2.*files/)
-  expect(console.log).toHaveBeenCalledWith(successOutput)
-  expect(console.log).toHaveBeenCalledWith(failureOutput)
+  expect(console.error).toHaveBeenCalledWith(successOutput)
+  expect(console.error).toHaveBeenCalledWith(failureOutput)
 })
 
 test('does not print success if there were no successful files', async () => {
@@ -106,15 +107,14 @@ test('logs errors to the console if something goes wrong', async () => {
   const globs = ['eslint-config-error/*.js', 'src/**/2*.js']
   await formatFiles({_: globs, write: true})
   expect(fsMock.writeFile).toHaveBeenCalledTimes(4)
-  expect(console.log).toHaveBeenCalledTimes(2)
+  expect(console.error).toHaveBeenCalledTimes(4)
   const successOutput = expect.stringMatching(/success.*4.*files/)
   const failureOutput = expect.stringMatching(/failure.*2.*files/)
-  expect(console.log).toHaveBeenCalledWith(successOutput)
-  expect(console.log).toHaveBeenCalledWith(failureOutput)
+  expect(console.error).toHaveBeenCalledWith(successOutput)
+  expect(console.error).toHaveBeenCalledWith(failureOutput)
   const errorPrefix = expect.stringMatching(/prettier-eslint-cli.*ERROR/)
   const cliError = expect.stringContaining('eslint-config-error')
   const errorOutput = expect.stringContaining('Some weird eslint config error')
-  expect(console.error).toHaveBeenCalledTimes(2)
   expect(console.error).toHaveBeenCalledWith(
     errorPrefix,
     cliError,
@@ -141,7 +141,7 @@ test('wont save file if contents did not change', async () => {
   expect(fsMock.readFile).toHaveBeenCalledTimes(3)
   expect(fsMock.writeFile).toHaveBeenCalledTimes(0)
   const unchangedOutput = expect.stringMatching(/3.*?files.*?unchanged/)
-  expect(console.log).toHaveBeenCalledWith(unchangedOutput)
+  expect(console.error).toHaveBeenCalledWith(unchangedOutput)
 })
 
 test('allows you to specify an ignore glob', async () => {
@@ -171,7 +171,7 @@ test('wont modify a file if it is eslint ignored', async () => {
     expect.any(Function),
   )
   const ignoredOutput = expect.stringMatching(/success.*1.*file/)
-  expect(console.log).toHaveBeenCalledWith(ignoredOutput)
+  expect(console.error).toHaveBeenCalledWith(ignoredOutput)
 })
 
 test('will modify a file if it is eslint ignored with noIgnore', async () => {
@@ -183,7 +183,7 @@ test('will modify a file if it is eslint ignored with noIgnore', async () => {
   expect(fsMock.readFile).toHaveBeenCalledTimes(4)
   expect(fsMock.writeFile).toHaveBeenCalledTimes(4)
   const ignoredOutput = expect.stringMatching(/success.*4.*files/)
-  expect(console.log).toHaveBeenCalledWith(ignoredOutput)
+  expect(console.error).toHaveBeenCalledWith(ignoredOutput)
 })
 
 test('will not blow up if an .eslintignore cannot be found', async () => {

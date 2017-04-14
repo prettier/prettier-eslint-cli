@@ -80,22 +80,29 @@ test(`prettier-eslint ${writeCommand}`, async () => {
   // we have to recreate and delete the files every time
   const example1Path = path.resolve(__dirname, '../fixtures/example1.js')
   const example2Path = path.resolve(__dirname, '../fixtures/example2.js')
-  const example1 = `const {  example1  }  =  baz.bar`
-  const example2 = `function example2(thing){return thing;};;;;;;;;;`
-  await Promise.all([
-    pWriteFile(example1Path, example1),
-    pWriteFile(example2Path, example2),
-  ])
-  const stdout = await runPrettierESLintCLI(writeCommand)
-  expect(stdout).toMatchSnapshot(`stdout: prettier-eslint ${writeCommand}`)
-  const [example1Result, example2Result] = await Promise.all([
-    pReadFile(example1Path, 'utf8'),
-    pReadFile(example2Path, 'utf8'),
-  ])
-  expect({example1Result, example2Result}).toMatchSnapshot(
-    `file contents: prettier-eslint ${writeCommand}`,
-  )
-  await Promise.all([pUnlink(example1Path), pUnlink(example2Path)])
+  try {
+    const example1 = `const {  example1  }  =  baz.bar`
+    const example2 = `function example2(thing){return thing;};;;;;;;;;`
+    await Promise.all([
+      pWriteFile(example1Path, example1),
+      pWriteFile(example2Path, example2),
+    ])
+    const stdout = await runPrettierESLintCLI(writeCommand)
+    expect(stdout).toMatchSnapshot(`stdout: prettier-eslint ${writeCommand}`)
+    const [example1Result, example2Result] = await Promise.all([
+      pReadFile(example1Path, 'utf8'),
+      pReadFile(example2Path, 'utf8'),
+    ])
+    expect({example1Result, example2Result}).toMatchSnapshot(
+      `file contents: prettier-eslint ${writeCommand}`,
+    )
+  } finally {
+    try {
+      await Promise.all([pUnlink(example1Path), pUnlink(example2Path)])
+    } catch (error) {
+      // ignore error
+    }
+  }
 })
 
 function testOutput(command) {
@@ -135,10 +142,10 @@ function runPrettierESLintCLI(args = '', stdin = '') {
     })
 
     child.on('close', () => {
-      if (stderr) {
-        reject(relativeizePath(stderr))
+      if (!stderr || stderr.includes('success')) {
+        resolve(relativeizePath(stdout || stderr))
       } else {
-        resolve(relativeizePath(stdout))
+        reject(relativeizePath(stderr))
       }
     })
   })
