@@ -9,7 +9,7 @@ CLI for [`prettier-eslint`][prettier-eslint]
 [![downloads][downloads-badge]][npm-stat]
 [![MIT License][license-badge]][LICENSE]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Donate][donate-badge]][donate]
 [![Code of Conduct][coc-badge]][coc]
@@ -158,6 +158,15 @@ An alternative approach is to use different tools for different concerns. If you
 argument `--pretter-last`, it will run `eslint --fix` first, then `prettier`. This allows you to
 use `eslint` to look for bugs and/or bad practices, and use `prettier` to enforce code style.
 
+#### --prettier
+ 
+Passes prettier configuration options to prettier-eslint, such as `trailingComma` or `singleQuote`,
+using the dot-notation.
+
+For example: `prettier-eslint --prettier.trailing-comma es5`
+
+The options supported are the same as [prettier-eslint](https://github.com/prettier/prettier-eslint#prettieroptions-object)
+
 ## Related
 
 - [prettier-eslint](https://github.com/prettier/prettier-eslint) - the core package
@@ -170,6 +179,7 @@ Thanks goes to these people ([emoji key][emojis]):
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub>Kent C. Dodds</sub>](https://kentcdodds.com)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=kentcdodds) [📖](https://github.com/prettier/prettier-eslint-cli/commits?author=kentcdodds) 🚇 [⚠️](https://github.com/prettier/prettier-eslint-cli/commits?author=kentcdodds) | [<img src="https://avatars3.githubusercontent.com/u/3266363?v=3" width="100px;"/><br /><sub>Adam Harris</sub>](https://github.com/aharris88)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=aharris88) [📖](https://github.com/prettier/prettier-eslint-cli/commits?author=aharris88) 👀 | [<img src="https://avatars.githubusercontent.com/u/622118?v=3" width="100px;"/><br /><sub>Eric McCormick</sub>](https://ericmccormick.io)<br />👀 | [<img src="https://avatars.githubusercontent.com/u/12389411?v=3" width="100px;"/><br /><sub>Joel Sequeira</sub>](https://github.com/joelseq)<br />[📖](https://github.com/prettier/prettier-eslint-cli/commits?author=joelseq) | [<img src="https://avatars.githubusercontent.com/u/103008?v=3" width="100px;"/><br /><sub>Frank Taillandier</sub>](https://frank.taillandier.me)<br /> | [<img src="https://avatars3.githubusercontent.com/u/292365?v=3" width="100px;"/><br /><sub>Adam Stankiewicz</sub>](http://sheerun.net)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=sheerun) | [<img src="https://avatars3.githubusercontent.com/u/487068?v=3" width="100px;"/><br /><sub>Stephen John Sorensen</sub>](http://www.stephenjohnsorensen.com/)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=spudly) |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [<img src="https://avatars0.githubusercontent.com/u/11560964?v=3" width="100px;"/><br /><sub>Gandem</sub>](https://github.com/Gandem)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=Gandem) [⚠️](https://github.com/prettier/prettier-eslint-cli/commits?author=Gandem) |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification. Contributions of any kind welcome!
