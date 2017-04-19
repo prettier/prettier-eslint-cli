@@ -5,6 +5,7 @@ import {oneLine} from 'common-tags'
 import arrify from 'arrify'
 import camelcaseKeys from 'camelcase-keys'
 import chalk from 'chalk'
+import boolify from 'boolify'
 
 const parser = yargs
   .usage('Usage: $0 <globs>... [--option-1 option-1-value --option-2]')
@@ -73,7 +74,7 @@ const parser = yargs
   })
   .coerce('prettier', config => {
     if (typeof config === 'object') {
-      return camelcaseKeys(config)
+      return boolify(camelcaseKeys(config))
     } else {
       throw Error(
         chalk.red(
