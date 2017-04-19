@@ -3,6 +3,8 @@ import findUp from 'find-up'
 import yargs from 'yargs'
 import {oneLine} from 'common-tags'
 import arrify from 'arrify'
+import camelcaseKeys from 'camelcase-keys'
+import chalk from 'chalk'
 
 const parser = yargs
   .usage('Usage: $0 <globs>... [--option-1 option-1-value --option-2]')
@@ -54,6 +56,12 @@ const parser = yargs
       default: false,
       type: 'boolean',
     },
+    prettier: {
+      describe: oneLine`
+          Prettier configuration options 
+          to be passed to prettier-eslint
+          using dot-notation`,
+    },
     // TODO: if we allow people to to specify a config path,
     // we need to read that somehow. These can come invarious
     // formats and we'd have to work out `extends` somehow as well.
@@ -62,12 +70,18 @@ const parser = yargs
     // eslintConfigPath: {
     //   describe: 'Path to the eslint config to use for eslint --fix',
     // },
-    // TODO: would this be just a JSON file? There's never going to be
-    // a `.prettierrc`: https://github.com/jlongster/prettier/issues/154
-    // so we'll have to be careful how we do this (if we do it at all).
-    // prettierOptions: {
-    //   describe: 'Path to the prettier config to use',
-    // },,
+  })
+  .coerce('prettier', config => {
+    if (typeof config === 'object') {
+      return camelcaseKeys(config)
+    } else {
+      throw Error(
+        chalk.red(
+          oneLine`You should use dot-notation with 
+          the --prettier flag, for example, --prettier.singleQuote`,
+        ),
+      )
+    }
   })
   .strict()
 

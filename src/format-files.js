@@ -26,25 +26,25 @@ const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
 export default formatFilesFromArgv
 
-function formatFilesFromArgv(
-  {
-    _: fileGlobs,
-    logLevel = logger.getLevel(),
-    stdin,
-    write,
-    eslintPath,
-    prettierPath,
-    ignore: ignoreGlobs = [],
-    eslintIgnore: applyEslintIgnore = true,
-    prettierLast,
-  },
-) {
+function formatFilesFromArgv({
+  _: fileGlobs,
+  logLevel = logger.getLevel(),
+  stdin,
+  write,
+  eslintPath,
+  prettierPath,
+  ignore: ignoreGlobs = [],
+  eslintIgnore: applyEslintIgnore = true,
+  prettierLast,
+  prettier,
+}) {
   logger.setLevel(logLevel)
   const prettierESLintOptions = {
     logLevel,
     eslintPath,
     prettierPath,
     prettierLast,
+    prettierOptions: prettier,
   }
   const cliOptions = {write}
   if (stdin) {
