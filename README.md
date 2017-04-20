@@ -182,7 +182,7 @@ if (x) {
   // eslint-disable-line
 }
 ```
-and you can notice that `// eslint-disable-line` has moved to a new line. This can be fixed by using `//eslint-disable-next-line` instead of `// eslint-disable-line`
+You can notice that `// eslint-disable-line` has moved to a new line. This can be fixed by using `//eslint-disable-next-line` instead of `// eslint-disable-line`
 ```js
 // eslint-disable-next-line
 if (x) {
