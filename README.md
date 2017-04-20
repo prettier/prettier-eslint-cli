@@ -178,7 +178,7 @@ if (x) { // eslint-disable-line
 ```
 changes to
 ```js
-if (!global.__DEV__) {
+if (x) {
   // eslint-disable-line
 }
 ```
