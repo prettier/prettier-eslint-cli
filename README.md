@@ -167,7 +167,7 @@ For example: `prettier-eslint --prettier.trailing-comma es5`
 
 The options supported are the same as [prettier-eslint](https://github.com/prettier/prettier-eslint#prettieroptions-object)
 
-## Note
+## Troubleshooting
 
 #### eslint-disable-line
 
