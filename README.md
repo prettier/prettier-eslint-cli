@@ -159,13 +159,36 @@ argument `--pretter-last`, it will run `eslint --fix` first, then `prettier`. Th
 use `eslint` to look for bugs and/or bad practices, and use `prettier` to enforce code style.
 
 #### --prettier
- 
+
 Passes prettier configuration options to prettier-eslint, such as `trailingComma` or `singleQuote`,
 using the dot-notation.
 
 For example: `prettier-eslint --prettier.trailing-comma es5`
 
 The options supported are the same as [prettier-eslint](https://github.com/prettier/prettier-eslint#prettieroptions-object)
+
+## Note
+
+#### eslint-disable-line
+
+While using `// eslint-disable-line`, sometimes you may get linting errors after the code has been processed by this module. That is because
+```js
+if (x) { // eslint-disable-line
+}
+```
+changes to
+```js
+if (!global.__DEV__) {
+  // eslint-disable-line
+}
+```
+and you can notice that `// eslint-disable-line` has moved to a new line. This can be fixed by using `//eslint-disable-next-line` instead of `// eslint-disable-line`
+```js
+// eslint-disable-next-line
+if (x) {
+}
+```
+
 
 ## Related
 
