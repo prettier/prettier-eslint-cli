@@ -3,6 +3,9 @@
   "version": "0.0.0-semantically-released",
   "description": "CLI for prettier-eslint",
   "main": "dist/no-main.js",
+  "engines": {
+    "node": ">=4"
+  },
   "bin": {
     "prettier-eslint": "dist/index.js"
   },
