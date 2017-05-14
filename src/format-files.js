@@ -64,7 +64,7 @@ async function formatStdin(prettierESLintOptions) {
   const stdinValue = (await getStdin()).trim()
   try {
     const formatted = format({text: stdinValue, ...prettierESLintOptions})
-    console.log(formatted)
+    process.stdout.write(formatted)
     return Promise.resolve(formatted)
   } catch (error) {
     logger.error(
@@ -192,7 +192,7 @@ function formatFile(filePath, prettierESLintOptions, cliOptions) {
     })
   } else {
     format$ = format$.map(info => {
-      console.log(info.formatted)
+      process.stdout.write(info.formatted)
       return info
     })
   }

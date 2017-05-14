@@ -9,7 +9,7 @@ import formatFiles from './format-files'
 jest.mock('fs')
 
 beforeEach(() => {
-  console.log = jest.fn()
+  process.stdout.write = jest.fn()
   console.error = jest.fn()
   formatMock.mockClear()
   fsMock.writeFile.mockClear()
@@ -23,11 +23,11 @@ test('sanity test', async () => {
   expect(fsMock.readFile).toHaveBeenCalledTimes(6)
   expect(formatMock).toHaveBeenCalledTimes(6)
   expect(fsMock.writeFile).toHaveBeenCalledTimes(0)
-  expect(console.log).toHaveBeenCalledTimes(6)
+  expect(process.stdout.write).toHaveBeenCalledTimes(6)
   expect(console.error).toHaveBeenCalledTimes(1)
   const mockOutput = expect.stringMatching(/MOCK_OUTPUT.*index.js/)
   const successOutput = expect.stringMatching(/success.*6.*files/)
-  expect(console.log).toHaveBeenCalledWith(mockOutput)
+  expect(process.stdout.write).toHaveBeenCalledWith(mockOutput)
   expect(console.error).toHaveBeenCalledWith(successOutput)
 })
 
@@ -61,8 +61,8 @@ test('should accept stdin', async () => {
   // the trim is part of the test
   const text = mockGetStdin.stdin.trim()
   expect(formatMock).toHaveBeenCalledWith(expect.objectContaining({text}))
-  expect(console.log).toHaveBeenCalledTimes(1)
-  expect(console.log).toHaveBeenCalledWith('MOCK_OUTPUT for stdin')
+  expect(process.stdout.write).toHaveBeenCalledTimes(1)
+  expect(process.stdout.write).toHaveBeenCalledWith('MOCK_OUTPUT for stdin')
 })
 
 test('will write to files if that is specified', async () => {
@@ -91,7 +91,7 @@ test('handles file errors gracefully', async () => {
 test('does not print success if there were no successful files', async () => {
   await formatFiles({_: ['no-match/*.js']})
   const successOutput = expect.stringMatching(/unhandled error/)
-  expect(console.log).not.toHaveBeenCalledWith(successOutput)
+  expect(process.stdout.write).not.toHaveBeenCalledWith(successOutput)
 })
 
 test('fails gracefully if something odd happens', async () => {
