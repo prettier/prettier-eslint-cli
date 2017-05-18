@@ -154,6 +154,15 @@ test('wont save file if contents did not change', async () => {
   expect(console.error).toHaveBeenCalledWith(unchangedOutput)
 })
 
+test('will report unchanged files even if not written', async () => {
+  const fileGlob = 'no-change/*.js'
+  await formatFiles({_: [fileGlob], write: false})
+  expect(fsMock.readFile).toHaveBeenCalledTimes(3)
+  expect(fsMock.writeFile).toHaveBeenCalledTimes(0)
+  const unchangedOutput = expect.stringMatching(/3.*?files.*?unchanged/)
+  expect(console.error).toHaveBeenCalledWith(unchangedOutput)
+})
+
 test('allows you to specify an ignore glob', async () => {
   const ignore = ['src/ignore/thing', 'src/ignore/otherthing']
   const fileGlob = 'src/**/1*.js'
