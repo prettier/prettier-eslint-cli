@@ -70,7 +70,7 @@ test('formats files and outputs to stdout', async () => {
 test('accepts stdin of code', async () => {
   const stdin = 'echo "console.log(   window.baz , typeof [] );  "'
   const stdout = await runPrettierESLintCLI('--stdin', stdin)
-  expect(stdout).toEqual('console.log(window.baz, typeof [])\n\n')
+  expect(stdout).toEqual('console.log(window.baz, typeof [])\n')
 })
 
 const writeCommand = 'cli-test/fixtures/example*.js --write --no-eslint-ignore'
