@@ -67,6 +67,16 @@ test('formats files and outputs to stdout', async () => {
   )
 })
 
+test('list different files with the --list-different option', async () => {
+  // can't just do the testOutput function here because
+  // the output is in an undeterministic order
+  const stdout = await runPrettierESLintCLI(
+    'cli-test/fixtures/stdout*.js --list-different --no-eslint-ignore',
+  )
+  expect(stdout).toContain('cli-test/fixtures/stdout1.js')
+  expect(stdout).toContain('cli-test/fixtures/stdout2.js')
+})
+
 test('accepts stdin of code', async () => {
   const stdin = 'echo "console.log(   window.baz , typeof [] );  "'
   const stdout = await runPrettierESLintCLI('--stdin', stdin)

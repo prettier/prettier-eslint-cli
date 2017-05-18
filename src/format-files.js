@@ -29,6 +29,7 @@ export default formatFilesFromArgv
 function formatFilesFromArgv({
   _: fileGlobs,
   logLevel = logger.getLevel(),
+  listDifferent,
   stdin,
   write,
   eslintPath,
@@ -46,7 +47,7 @@ function formatFilesFromArgv({
     prettierLast,
     prettierOptions: prettier,
   }
-  const cliOptions = {write}
+  const cliOptions = {write, listDifferent}
   if (stdin) {
     return formatStdin(prettierESLintOptions)
   } else {
@@ -179,16 +180,24 @@ function formatFile(filePath, prettierESLintOptions, cliOptions) {
   let format$ = rxReadFile(filePath, 'utf8').map(text => {
     fileInfo.text = text
     fileInfo.formatted = format({text, filePath, ...prettierESLintOptions})
+    fileInfo.unchanged = fileInfo.text === fileInfo.formatted
     return fileInfo
   })
 
   if (cliOptions.write) {
     format$ = format$.mergeMap(info => {
-      if (info.text === info.formatted) {
-        return Rx.Observable.of(Object.assign(fileInfo, {unchanged: true}))
+      if (info.unchanged) {
+        return Rx.Observable.of(info)
       } else {
-        return rxWriteFile(filePath, info.formatted).map(() => fileInfo)
+        return rxWriteFile(filePath, info.formatted).map(() => info)
       }
+    })
+  } else if (cliOptions.listDifferent) {
+    format$ = format$.map(info => {
+      if (!info.unchanged) {
+        console.log(info.filePath)
+      }
+      return info
     })
   } else {
     format$ = format$.map(info => {

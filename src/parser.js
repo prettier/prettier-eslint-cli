@@ -31,6 +31,14 @@ const parser = yargs
         (can use --no-eslint-ignore to disable this)
       `,
     },
+    'list-different': {
+      default: false,
+      type: 'boolean',
+      describe: oneLine`
+        Print filenames of files that are different
+        from Prettier + Eslint formatting.
+      `,
+    },
     eslintPath: {
       default: getPathInHostNodeModules('eslint'),
       describe: 'The path to the eslint module to use',

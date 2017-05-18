@@ -11,6 +11,7 @@ jest.mock('fs')
 beforeEach(() => {
   process.stdout.write = jest.fn()
   console.error = jest.fn()
+  console.log = jest.fn()
   formatMock.mockClear()
   fsMock.writeFile.mockClear()
   fsMock.readFile.mockClear()
@@ -154,6 +155,15 @@ test('wont save file if contents did not change', async () => {
   expect(console.error).toHaveBeenCalledWith(unchangedOutput)
 })
 
+test('will report unchanged files even if not written', async () => {
+  const fileGlob = 'no-change/*.js'
+  await formatFiles({_: [fileGlob], write: false})
+  expect(fsMock.readFile).toHaveBeenCalledTimes(3)
+  expect(fsMock.writeFile).toHaveBeenCalledTimes(0)
+  const unchangedOutput = expect.stringMatching(/3.*?files.*?unchanged/)
+  expect(console.error).toHaveBeenCalledWith(unchangedOutput)
+})
+
 test('allows you to specify an ignore glob', async () => {
   const ignore = ['src/ignore/thing', 'src/ignore/otherthing']
   const fileGlob = 'src/**/1*.js'
@@ -209,4 +219,26 @@ test('will not blow up if an .eslintignore cannot be found', async () => {
   } finally {
     findUpMock.sync = originalSync
   }
+})
+
+test('will list different files', async () => {
+  await formatFiles({
+    _: ['src/**/1*.js', 'src/**/no-change*.js'],
+    listDifferent: true,
+  })
+  expect(fsMock.readFile).toHaveBeenCalledTimes(7)
+  expect(fsMock.writeFile).toHaveBeenCalledTimes(0)
+
+  const unchangedOutput = expect.stringMatching(/3.*files were.*unchanged/)
+  const successOutput = expect.stringMatching(/success.*4.*files/)
+  expect(console.error).toHaveBeenCalledTimes(2)
+  expect(console.error).toHaveBeenCalledWith(unchangedOutput)
+  expect(console.error).toHaveBeenCalledWith(successOutput)
+
+  const path = '/Users/fredFlintstone/Developer/top-secret/footless-carriage/'
+  expect(console.log).toHaveBeenCalledTimes(4)
+  expect(console.log).toHaveBeenCalledWith(`${path}stop/log.js`)
+  expect(console.log).toHaveBeenCalledWith(`${path}stop/index.js`)
+  expect(console.log).toHaveBeenCalledWith(`${path}index.js`)
+  expect(console.log).toHaveBeenCalledWith(`${path}start.js`)
 })
