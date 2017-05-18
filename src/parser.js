@@ -53,7 +53,7 @@ const parser = yargs
       describe: 'The log level to use',
       choices: ['silent', 'error', 'warn', 'info', 'debug', 'trace'],
       alias: 'l',
-      default: 'warn',
+      default: process.env.LOG_LEVEL || 'warn',
     },
     'prettier-last': {
       describe: 'Run prettier last',
