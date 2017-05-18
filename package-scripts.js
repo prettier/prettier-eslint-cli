@@ -23,6 +23,10 @@ module.exports = {
     test: {
       default: 'jest --coverage',
       watch: 'jest --watch',
+      cli: {
+        default: 'jest --config cli-test/jest.config.json',
+        watch: 'jest --config cli-test/jest.config.json --watch',
+      },
     },
     build: {
       description: 'delete the dist directory and run babel to build the files',
@@ -49,7 +53,7 @@ module.exports = {
     },
     validate: {
       description: 'This runs several scripts to make sure things look good before committing or on clean install',
-      script: concurrent.nps('lint', 'build', 'test'),
+      script: concurrent.nps('lint', 'build', 'test', 'test.cli'),
     },
     format: {
       description: 'Formats everything with prettier-eslint',
