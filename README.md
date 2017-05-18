@@ -120,6 +120,10 @@ itself (a common use-case) then add `--write`. You should quote your globs, othe
 > **NOTE:** It is recommended that you keep your files under source control and committed
 > before running `prettier-eslint --write` as it will overwrite your files!
 
+#### --list-different
+
+Instead of printing the formatted version of the files to the terminal, `prettier-eslint` will log the name of the files that are different from the expected formatting. This can be usefull when using `prettier-eslint` in a version control system hook to inform the committer which files need to be formatted.
+
 #### --stdin
 
 Accept input via `stdin`. For example:
