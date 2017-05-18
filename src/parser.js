@@ -1,4 +1,5 @@
 import path from 'path'
+import getLogger from 'loglevel-colored-level-prefix'
 import findUp from 'find-up'
 import yargs from 'yargs'
 import {oneLine} from 'common-tags'
@@ -6,6 +7,8 @@ import arrify from 'arrify'
 import camelcaseKeys from 'camelcase-keys'
 import chalk from 'chalk'
 import boolify from 'boolify'
+
+const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
 const parser = yargs
   .usage('Usage: $0 <globs>... [--option-1 option-1-value --option-2]')
@@ -40,10 +43,10 @@ const parser = yargs
     },
     ignore: {
       describe: oneLine`
-          pattern(s) you wish to ignore
-          (can be used multiple times
-          and includes **/node_modules/** automatically)
-        `,
+        pattern(s) you wish to ignore
+        (can be used multiple times
+        and includes **/node_modules/** automatically)
+      `,
       coerce: arrify,
     },
     'log-level': {
@@ -59,9 +62,10 @@ const parser = yargs
     },
     prettier: {
       describe: oneLine`
-          Prettier configuration options 
-          to be passed to prettier-eslint
-          using dot-notation`,
+        Prettier configuration options
+        to be passed to prettier-eslint
+        using dot-notation
+      `,
     },
     // TODO: if we allow people to to specify a config path,
     // we need to read that somehow. These can come invarious
@@ -78,8 +82,10 @@ const parser = yargs
     } else {
       throw Error(
         chalk.red(
-          oneLine`You should use dot-notation with 
-          the --prettier flag, for example, --prettier.singleQuote`,
+          oneLine`
+            You should use dot-notation with
+            the --prettier flag, for example, --prettier.singleQuote
+          `,
         ),
       )
     }
@@ -89,11 +95,18 @@ const parser = yargs
 export default parser
 
 function getPathInHostNodeModules(module) {
+  logger.debug(`Looking for a local installation of the module "${module}"`)
   const modulePath = findUp.sync(`node_modules/${module}`)
 
   if (modulePath) {
     return modulePath
   }
+  logger.debug(
+    oneLine`
+      Local installation of "${module}" not found,
+      looking again starting in "${__dirname}"
+    `,
+  )
 
   return findUp.sync(`node_modules/${module}`, {cwd: __dirname})
 }
