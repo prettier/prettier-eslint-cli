@@ -70,7 +70,7 @@ test('formats files and outputs to stdout', async () => {
 test('accepts stdin of code', async () => {
   const stdin = 'echo "console.log(   window.baz , typeof [] );  "'
   const stdout = await runPrettierESLintCLI('--stdin', stdin)
-  expect(stdout).toEqual('console.log(window.baz, typeof [])\n\n')
+  expect(stdout).toEqual('console.log(window.baz, typeof [])\n')
 })
 
 const writeCommand = 'cli-test/fixtures/example*.js --write --no-eslint-ignore'
@@ -127,7 +127,15 @@ function runPrettierESLintCLI(args = '', stdin = '') {
     let stderr = ''
     const command = `${PRETTIER_ESLINT_PATH} ${args}`
     const babelCommand = `${stdin}${BABEL_BIN_PATH} -- ${command}`
-    const child = spawn(babelCommand, {cwd})
+
+    // prevent chalk to output colors
+    const env = Object.assign({}, process.env)
+    env.TERM = 'dumb'
+    delete env.CI
+    delete env.COLORTERM
+    delete env.FORCE_COLOR
+
+    const child = spawn(babelCommand, {cwd, env})
 
     child.on('error', error => {
       reject(error)
