@@ -27,10 +27,13 @@ test('help outputs usage information and flags', async () => {
   expect(stdout).toContain('Options:\n')
   // just a sanity check.
   // If it's ever longer than 2000 then we've probably got a problem...
-  if (stdout.length > 2000) {
+  if (stdout.length > 4100) {
     console.error(stdout)
     throw new Error(
-      'We probably have a problem. The --help output is probably too long...',
+      `
+      We probably have a problem.
+      The --help output is probably too long (${stdout.length})...
+    `,
     )
   }
 })
@@ -45,9 +48,9 @@ test('formats files and outputs to stdout', async () => {
     stripIndent(
       `
         import baz, {stuff} from 'fdjakfdlfw-baz'
-        
+
         export {bazzy}
-        
+
         function bazzy(something) {
           return baz(stuff(something))
         }
@@ -58,7 +61,7 @@ test('formats files and outputs to stdout', async () => {
     stripIndent(
       `
         export default foo
-        
+
         function foo(thing) {
           return thing
         }
