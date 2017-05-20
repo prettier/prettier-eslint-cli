@@ -1,12 +1,9 @@
-const path = require('path')
-const getLogger = require('loglevel-colored-level-prefix')
-const findUp = require('find-up')
-const yargs = require('yargs')
-const {oneLine} = require('common-tags')
-const arrify = require('arrify')
-// const camelcaseKeys = require('camelcase-keys')
-// const chalk = require('chalk')
-// const boolify = require('boolify')
+import path from 'path'
+import getLogger from 'loglevel-colored-level-prefix'
+import findUp from 'find-up'
+import yargs from 'yargs'
+import {oneLine} from 'common-tags'
+import arrify from 'arrify'
 
 const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
@@ -94,8 +91,6 @@ semicolons and --no-eslint-ignore to disable default ignores.`,
       type: 'number',
       describe: 'Specify the number of spaces per indentation-level.',
     },
-    // typos of fast fingers?
-    // because `yargs` don't have `recommendOptions`, huh?
     'trailing-comma': {
       default: 'none',
       type: 'string',
@@ -156,7 +151,7 @@ that may introduce ASI failures
   })
   .strict()
 
-module.exports = parser
+export default parser
 
 function getPathInHostNodeModules(module) {
   logger.debug(`Looking for a local installation of the module "${module}"`)

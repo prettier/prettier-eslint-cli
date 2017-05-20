@@ -52,8 +52,6 @@ function formatFilesFromArgv({
     parser
   } = prettierOptions
    */
-  console.log('actual')
-  console.log(prettierOptions)
 
   logger.setLevel(logLevel)
   const prettierESLintOptions = {
