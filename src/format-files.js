@@ -37,15 +37,31 @@ function formatFilesFromArgv({
   ignore: ignoreGlobs = [],
   eslintIgnore: applyEslintIgnore = true,
   prettierLast,
-  prettier,
+  ...prettierOptions
 }) {
+  /*
+  // Wanna be more strict?
+  const {
+    useTabs,
+    bracketSpacing,
+    jsxBracketSameLine,
+    semi,
+    printWidth,
+    tabWidth,
+    trailingComma,
+    parser
+  } = prettierOptions
+   */
+  console.log('actual')
+  console.log(prettierOptions)
+
   logger.setLevel(logLevel)
   const prettierESLintOptions = {
     logLevel,
     eslintPath,
     prettierPath,
     prettierLast,
-    prettierOptions: prettier,
+    prettierOptions,
   }
   const cliOptions = {write, listDifferent}
   if (stdin) {

@@ -116,11 +116,7 @@ test('logs errors to the console if something goes wrong', async () => {
   const errorPrefix = expect.stringMatching(/prettier-eslint-cli.*ERROR/)
   const cliError = expect.stringContaining('eslint-config-error')
   const errorOutput = expect.stringContaining('Some weird eslint config error')
-  expect(console.error).toHaveBeenCalledWith(
-    errorPrefix,
-    cliError,
-    errorOutput,
-  )
+  expect(console.error).toHaveBeenCalledWith(errorPrefix, cliError, errorOutput)
 })
 
 test('forwards logLevel onto prettier-eslint', async () => {
@@ -139,7 +135,7 @@ test('forwards prettierLast onto prettier-eslint', async () => {
 test('forwards prettierOptions onto prettier-eslint', async () => {
   await formatFiles({
     _: ['src/**/1*.js'],
-    prettier: {trailingComma: 'es5'},
+    trailingComma: 'es5',
   })
   expect(formatMock).toHaveBeenCalledWith(
     expect.objectContaining({prettierOptions: {trailingComma: 'es5'}}),
