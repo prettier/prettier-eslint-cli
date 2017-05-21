@@ -2,17 +2,18 @@ import path from 'path'
 import getLogger from 'loglevel-colored-level-prefix'
 import findUp from 'find-up'
 import yargs from 'yargs'
-import {oneLine} from 'common-tags'
+import {oneLine, stripIndent} from 'common-tags'
 import arrify from 'arrify'
 
 const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
 const parser = yargs
   .usage(
-    `Usage: $0 <globs>... [--option-1 option-1-value --option-2]
+    stripIndent`Usage: $0 <globs>... [--option-1 option-1-value --option-2]
 
-Prefix an option with "no-" to set it to false, such as --no-semi to disable
-semicolons and --no-eslint-ignore to disable default ignores.`,
+      Prefix an option with "no-" to set it to false, such as --no-semi to
+      disable semicolons and --no-eslint-ignore to disable default ignores.
+    `,
   )
   .help('h')
   .alias('h', 'help')
@@ -94,25 +95,26 @@ semicolons and --no-eslint-ignore to disable default ignores.`,
     'trailing-comma': {
       default: 'none',
       type: 'string',
-      describe: `Print trailing commas wherever possible.
+      describe: stripIndent`
+        Print trailing commas wherever possible.
 
-Valid options:
-- "none" - no trailing commas
-- "es5" - trailing commas where valid in ES5 (objects, arrays, etc)
-- "all" - trailing commas wherever possible (function arguments)
+        Valid options:
+          - "none" - no trailing commas
+          - "es5" - trailing commas where valid in ES5 (objects, arrays, etc)
+          - "all" - trailing commas wherever possible (function arguments)
       `,
     },
 
     'bracket-spacing': {
       default: true,
       type: 'boolean',
-      describe: `Print spaces between brackets in object literals.
-Can use --no-bracket-spacing for "false" to disable it.
+      describe: stripIndent`Print spaces between brackets in object literals.
+        Can use --no-bracket-spacing for "false" to disable it.
 
-Valid options:
-- true - Example: { foo: bar }
-- false - Example: {foo: bar}
-`,
+        Valid options:
+        - true - Example: { foo: bar }
+        - false - Example: {foo: bar}
+      `,
     },
     'jsx-bracket-same-line': {
       default: false,
@@ -131,14 +133,14 @@ Valid options:
     semi: {
       default: true,
       type: 'boolean',
-      describe: `Print semicolons at the ends of statements.
-Can use --no-semi to be compatible with StandardJS.
+      describe: stripIndent`Print semicolons at the ends of statements.
+        Can use --no-semi to be compatible with StandardJS.
 
-Valid options:
-- true - add a semicolon at the end of every statement
-- false - only add semicolons at the beginning of lines
-that may introduce ASI failures
-`,
+        Valid options:
+        - true - add a semicolon at the end of every statement
+        - false - only add semicolons at the beginning of lines
+        that may introduce ASI failures
+        `,
     },
     // TODO: if we allow people to to specify a config path,
     // we need to read that somehow. These can come invarious

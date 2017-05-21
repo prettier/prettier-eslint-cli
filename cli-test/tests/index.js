@@ -4,6 +4,7 @@ import path from 'path'
 import fs from 'fs'
 import spawn from 'spawn-command'
 import pify from 'pify'
+import {oneLine} from 'common-tags'
 import stripIndent from 'strip-indent'
 
 const pWriteFile = pify(fs.writeFile)
@@ -30,10 +31,10 @@ test('help outputs usage information and flags', async () => {
   if (stdout.length > 4100) {
     console.error(stdout)
     throw new Error(
-      `
-      We probably have a problem.
-      The --help output is probably too long (${stdout.length})...
-    `,
+      oneLine`
+        We probably have a problem.
+        The --help output is probably too long (${stdout.length})...
+      `,
     )
   }
 })

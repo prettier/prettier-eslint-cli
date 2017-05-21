@@ -39,20 +39,6 @@ function formatFilesFromArgv({
   prettierLast,
   ...prettierOptions
 }) {
-  /*
-  // Wanna be more strict?
-  const {
-    useTabs,
-    bracketSpacing,
-    jsxBracketSameLine,
-    semi,
-    printWidth,
-    tabWidth,
-    trailingComma,
-    parser
-  } = prettierOptions
-   */
-
   logger.setLevel(logLevel)
   const prettierESLintOptions = {
     logLevel,
