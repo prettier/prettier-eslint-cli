@@ -37,7 +37,7 @@ function formatFilesFromArgv({
   ignore: ignoreGlobs = [],
   eslintIgnore: applyEslintIgnore = true,
   prettierLast,
-  prettier,
+  ...prettierOptions
 }) {
   logger.setLevel(logLevel)
   const prettierESLintOptions = {
@@ -45,7 +45,7 @@ function formatFilesFromArgv({
     eslintPath,
     prettierPath,
     prettierLast,
-    prettierOptions: prettier,
+    prettierOptions,
   }
   const cliOptions = {write, listDifferent}
   if (stdin) {

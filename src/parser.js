@@ -2,16 +2,19 @@ import path from 'path'
 import getLogger from 'loglevel-colored-level-prefix'
 import findUp from 'find-up'
 import yargs from 'yargs'
-import {oneLine} from 'common-tags'
+import {oneLine, stripIndent} from 'common-tags'
 import arrify from 'arrify'
-import camelcaseKeys from 'camelcase-keys'
-import chalk from 'chalk'
-import boolify from 'boolify'
 
 const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
 const parser = yargs
-  .usage('Usage: $0 <globs>... [--option-1 option-1-value --option-2]')
+  .usage(
+    stripIndent`Usage: $0 <globs>... [--option-1 option-1-value --option-2]
+
+      Prefix an option with "no-" to set it to false, such as --no-semi to
+      disable semicolons and --no-eslint-ignore to disable default ignores.
+    `,
+  )
   .help('h')
   .alias('h', 'help')
   .version()
@@ -21,7 +24,11 @@ const parser = yargs
       describe: 'Edit the file in-place (beware!)',
       type: 'boolean',
     },
-    stdin: {default: false, describe: 'Read input via stdin', type: 'boolean'},
+    stdin: {
+      default: false,
+      describe: 'Read input via stdin',
+      type: 'boolean',
+    },
     'eslint-ignore': {
       default: true,
       type: 'boolean',
@@ -39,12 +46,14 @@ const parser = yargs
         from Prettier + Eslint formatting.
       `,
     },
-    eslintPath: {
+    // allow `--eslint-path` and `--eslintPath`
+    'eslint-path': {
       default: getPathInHostNodeModules('eslint'),
       describe: 'The path to the eslint module to use',
       coerce: coercePath,
     },
-    prettierPath: {
+    // allow `--prettier-path` and `--prettierPath`
+    'prettier-path': {
       describe: 'The path to the prettier module to use',
       default: getPathInHostNodeModules('prettier'),
       coerce: coercePath,
@@ -68,12 +77,70 @@ const parser = yargs
       default: false,
       type: 'boolean',
     },
-    prettier: {
-      describe: oneLine`
-        Prettier configuration options
-        to be passed to prettier-eslint
-        using dot-notation
+    'use-tabs': {
+      default: false,
+      type: 'boolean',
+      describe: 'Indent lines with tabs instead of spaces.',
+    },
+    'print-width': {
+      default: 80,
+      type: 'number',
+      describe: 'Specify the length of line that the printer will wrap on.',
+    },
+    'tab-width': {
+      default: 2,
+      type: 'number',
+      describe: 'Specify the number of spaces per indentation-level.',
+    },
+    'trailing-comma': {
+      default: 'none',
+      type: 'string',
+      describe: stripIndent`
+        Print trailing commas wherever possible.
+
+        Valid options:
+          - "none" - no trailing commas
+          - "es5" - trailing commas where valid in ES5 (objects, arrays, etc)
+          - "all" - trailing commas wherever possible (function arguments)
       `,
+    },
+
+    'bracket-spacing': {
+      default: true,
+      type: 'boolean',
+      describe: stripIndent`Print spaces between brackets in object literals.
+        Can use --no-bracket-spacing for "false" to disable it.
+
+        Valid options:
+        - true - Example: { foo: bar }
+        - false - Example: {foo: bar}
+      `,
+    },
+    'jsx-bracket-same-line': {
+      default: false,
+      type: 'boolean',
+      describe: oneLine`
+        Put the > of a multi-line JSX element at
+        the end of the last line instead of
+        being alone on the next line
+      `,
+    },
+    parser: {
+      default: 'babylon',
+      type: 'string',
+      describe: 'Specify which parser to use.',
+    },
+    semi: {
+      default: true,
+      type: 'boolean',
+      describe: stripIndent`Print semicolons at the ends of statements.
+        Can use --no-semi to be compatible with StandardJS.
+
+        Valid options:
+        - true - add a semicolon at the end of every statement
+        - false - only add semicolons at the beginning of lines
+        that may introduce ASI failures
+        `,
     },
     // TODO: if we allow people to to specify a config path,
     // we need to read that somehow. These can come invarious
@@ -83,20 +150,6 @@ const parser = yargs
     // eslintConfigPath: {
     //   describe: 'Path to the eslint config to use for eslint --fix',
     // },
-  })
-  .coerce('prettier', config => {
-    if (typeof config === 'object') {
-      return boolify(camelcaseKeys(config))
-    } else {
-      throw Error(
-        chalk.red(
-          oneLine`
-            You should use dot-notation with
-            the --prettier flag, for example, --prettier.singleQuote
-          `,
-        ),
-      )
-    }
   })
   .strict()
 

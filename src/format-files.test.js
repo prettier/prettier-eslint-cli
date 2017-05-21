@@ -139,7 +139,7 @@ test('forwards prettierLast onto prettier-eslint', async () => {
 test('forwards prettierOptions onto prettier-eslint', async () => {
   await formatFiles({
     _: ['src/**/1*.js'],
-    prettier: {trailingComma: 'es5'},
+    trailingComma: 'es5',
   })
   expect(formatMock).toHaveBeenCalledWith(
     expect.objectContaining({prettierOptions: {trailingComma: 'es5'}}),
