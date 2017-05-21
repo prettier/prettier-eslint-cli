@@ -102,6 +102,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "tunnckoCore",
+      "name": "Charlike Mike Reagent",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/5038030?v=3",
+      "profile": "https://i.am.charlike.online",
+      "contributions": [
+        "code",
+        "test"
+      ]
     }
   ]
 }

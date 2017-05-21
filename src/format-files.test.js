@@ -116,7 +116,11 @@ test('logs errors to the console if something goes wrong', async () => {
   const errorPrefix = expect.stringMatching(/prettier-eslint-cli.*ERROR/)
   const cliError = expect.stringContaining('eslint-config-error')
   const errorOutput = expect.stringContaining('Some weird eslint config error')
-  expect(console.error).toHaveBeenCalledWith(errorPrefix, cliError, errorOutput)
+  expect(console.error).toHaveBeenCalledWith(
+    errorPrefix,
+    cliError,
+    errorOutput,
+  )
 })
 
 test('forwards logLevel onto prettier-eslint', async () => {
