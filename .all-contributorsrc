@@ -112,6 +112,15 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "diondirza",
+      "name": "Dion Dirza",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/10954870?v=3",
+      "profile": "https://github.com/diondirza",
+      "contributions": [
+        "bug"
+      ]
     }
   ]
 }
