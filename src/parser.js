@@ -108,7 +108,8 @@ const parser = yargs
     'bracket-spacing': {
       default: true,
       type: 'boolean',
-      describe: stripIndent`Print spaces between brackets in object literals.
+      describe: stripIndent`
+        Print spaces between brackets in object literals.
         Can use --no-bracket-spacing for "false" to disable it.
 
         Valid options:
@@ -133,15 +134,25 @@ const parser = yargs
     semi: {
       default: true,
       type: 'boolean',
-      describe: stripIndent`Print semicolons at the ends of statements.
-        Can use --no-semi to be compatible with StandardJS.
+      describe: stripIndent`
+        Print semicolons at the ends of statements.
+        Can use --no-semi.
 
         Valid options:
-        - true - add a semicolon at the end of every statement
-        - false - only add semicolons at the beginning of lines
-        that may introduce ASI failures
-        `,
+          - true - add a semicolon at the end of every statement
+          - false - ${oneLine`
+            only add semicolons at the beginning of lines
+            that may introduce ASI failures
+          `}
+      `,
     },
+    'single-quote': {
+      default: false,
+      type: 'boolean',
+      describe: 'Use single quotes instead of double quotes.',
+    },
+    // TODO: support range-start and range-end
+    // would require changes in prettier-eslint
     // TODO: if we allow people to to specify a config path,
     // we need to read that somehow. These can come invarious
     // formats and we'd have to work out `extends` somehow as well.
