@@ -9,7 +9,8 @@ const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
 const parser = yargs
   .usage(
-    stripIndent`Usage: $0 <globs>... [--option-1 option-1-value --option-2]
+    stripIndent`
+      Usage: $0 <globs>... [--option-1 option-1-value --option-2]
 
       Prefix an option with "no-" to set it to false, such as --no-semi to
       disable semicolons and --no-eslint-ignore to disable default ignores.
@@ -78,22 +79,18 @@ const parser = yargs
       type: 'boolean',
     },
     'use-tabs': {
-      default: false,
       type: 'boolean',
       describe: 'Indent lines with tabs instead of spaces.',
     },
     'print-width': {
-      default: 80,
       type: 'number',
       describe: 'Specify the length of line that the printer will wrap on.',
     },
     'tab-width': {
-      default: 2,
       type: 'number',
       describe: 'Specify the number of spaces per indentation-level.',
     },
     'trailing-comma': {
-      default: 'none',
       type: 'string',
       describe: stripIndent`
         Print trailing commas wherever possible.
@@ -103,10 +100,9 @@ const parser = yargs
           - "es5" - trailing commas where valid in ES5 (objects, arrays, etc)
           - "all" - trailing commas wherever possible (function arguments)
       `,
+      choices: ['none', 'es5', 'all'],
     },
-
     'bracket-spacing': {
-      default: true,
       type: 'boolean',
       describe: stripIndent`
         Print spaces between brackets in object literals.
@@ -116,9 +112,9 @@ const parser = yargs
         - true - Example: { foo: bar }
         - false - Example: {foo: bar}
       `,
+      choices: [true, false],
     },
     'jsx-bracket-same-line': {
-      default: false,
       type: 'boolean',
       describe: oneLine`
         Put the > of a multi-line JSX element at
@@ -127,12 +123,10 @@ const parser = yargs
       `,
     },
     parser: {
-      default: 'babylon',
       type: 'string',
       describe: 'Specify which parser to use.',
     },
     semi: {
-      default: true,
       type: 'boolean',
       describe: stripIndent`
         Print semicolons at the ends of statements.
@@ -145,9 +139,9 @@ const parser = yargs
             that may introduce ASI failures
           `}
       `,
+      choices: [true, false],
     },
     'single-quote': {
-      default: false,
       type: 'boolean',
       describe: 'Use single quotes instead of double quotes.',
     },
