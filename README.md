@@ -165,9 +165,9 @@ use `eslint` to look for bugs and/or bad practices, and use `prettier` to enforc
 #### --prettier
  
 Passes prettier configuration options to prettier-eslint, such as `trailingComma` or `singleQuote`,
-using the dot-notation.
+using the same options as in prettier.
 
-For example: `prettier-eslint --prettier.trailing-comma es5`
+For example: `prettier-eslint --trailing-comma es5`
 
 The options supported are the same as [prettier-eslint](https://github.com/prettier/prettier-eslint#prettieroptions-object)
 
