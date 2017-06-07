@@ -80,6 +80,7 @@ const parser = yargs
     },
     'use-tabs': {
       type: 'boolean',
+      default: undefined,
       describe: 'Indent lines with tabs instead of spaces.',
     },
     'print-width': {
@@ -104,6 +105,7 @@ const parser = yargs
     },
     'bracket-spacing': {
       type: 'boolean',
+      default: undefined,
       describe: stripIndent`
         Print spaces between brackets in object literals.
         Can use --no-bracket-spacing for "false" to disable it.
@@ -112,10 +114,10 @@ const parser = yargs
         - true - Example: { foo: bar }
         - false - Example: {foo: bar}
       `,
-      choices: [true, false],
     },
     'jsx-bracket-same-line': {
       type: 'boolean',
+      default: undefined,
       describe: oneLine`
         Put the > of a multi-line JSX element at
         the end of the last line instead of
@@ -128,6 +130,7 @@ const parser = yargs
     },
     semi: {
       type: 'boolean',
+      default: undefined,
       describe: stripIndent`
         Print semicolons at the ends of statements.
         Can use --no-semi.
@@ -139,10 +142,10 @@ const parser = yargs
             that may introduce ASI failures
           `}
       `,
-      choices: [true, false],
     },
     'single-quote': {
       type: 'boolean',
+      default: undefined,
       describe: 'Use single quotes instead of double quotes.',
     },
     // TODO: support range-start and range-end
