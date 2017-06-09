@@ -126,7 +126,13 @@ function formatFilesFromGlobs(
     }
 
     function onComplete() {
-      if (successes.length) {
+      const isNotSilent = logger.getLevel() !== logger.levels.SILENT
+
+      /* use console.error directly here because
+       * - we don't want these messages prefixed
+       * - we want them to go to stderr, not stdout
+       */
+      if (successes.length && isNotSilent) {
         console.error(
           messages.success({
             success: chalk.green('success'),
@@ -135,7 +141,7 @@ function formatFilesFromGlobs(
           }),
         )
       }
-      if (failures.length) {
+      if (failures.length && isNotSilent) {
         process.exitCode = 1
         console.error(
           messages.failure({
@@ -145,7 +151,7 @@ function formatFilesFromGlobs(
           }),
         )
       }
-      if (unchanged.length) {
+      if (unchanged.length && isNotSilent) {
         console.error(
           messages.unchanged({
             unchanged: chalk.gray('unchanged'),
