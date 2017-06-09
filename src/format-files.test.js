@@ -4,8 +4,8 @@ import findUpMock from 'find-up'
 import formatMock from 'prettier-eslint'
 import globMock from 'glob'
 import mockGetStdin from 'get-stdin'
-import formatFiles from './format-files'
 import getLogger from 'loglevel-colored-level-prefix'
+import formatFiles from './format-files'
 
 jest.mock('fs')
 
