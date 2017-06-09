@@ -131,6 +131,15 @@
         "bug",
         "code"
       ]
+    },
+    {
+      "login": "jackfranklin",
+      "name": "Jack Franklin",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/193238?v=3",
+      "profile": "http://www.jackfranklin.co.uk",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }

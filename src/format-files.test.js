@@ -4,6 +4,7 @@ import findUpMock from 'find-up'
 import formatMock from 'prettier-eslint'
 import globMock from 'glob'
 import mockGetStdin from 'get-stdin'
+import getLogger from 'loglevel-colored-level-prefix'
 import formatFiles from './format-files'
 
 jest.mock('fs')
@@ -121,6 +122,18 @@ test('logs errors to the console if something goes wrong', async () => {
     cliError,
     errorOutput,
   )
+})
+
+test('does not log anything to the console if logLevel is silent', async () => {
+  const log = getLogger()
+  const globs = ['eslint-config-error/*.js', 'src/**/2*.js']
+  await formatFiles({
+    _: globs,
+    write: true,
+    logLevel: log.levels.SILENT,
+  })
+  expect(fsMock.writeFile).toHaveBeenCalledTimes(4)
+  expect(console.error).not.toHaveBeenCalled()
 })
 
 test('forwards logLevel onto prettier-eslint', async () => {
