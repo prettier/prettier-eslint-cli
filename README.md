@@ -9,7 +9,7 @@ CLI for [`prettier-eslint`][prettier-eslint]
 [![downloads][downloads-badge]][npm-stat]
 [![MIT License][license-badge]][LICENSE]
 
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-15-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Donate][donate-badge]][donate]
 [![Code of Conduct][coc-badge]][coc]
@@ -78,24 +78,64 @@ autocmd BufWritePre *.js :normal gggqG
 prettier-eslint --help
 Usage: prettier-eslint <globs>... [--option-1 option-1-value --option-2]
 
+Prefix an option with "no-" to set it to false, such as --no-semi to
+disable semicolons and --no-eslint-ignore to disable default ignores.
+
 Options:
-  -h, --help       Show help                                           [boolean]
-  --version        Show version number                                 [boolean]
-  --write          Edit the file in-place (beware!)   [boolean] [default: false]
-  --stdin          Read input via stdin               [boolean] [default: false]
-  --eslint-ignore  Only format matching files even if they are not ignored by
-                   .eslintignore. (can use --no-eslint-ignore to disable this)
-                                                       [boolean] [default: true]
-  --eslintPath     The path to the eslint module to use
-    [default: "<path-to-root>/node_modules/eslint"]
-  --prettierPath   The path to the prettier module to use
-  [default: "<path-to-root>/node_modules/prettier"]
-  --ignore         pattern(s) you wish to ignore (can be used multiple times and
-                   includes **/node_modules/** automatically)
-  --log-level, -l  The log level to use
+  -h, --help               Show help                                   [boolean]
+  --version                Show version number                         [boolean]
+  --write                  Edit the file in-place (beware!)
+                                                      [boolean] [default: false]
+  --stdin                  Read input via stdin       [boolean] [default: false]
+  --eslint-ignore          Only format matching files even if they are not
+                           ignored by .eslintignore. (can use --no-eslint-ignore
+                           to disable this)            [boolean] [default: true]
+  --list-different         Print filenames of files that are different from
+                           Prettier + Eslint formatting.
+                                                      [boolean] [default: false]
+  --eslint-path            The path to the eslint module to use
+                 [default: "/home/ryan/prettier-eslint-cli/node_modules/eslint"]
+  --prettier-path          The path to the prettier module to use
+               [default: "/home/ryan/prettier-eslint-cli/node_modules/prettier"]
+  --ignore                 pattern(s) you wish to ignore (can be used multiple
+                           times and includes **/node_modules/** automatically)
+  --log-level, -l          The log level to use
         [choices: "silent", "error", "warn", "info", "debug", "trace"] [default:
                                                                          "warn"]
-  --prettier-last  Run prettier last                  [boolean] [default: false]
+  --prettier-last          Run prettier last          [boolean] [default: false]
+  --use-tabs               Indent lines with tabs instead of spaces.   [boolean]
+  --print-width            Specify the length of line that the printer will wrap
+                           on.                                          [number]
+  --tab-width              Specify the number of spaces per indentation-level.
+                                                                        [number]
+  --trailing-comma         Print trailing commas wherever possible.
+
+                           Valid options:
+                           - "none" - no trailing commas
+                           - "es5" - trailing commas where valid in ES5
+                           (objects, arrays, etc)
+                           - "all" - trailing commas wherever possible (function
+                           arguments)   [string] [choices: "none", "es5", "all"]
+  --bracket-spacing        Print spaces between brackets in object literals.
+                           Can use --no-bracket-spacing for "false" to disable
+                           it.
+
+                           Valid options:
+                           - true - Example: { foo: bar }
+                           - false - Example: {foo: bar}               [boolean]
+  --jsx-bracket-same-line  Put the > of a multi-line JSX element at the end of
+                           the last line instead of being alone on the next line
+                                                                       [boolean]
+  --parser                 Specify which parser to use.                 [string]
+  --semi                   Print semicolons at the ends of statements.
+                           Can use --no-semi.
+
+                           Valid options:
+                           - true - add a semicolon at the end of every
+                           statement
+                           - false - only add semicolons at the beginning of
+                           lines that may introduce ASI failures       [boolean]
+  --single-quote           Use single quotes instead of double quotes. [boolean]
 ```
 
 #### <globs>
@@ -162,14 +202,13 @@ An alternative approach is to use different tools for different concerns. If you
 argument `--pretter-last`, it will run `eslint --fix` first, then `prettier`. This allows you to
 use `eslint` to look for bugs and/or bad practices, and use `prettier` to enforce code style.
 
-#### --prettier
- 
-Passes prettier configuration options to prettier-eslint, such as `trailingComma` or `singleQuote`,
-using the same options as in prettier.
+#### `prettier` options
+
+`prettier-eslint-cli` also supports the same command line options as `prettier`.
 
 For example: `prettier-eslint --trailing-comma es5`
 
-The options supported are the same as [prettier-eslint](https://github.com/prettier/prettier-eslint#prettieroptions-object)
+Refer to the  [prettier-eslint](https://github.com/prettier/prettier#options) docs for documentation on these options
 
 ## Related
 
@@ -184,6 +223,7 @@ Thanks goes to these people ([emoji key][emojis]):
 | [<img src="https://avatars.githubusercontent.com/u/1500684?v=3" width="100px;"/><br /><sub>Kent C. Dodds</sub>](https://kentcdodds.com)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=kentcdodds "Code") [📖](https://github.com/prettier/prettier-eslint-cli/commits?author=kentcdodds "Documentation") [🚇](#infra-kentcdodds "Infrastructure (Hosting, Build-Tools, etc)") [⚠️](https://github.com/prettier/prettier-eslint-cli/commits?author=kentcdodds "Tests") | [<img src="https://avatars3.githubusercontent.com/u/3266363?v=3" width="100px;"/><br /><sub>Adam Harris</sub>](https://github.com/aharris88)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=aharris88 "Code") [📖](https://github.com/prettier/prettier-eslint-cli/commits?author=aharris88 "Documentation") [👀](#review-aharris88 "Reviewed Pull Requests") | [<img src="https://avatars.githubusercontent.com/u/622118?v=3" width="100px;"/><br /><sub>Eric McCormick</sub>](https://ericmccormick.io)<br />[👀](#review-edm00se "Reviewed Pull Requests") | [<img src="https://avatars.githubusercontent.com/u/12389411?v=3" width="100px;"/><br /><sub>Joel Sequeira</sub>](https://github.com/joelseq)<br />[📖](https://github.com/prettier/prettier-eslint-cli/commits?author=joelseq "Documentation") | [<img src="https://avatars.githubusercontent.com/u/103008?v=3" width="100px;"/><br /><sub>Frank Taillandier</sub>](https://frank.taillandier.me)<br /> | [<img src="https://avatars3.githubusercontent.com/u/292365?v=3" width="100px;"/><br /><sub>Adam Stankiewicz</sub>](http://sheerun.net)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=sheerun "Code") | [<img src="https://avatars3.githubusercontent.com/u/487068?v=3" width="100px;"/><br /><sub>Stephen John Sorensen</sub>](http://www.stephenjohnsorensen.com/)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=spudly "Code") |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [<img src="https://avatars0.githubusercontent.com/u/11560964?v=3" width="100px;"/><br /><sub>Gandem</sub>](https://github.com/Gandem)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=Gandem "Code") [⚠️](https://github.com/prettier/prettier-eslint-cli/commits?author=Gandem "Tests") | [<img src="https://avatars0.githubusercontent.com/u/129991?v=3" width="100px;"/><br /><sub>Matteo Ronchi</sub>](https://github.com/cef62)<br />[🐛](https://github.com/prettier/prettier-eslint-cli/issues?q=author%3Acef62 "Bug reports") [💻](https://github.com/prettier/prettier-eslint-cli/commits?author=cef62 "Code") | [<img src="https://avatars2.githubusercontent.com/u/61787?v=3" width="100px;"/><br /><sub>Benoît Zugmeyer</sub>](https://github.com/BenoitZugmeyer)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=BenoitZugmeyer "Code") [⚠️](https://github.com/prettier/prettier-eslint-cli/commits?author=BenoitZugmeyer "Tests") | [<img src="https://avatars0.githubusercontent.com/u/5038030?v=3" width="100px;"/><br /><sub>Charlike Mike Reagent</sub>](https://i.am.charlike.online)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=tunnckoCore "Code") [⚠️](https://github.com/prettier/prettier-eslint-cli/commits?author=tunnckoCore "Tests") | [<img src="https://avatars0.githubusercontent.com/u/10954870?v=3" width="100px;"/><br /><sub>Dion Dirza</sub>](https://github.com/diondirza)<br />[🐛](https://github.com/prettier/prettier-eslint-cli/issues?q=author%3Adiondirza "Bug reports") | [<img src="https://avatars0.githubusercontent.com/u/3297808?v=3" width="100px;"/><br /><sub>mrm007</sub>](https://github.com/mrm007)<br />[🐛](https://github.com/prettier/prettier-eslint-cli/issues?q=author%3Amrm007 "Bug reports") [💻](https://github.com/prettier/prettier-eslint-cli/commits?author=mrm007 "Code") | [<img src="https://avatars0.githubusercontent.com/u/193238?v=3" width="100px;"/><br /><sub>Jack Franklin</sub>](http://www.jackfranklin.co.uk)<br />[💻](https://github.com/prettier/prettier-eslint-cli/commits?author=jackfranklin "Code") |
+| [<img src="https://avatars0.githubusercontent.com/u/17342435?v=3" width="100px;"/><br /><sub>Ryan Zimmerman</sub>](http://www.ryanzim.com)<br />[📖](https://github.com/prettier/prettier-eslint-cli/commits?author=RyanZim "Documentation") |
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors][all-contributors] specification. Contributions of any kind welcome!
