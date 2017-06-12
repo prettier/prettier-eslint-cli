@@ -31,7 +31,7 @@
     "find-up": "^2.1.0",
     "get-stdin": "^5.0.1",
     "glob": "^7.1.1",
-    "ignore": "^3.2.7",
+    "ignore": "^3.3.3",
     "indent-string": "^3.1.0",
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
