@@ -18,6 +18,10 @@ beforeEach(() => {
   fsMock.readFile.mockClear()
 })
 
+afterEach(() => {
+  process.exitCode = 0
+})
+
 test('sanity test', async () => {
   const globs = ['src/**/1*.js', 'src/**/2*.js']
   await formatFiles({_: globs})
@@ -234,24 +238,45 @@ test('will not blow up if an .eslintignore cannot be found', async () => {
   }
 })
 
-test('will list different files', async () => {
-  await formatFiles({
-    _: ['src/**/1*.js', 'src/**/no-change*.js'],
-    listDifferent: true,
+describe('listDifferent', () => {
+  test('will list different files', async () => {
+    await formatFiles({
+      _: ['src/**/1*.js', 'src/**/no-change*.js'],
+      listDifferent: true,
+    })
+    expect(fsMock.readFile).toHaveBeenCalledTimes(7)
+    expect(fsMock.writeFile).toHaveBeenCalledTimes(0)
+
+    const unchangedOutput = expect.stringMatching(/3.*files were.*unchanged/)
+    const successOutput = expect.stringMatching(/success.*4.*files/)
+    expect(console.error).toHaveBeenCalledTimes(2)
+    expect(console.error).toHaveBeenCalledWith(unchangedOutput)
+    expect(console.error).toHaveBeenCalledWith(successOutput)
+
+    const path =
+      '/Users/fredFlintstone/Developer/top-secret/footless-carriage/'
+    expect(console.log).toHaveBeenCalledTimes(4)
+    expect(console.log).toHaveBeenCalledWith(`${path}stop/log.js`)
+    expect(console.log).toHaveBeenCalledWith(`${path}stop/index.js`)
+    expect(console.log).toHaveBeenCalledWith(`${path}index.js`)
+    expect(console.log).toHaveBeenCalledWith(`${path}start.js`)
   })
-  expect(fsMock.readFile).toHaveBeenCalledTimes(7)
-  expect(fsMock.writeFile).toHaveBeenCalledTimes(0)
 
-  const unchangedOutput = expect.stringMatching(/3.*files were.*unchanged/)
-  const successOutput = expect.stringMatching(/success.*4.*files/)
-  expect(console.error).toHaveBeenCalledTimes(2)
-  expect(console.error).toHaveBeenCalledWith(unchangedOutput)
-  expect(console.error).toHaveBeenCalledWith(successOutput)
+  test('will error out when contents did change', async () => {
+    const fileGlob = 'src/**/1*.js'
+    await formatFiles({
+      _: [fileGlob],
+      listDifferent: true,
+    })
+    expect(process.exitCode).toBe(1)
+  })
 
-  const path = '/Users/fredFlintstone/Developer/top-secret/footless-carriage/'
-  expect(console.log).toHaveBeenCalledTimes(4)
-  expect(console.log).toHaveBeenCalledWith(`${path}stop/log.js`)
-  expect(console.log).toHaveBeenCalledWith(`${path}stop/index.js`)
-  expect(console.log).toHaveBeenCalledWith(`${path}index.js`)
-  expect(console.log).toHaveBeenCalledWith(`${path}start.js`)
+  test('wont error out when contents did not change', async () => {
+    const fileGlob = 'no-change/*.js'
+    await formatFiles({
+      _: [fileGlob],
+      listDifferent: true,
+    })
+    expect(process.exitCode).toBe(0)
+  })
 })
