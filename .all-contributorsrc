@@ -149,6 +149,17 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "moretti",
+      "name": "Paolo Moretti",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1186409?v=3",
+      "profile": "http://stackoverflow.com/users/63011",
+      "contributions": [
+        "bug",
+        "code",
+        "test"
+      ]
     }
   ]
 }
