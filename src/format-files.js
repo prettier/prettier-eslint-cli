@@ -201,6 +201,7 @@ function formatFile(filePath, prettierESLintOptions, cliOptions) {
   } else if (cliOptions.listDifferent) {
     format$ = format$.map(info => {
       if (!info.unchanged) {
+        process.exitCode = 1
         console.log(info.filePath)
       }
       return info
