@@ -199,7 +199,7 @@ By default, `prettier-eslint-cli` will run `prettier` first, then `eslint --fix`
 you want to use `prettier`, but override some of the styles you don't like using `eslint --fix`.
 
 An alternative approach is to use different tools for different concerns. If you provide the
-argument `--pretter-last`, it will run `eslint --fix` first, then `prettier`. This allows you to
+argument `--prettier-last`, it will run `eslint --fix` first, then `prettier`. This allows you to
 use `eslint` to look for bugs and/or bad practices, and use `prettier` to enforce code style.
 
 #### `prettier` options
