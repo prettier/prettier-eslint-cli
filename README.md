@@ -94,9 +94,9 @@ Options:
                            Prettier + Eslint formatting.
                                                       [boolean] [default: false]
   --eslint-path            The path to the eslint module to use
-                 [default: "/home/ryan/prettier-eslint-cli/node_modules/eslint"]
+                 [default: "./node_modules/eslint"]
   --prettier-path          The path to the prettier module to use
-               [default: "/home/ryan/prettier-eslint-cli/node_modules/prettier"]
+               [default: "./node_modules/prettier"]
   --ignore                 pattern(s) you wish to ignore (can be used multiple
                            times and includes **/node_modules/** automatically)
   --log-level, -l          The log level to use
@@ -210,6 +210,13 @@ For example: `prettier-eslint --trailing-comma es5`
 
 Refer to the  [prettier-eslint](https://github.com/prettier/prettier#options) docs for documentation on these options
 
+## Integration
+Any linter that support ESLint [CLIEngine](http://eslint.org/docs/developer-guide/nodejs-api#cliengine) interface can be integrate with `prettier-eslint`
+
+### Knowed integrated packages
+- [standard-prettier-eslint][standard-prettier-eslint], a helper package for integrate [standard][standard]
+- [semistandard-prettier-eslint][semistandard-prettier-eslint], a helper package for integrate [semistandard][semistandard]
+
 ## Related
 
 - [prettier-eslint](https://github.com/prettier/prettier-eslint) - the core package
@@ -269,3 +276,7 @@ MIT
 [npm scripts]: https://docs.npmjs.com/misc/scripts
 [package scripts]: https://github.com/kentcdodds/p-s
 [glob]: https://github.com/isaacs/node-glob
+[standard-prettier-eslint]: https://github.com/bySabi/standard-prettier-eslint
+[semistandard-prettier-eslint]: https://github.com/bySabi/semistandard-prettier-eslint
+[standard]: https://github.com/standard/standard
+[semistandard]: https://github.com/Flet/semistandard
