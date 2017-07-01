@@ -41,7 +41,7 @@
     "yargs": "^7.1.0"
   },
   "devDependencies": {
-    "all-contributors-cli": "^4.3.0",
+    "all-contributors-cli": "4.3.0",
     "babel-cli": "^6.24.1",
     "babel-jest": "^19.0.0",
     "babel-plugin-transform-runtime": "^6.23.0",
@@ -55,8 +55,8 @@
     "eslint-config-kentcdodds": "^12.2.1",
     "husky": "^0.13.3",
     "jest-cli": "^19.0.2",
-    "nps": "^5.1.0",
-    "nps-utils": "^1.2.0",
+    "nps": "5.3.2",
+    "nps-utils": "1.2.0",
     "opt-cli": "^1.5.1",
     "pify": "^2.3.0",
     "rimraf": "^2.6.1",

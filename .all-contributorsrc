@@ -160,6 +160,16 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "bySabi",
+      "name": "bySabi Files",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/6242574?v=3",
+      "profile": "https://github.com/bySabi",
+      "contributions": [
+        "doc",
+        "tool"
+      ]
     }
   ]
 }
