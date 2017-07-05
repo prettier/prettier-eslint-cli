@@ -211,11 +211,18 @@ For example: `prettier-eslint --trailing-comma es5`
 Refer to the  [prettier-eslint](https://github.com/prettier/prettier#options) docs for documentation on these options
 
 ## Integration
+
 Any linter that support ESLint [CLIEngine](http://eslint.org/docs/developer-guide/nodejs-api#cliengine) interface can be integrate with `prettier-eslint`
 
-### Knowed integrated packages
+### Knowed integrated package helpers
+
 - [standard-prettier-eslint][standard-prettier-eslint], a helper package for integrate [standard][standard]
 - [semistandard-prettier-eslint][semistandard-prettier-eslint], a helper package for integrate [semistandard][semistandard]
+
+### Standalone CLI tools based on `prettier-eslint-cli`
+
+- [prettier-std-cli][prettier-std-cli] the easy to use CLI version of [standard-prettier-eslint][standard-prettier-eslint] 
+- [prettier-semi-cli][prettier-semi-cli] the easy to use CLI version of [semistandard-prettier-eslint][semistandard-prettier-eslint]
 
 ## Related
 
@@ -280,3 +287,5 @@ MIT
 [semistandard-prettier-eslint]: https://github.com/bySabi/semistandard-prettier-eslint
 [standard]: https://github.com/standard/standard
 [semistandard]: https://github.com/Flet/semistandard
+[prettier-std-cli]: https://github.com/bySabi/prettier-std-cli
+[prettier-semi-cli]: https://github.com/bySabi/prettier-semi-cli
