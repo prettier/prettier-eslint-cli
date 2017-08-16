@@ -11,6 +11,7 @@ import findUp from 'find-up'
 import memoize from 'lodash.memoize'
 import indentString from 'indent-string'
 import getLogger from 'loglevel-colored-level-prefix'
+import ConfigFile from 'eslint/lib/config/config-file'
 import * as messages from './messages'
 
 const LINE_SEPERATOR_REGEX = /(\r|\n|\r\n)/
@@ -36,6 +37,7 @@ function formatFilesFromArgv({
   prettierPath,
   ignore: ignoreGlobs = [],
   eslintIgnore: applyEslintIgnore = true,
+  eslintConfigPath,
   prettierLast,
   ...prettierOptions
 }) {
@@ -47,6 +49,11 @@ function formatFilesFromArgv({
     prettierLast,
     prettierOptions,
   }
+
+  if (eslintConfigPath) {
+    prettierESLintOptions.eslintConfig = ConfigFile.load(eslintConfigPath)
+  }
+
   const cliOptions = {write, listDifferent}
   if (stdin) {
     return formatStdin(prettierESLintOptions)

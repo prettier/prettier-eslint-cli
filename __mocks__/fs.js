@@ -6,6 +6,10 @@ const writeFile = jest.fn((filePath, contents, callback) => {
 })
 
 const readFileSync = jest.fn(filePath => {
+  if (filePath.indexOf('.eslintrc') !== -1) {
+    return '{ "rules": { "semi": "error" } }'
+  }
+
   if (filePath.indexOf('eslintignore')) {
     return '*ignored*\n**/ignored/**\n'
   } else {
@@ -13,4 +17,8 @@ const readFileSync = jest.fn(filePath => {
   }
 })
 
-module.exports = {readFile, writeFile, readFileSync}
+const readdirSync = jest.fn(() => {
+  return []
+})
+
+module.exports = {readFile, writeFile, readFileSync, readdirSync}

@@ -280,3 +280,13 @@ describe('listDifferent', () => {
     expect(process.exitCode).toBe(0)
   })
 })
+
+describe('eslintConfigPath', () => {
+  test('will use eslintrc', async () => {
+    await formatFiles({
+      _: ['src/**/1*.js'],
+      eslintConfigPath: '.eslintrc',
+    })
+    expect(process.exitCode).toBe(0)
+  })
+})
