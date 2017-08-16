@@ -170,6 +170,15 @@
         "doc",
         "tool"
       ]
+    },
+    {
+      "login": "morhetz",
+      "name": "Pavel Pertsev",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/554231?v=4",
+      "profile": "http://morhetz.com",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }

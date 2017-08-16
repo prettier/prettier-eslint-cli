@@ -53,6 +53,11 @@ const parser = yargs
       describe: 'The path to the eslint module to use',
       coerce: coercePath,
     },
+    // allow `--eslint-config-path` and `--eslintConfigPath`
+    'eslint-config-path': {
+      default: undefined,
+      describe: 'Path to the eslint config to use for eslint --fix',
+    },
     // allow `--prettier-path` and `--prettierPath`
     'prettier-path': {
       describe: 'The path to the prettier module to use',
@@ -150,14 +155,6 @@ const parser = yargs
     },
     // TODO: support range-start and range-end
     // would require changes in prettier-eslint
-    // TODO: if we allow people to to specify a config path,
-    // we need to read that somehow. These can come invarious
-    // formats and we'd have to work out `extends` somehow as well.
-    // I don't know whether ESLint exposes a way to do this...
-    // Contributions welcome!
-    // eslintConfigPath: {
-    //   describe: 'Path to the eslint config to use for eslint --fix',
-    // },
   })
   .strict()
 
