@@ -1,11 +1,7 @@
 import path from 'path'
-import getLogger from 'loglevel-colored-level-prefix'
-import findUp from 'find-up'
 import yargs from 'yargs'
 import {oneLine, stripIndent} from 'common-tags'
 import arrify from 'arrify'
-
-const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
 const parser = yargs
   .usage(
@@ -49,7 +45,6 @@ const parser = yargs
     },
     // allow `--eslint-path` and `--eslintPath`
     'eslint-path': {
-      default: getPathInHostNodeModules('eslint'),
       describe: 'The path to the eslint module to use',
       coerce: coercePath,
     },
@@ -61,7 +56,6 @@ const parser = yargs
     // allow `--prettier-path` and `--prettierPath`
     'prettier-path': {
       describe: 'The path to the prettier module to use',
-      default: getPathInHostNodeModules('prettier'),
       coerce: coercePath,
     },
     ignore: {
@@ -159,23 +153,6 @@ const parser = yargs
   .strict()
 
 export default parser
-
-function getPathInHostNodeModules(module) {
-  logger.debug(`Looking for a local installation of the module "${module}"`)
-  const modulePath = findUp.sync(`node_modules/${module}`)
-
-  if (modulePath) {
-    return modulePath
-  }
-  logger.debug(
-    oneLine`
-      Local installation of "${module}" not found,
-      looking again starting in "${__dirname}"
-    `,
-  )
-
-  return findUp.sync(`node_modules/${module}`, {cwd: __dirname})
-}
 
 function coercePath(input) {
   return path.isAbsolute(input) ? input : path.join(process.cwd(), input)
