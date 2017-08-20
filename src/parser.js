@@ -1,11 +1,7 @@
 import path from 'path'
-import getLogger from 'loglevel-colored-level-prefix'
-import findUp from 'find-up'
 import yargs from 'yargs'
 import {oneLine, stripIndent} from 'common-tags'
 import arrify from 'arrify'
-
-const logger = getLogger({prefix: 'prettier-eslint-cli'})
 
 const parser = yargs
   .usage(
