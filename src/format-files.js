@@ -51,8 +51,9 @@ function formatFilesFromArgv({
     prettierLast,
     prettierOptions,
   }
-  const configContext = new Config({}, new Linter())
+
   if (eslintConfigPath) {
+    const configContext = new Config({}, new Linter())
     prettierESLintOptions.eslintConfig =
       ConfigFile.load(eslintConfigPath, configContext)
   }
