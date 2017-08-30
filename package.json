@@ -37,7 +37,7 @@
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
     "messageformat": "^1.0.2",
-    "prettier-eslint": "^6.4.2",
+    "prettier-eslint": "^6.4.3",
     "rxjs": "^5.3.0",
     "yargs": "^7.1.0"
   },
@@ -45,9 +45,10 @@
     "all-contributors-cli": "^4.3.0",
     "babel-cli": "^6.24.1",
     "babel-jest": "^19.0.0",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.4.0",
-    "babel-preset-stage-2": "^6.24.1",
     "babel-register": "^6.24.1",
     "codecov": "^2.1.0",
     "commitizen": "^2.9.6",
@@ -77,7 +78,8 @@
         80
       ],
       "import/max-dependencies": [
-        "error", {
+        "error",
+        {
           "max": 16
         }
       ],
