@@ -180,6 +180,18 @@
         "code",
         "test"
       ]
+    },
+    {
+      "login": "jmenglis",
+      "name": "Josh English",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/13577271?v=4",
+      "profile": "http://www.joshenglish.com",
+      "contributions": [
+        "test",
+        "bug",
+        "code",
+        "plugin"
+      ]
     }
   ]
 }
