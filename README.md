@@ -4,7 +4,6 @@ CLI for [`prettier-eslint`][prettier-eslint]
 
 [![Build Status][build-badge]][build]
 [![Code Coverage][coverage-badge]][coverage]
-[![Dependencies][dependencyci-badge]][dependencyci]
 [![version][version-badge]][package]
 [![downloads][downloads-badge]][npm-stat]
 [![MIT License][license-badge]][LICENSE]
@@ -227,7 +226,7 @@ Any linter that support ESLint [CLIEngine](http://eslint.org/docs/developer-guid
 
 ### Standalone CLI tools based on `prettier-eslint-cli`
 
-- [prettier-std-cli][prettier-std-cli] the easy to use CLI version of [standard-prettier-eslint][standard-prettier-eslint] 
+- [prettier-std-cli][prettier-std-cli] the easy to use CLI version of [standard-prettier-eslint][standard-prettier-eslint]
 - [prettier-semi-cli][prettier-semi-cli] the easy to use CLI version of [semistandard-prettier-eslint][semistandard-prettier-eslint]
 
 ## Related
@@ -259,8 +258,6 @@ MIT
 [build]: https://travis-ci.org/prettier/prettier-eslint-cli
 [coverage-badge]: https://img.shields.io/codecov/c/github/prettier/prettier-eslint-cli.svg?style=flat-square
 [coverage]: https://codecov.io/github/prettier/prettier-eslint-cli
-[dependencyci-badge]: https://dependencyci.com/github/prettier/prettier-eslint-cli/badge?style=flat-square
-[dependencyci]: https://dependencyci.com/github/prettier/prettier-eslint-cli
 [version-badge]: https://img.shields.io/npm/v/prettier-eslint-cli.svg?style=flat-square
 [package]: https://www.npmjs.com/package/prettier-eslint-cli
 [downloads-badge]: https://img.shields.io/npm/dm/prettier-eslint-cli.svg?style=flat-square
