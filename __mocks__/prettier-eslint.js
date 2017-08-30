@@ -4,7 +4,8 @@
 // http://facebook.github.io/jest/docs/manual-mocks.html
 // so we just return some spies here and assert
 // that we're calling prettier-eslint APIs correctly
-const format = jest.fn(({text, filePath = ''}) => {
+// eslint-disable-next-line require-await
+const format = jest.fn(async ({text, filePath = ''}) => {
   if (text === 'MOCK_SYNTAX_ERROR' || filePath.includes('syntax-error')) {
     throw new Error('Mock error for a syntax error')
   } else if (filePath.includes('eslint-config-error')) {

@@ -78,7 +78,7 @@ function formatFilesFromArgv({
 async function formatStdin(prettierESLintOptions) {
   const stdinValue = (await getStdin()).trim()
   try {
-    const formatted = format({text: stdinValue, ...prettierESLintOptions})
+    const formatted = await format({text: stdinValue, ...prettierESLintOptions})
     process.stdout.write(formatted)
     return Promise.resolve(formatted)
   } catch (error) {
@@ -197,11 +197,18 @@ function getFilesFromGlob(ignoreGlobs, applyEslintIgnore, fileGlob) {
 
 function formatFile(filePath, prettierESLintOptions, cliOptions) {
   const fileInfo = {filePath}
-  let format$ = rxReadFile(filePath, 'utf8').map(text => {
-    fileInfo.text = text
-    fileInfo.formatted = format({text, filePath, ...prettierESLintOptions})
-    fileInfo.unchanged = fileInfo.text === fileInfo.formatted
-    return fileInfo
+  let format$ = rxReadFile(filePath, 'utf8').mergeMap(text => {
+    const promise = format({
+      text,
+      filePath,
+      ...prettierESLintOptions,
+    }).then(formatted => {
+      fileInfo.text = text
+      fileInfo.formatted = formatted
+      fileInfo.unchanged = fileInfo.text === fileInfo.formatted
+      return fileInfo
+    })
+    return Rx.Observable.fromPromise(promise)
   })
 
   if (cliOptions.write) {

@@ -19,7 +19,7 @@ const BABEL_BIN_PATH = require.resolve('babel-cli/bin/babel-node')
 
 testOutput('--version')
 
-test('help outputs usage information and flags', async() => {
+test('help outputs usage information and flags', async () => {
   // can't just do the testOutput function here because
   // the output is variable (based on the width of your
   // terminal I think)...
@@ -39,7 +39,7 @@ test('help outputs usage information and flags', async() => {
   }
 })
 
-test('formats files and outputs to stdout', async() => {
+test('formats files and outputs to stdout', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
@@ -71,7 +71,7 @@ test('formats files and outputs to stdout', async() => {
   )
 })
 
-test('list different files with the --list-different option', async() => {
+test('list different files with the --list-different option', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
@@ -81,7 +81,7 @@ test('list different files with the --list-different option', async() => {
   expect(stdout).toContain('cli-test/fixtures/stdout2.js')
 })
 
-test('accepts stdin of code', async() => {
+test('accepts stdin of code', async () => {
   const stdin = 'echo "console.log(   window.baz , typeof [] );  "'
   const stdout = await runPrettierESLintCLI('--stdin', stdin)
   expect(stdout).toEqual('console.log(window.baz, typeof [])\n')
@@ -89,7 +89,7 @@ test('accepts stdin of code', async() => {
 
 const writeCommand = 'cli-test/fixtures/example*.js --write --no-eslint-ignore'
 
-test(`prettier-eslint ${writeCommand}`, async() => {
+test(`prettier-eslint ${writeCommand}`, async () => {
   // because we're using --write,
   // we have to recreate and delete the files every time
   const example1Path = path.resolve(__dirname, '../fixtures/example1.js')
@@ -120,7 +120,7 @@ test(`prettier-eslint ${writeCommand}`, async() => {
 })
 
 function testOutput(command) {
-  test(`prettier-eslint ${command}`, async() => {
+  test(`prettier-eslint ${command}`, async () => {
     try {
       const stdout = await runPrettierESLintCLI(command)
       expect(stdout).toMatchSnapshot(`stdout: ${command}`)
