@@ -3,6 +3,7 @@ const npsUtils = require('nps-utils')
 const series = npsUtils.series
 const concurrent = npsUtils.concurrent
 const rimraf = npsUtils.rimraf
+const crossEnv = npsUtils.crossEnv
 
 module.exports = {
   scripts: {
@@ -16,16 +17,21 @@ module.exports = {
         script: 'all-contributors generate',
       },
     },
-    commit: {
-      description: 'This uses commitizen to help us generate well formatted commit messages',
-      script: 'git-cz',
-    },
     test: {
-      default: 'jest --coverage',
-      watch: 'jest --watch',
+      default: crossEnv('NODE_ENV=test jest --coverage'),
+      update: crossEnv('NODE_ENV=test jest --coverage --updateSnapshot'),
+      watch: crossEnv('NODE_ENV=test jest --watch'),
+      openCoverage: 'open coverage/lcov-report/index.html',
       cli: {
-        default: 'jest --config cli-test/jest.config.json',
-        watch: 'jest --config cli-test/jest.config.json --watch',
+        default: crossEnv(
+          'NODE_ENV=test jest --config cli-test/jest.config.json'
+        ),
+        update: crossEnv(
+          'NODE_ENV=test jest --config cli-test/jest.config.json --coverage --updateSnapshot'
+        ),
+        watch: crossEnv(
+          'NODE_ENV=test jest --config cli-test/jest.config.json --watch'
+        ),
       },
     },
     build: {
@@ -39,20 +45,9 @@ module.exports = {
       description: 'lint the entire project',
       script: 'eslint .',
     },
-    reportCoverage: {
-      description: 'Report coverage stats to codecov. This should be run after the `test` script',
-      script: 'codecov',
-    },
-    release: {
-      description: 'We automate releases with semantic-release. This should only be run on travis',
-      script: series(
-        'semantic-release pre',
-        'npm publish',
-        'semantic-release post'
-      ),
-    },
     validate: {
-      description: 'This runs several scripts to make sure things look good before committing or on clean install',
+      description:
+        'This runs several scripts to make sure things look good before committing or on clean install',
       script: concurrent.nps('lint', 'build', 'test', 'test.cli'),
     },
     format: {

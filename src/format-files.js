@@ -23,6 +23,7 @@ const rxWriteFile = Rx.Observable.bindNodeCallback(fs.writeFile)
 const findUpSyncMemoized = memoize(findUpSync, function resolver(...args) {
   return args.join('::')
 })
+
 const getIsIgnoredMemoized = memoize(getIsIgnored)
 
 const logger = getLogger({prefix: 'prettier-eslint-cli'})
@@ -54,8 +55,10 @@ function formatFilesFromArgv({
 
   if (eslintConfigPath) {
     const configContext = new Config({}, new Linter())
-    prettierESLintOptions.eslintConfig =
-      ConfigFile.load(eslintConfigPath, configContext)
+    prettierESLintOptions.eslintConfig = ConfigFile.load(
+      eslintConfigPath,
+      configContext,
+    )
   }
 
   const cliOptions = {write, listDifferent}

@@ -121,11 +121,7 @@ test('logs errors to the console if something goes wrong', async() => {
   const errorPrefix = expect.stringMatching(/prettier-eslint-cli.*ERROR/)
   const cliError = expect.stringContaining('eslint-config-error')
   const errorOutput = expect.stringContaining('Some weird eslint config error')
-  expect(console.error).toHaveBeenCalledWith(
-    errorPrefix,
-    cliError,
-    errorOutput,
-  )
+  expect(console.error).toHaveBeenCalledWith(errorPrefix, cliError, errorOutput)
 })
 
 test('does not log anything to the console if logLevel is silent', async() => {
@@ -253,8 +249,7 @@ describe('listDifferent', () => {
     expect(console.error).toHaveBeenCalledWith(unchangedOutput)
     expect(console.error).toHaveBeenCalledWith(successOutput)
 
-    const path =
-      '/Users/fredFlintstone/Developer/top-secret/footless-carriage/'
+    const path = '/Users/fredFlintstone/Developer/top-secret/footless-carriage/'
     expect(console.log).toHaveBeenCalledTimes(4)
     expect(console.log).toHaveBeenCalledWith(`${path}stop/log.js`)
     expect(console.log).toHaveBeenCalledWith(`${path}stop/index.js`)
