@@ -19,6 +19,8 @@ CLI for [`prettier-eslint`][prettier-eslint]
 [![Star on GitHub][github-star-badge]][github-star]
 [![Tweet][twitter-badge]][twitter]
 
+<a href="https://app.codesponsor.io/link/PKGFLnhDiFvsUA5P4kAXfiPs/prettier/prettier-eslint-cli" rel="nofollow"><img src="https://app.codesponsor.io/embed/PKGFLnhDiFvsUA5P4kAXfiPs/prettier/prettier-eslint-cli.svg" style="width: 888px; height: 68px;" alt="Sponsor" /></a>
+
 ## The problem
 
 You have a bunch of files that you want to format using [`prettier-eslint`][prettier-eslint].
