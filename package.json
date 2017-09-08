@@ -12,10 +12,11 @@
   "scripts": {
     "start": "nps",
     "test": "nps test",
-    "precommit":
-      "lint-staged && opt --in pre-commit --exec \"npm start validate\""
+    "precommit": "lint-staged && opt --in pre-commit --exec \"npm start validate\""
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "license": "MIT",
@@ -35,7 +36,7 @@
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
     "messageformat": "^1.0.2",
-    "prettier-eslint": "^7.0.0",
+    "prettier-eslint": "^8.0.0",
     "rxjs": "^5.3.0",
     "yargs": "8.0.2"
   },
@@ -63,7 +64,10 @@
     "yargs-parser": "7.0.0"
   },
   "lint-staged": {
-    "*.+(js|json)": ["node ./dist/index --write", "git add"]
+    "*.+(js|json)": [
+      "node ./dist/index --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
