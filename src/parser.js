@@ -58,6 +58,10 @@ const parser = yargs
       describe: 'The path to the prettier module to use',
       coerce: coercePath,
     },
+    config: {
+      default: undefined,
+      describe: 'Path to the prettier config',
+    },
     ignore: {
       describe: oneLine`
         pattern(s) you wish to ignore
