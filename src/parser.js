@@ -35,6 +35,15 @@ const parser = yargs
         (can use --no-eslint-ignore to disable this)
       `,
     },
+    'prettier-ignore': {
+      default: true,
+      type: 'boolean',
+      describe: oneLine`
+        Only format matching files even if
+        they are not ignored by .prettierignore.
+        (can use --no-prettier-ignore to disable this)
+      `,
+    },
     'list-different': {
       default: false,
       type: 'boolean',

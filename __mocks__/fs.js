@@ -10,10 +10,14 @@ const readFileSync = jest.fn(filePath => {
     return '{ "rules": { "semi": "error" } }'
   }
 
-  if (filePath.indexOf('eslintignore')) {
-    return '*ignored*\n**/ignored/**\n'
+  if (filePath.indexOf('eslintignore') >= 0) {
+    return '**/*eslintignored*\n'
+  }
+
+  if (filePath.indexOf('prettierignore') >= 0) {
+    return '**/*prettierignored*\n'
   } else {
-    throw new Error('readFileSync mock does nto yet handle ', filePath)
+    throw new Error('readFileSync mock does not yet handle ', filePath)
   }
 })
 
