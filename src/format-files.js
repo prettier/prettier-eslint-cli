@@ -35,6 +35,7 @@ function formatFilesFromArgv({
   logLevel = logger.getLevel(),
   listDifferent,
   stdin,
+  stdinFilepath,
   write,
   eslintPath,
   prettierPath,
@@ -63,7 +64,7 @@ function formatFilesFromArgv({
 
   const cliOptions = {write, listDifferent}
   if (stdin) {
-    return formatStdin(prettierESLintOptions)
+    return formatStdin({filePath: stdinFilepath, ...prettierESLintOptions})
   } else {
     return formatFilesFromGlobs(
       fileGlobs,

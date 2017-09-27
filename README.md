@@ -88,6 +88,7 @@ Options:
   --write                  Edit the file in-place (beware!)
                                                       [boolean] [default: false]
   --stdin                  Read input via stdin       [boolean] [default: false]
+  --stdin-filepath         Path to the file to pretend that stdin comes from.
   --eslint-ignore          Only format matching files even if they are not
                            ignored by .eslintignore. (can use --no-eslint-ignore
                            to disable this)            [boolean] [default: true]

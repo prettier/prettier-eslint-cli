@@ -26,6 +26,10 @@ const parser = yargs
       describe: 'Read input via stdin',
       type: 'boolean',
     },
+    'stdin-filepath': {
+      describe: 'Path to the file to pretend that stdin comes from.',
+      coerce: coercePath,
+    },
     'eslint-ignore': {
       default: true,
       type: 'boolean',
