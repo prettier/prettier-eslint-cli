@@ -35,14 +35,21 @@ module.exports = jest.fn(function mockGlob(globString, options, callback) {
       fredProject('no-change/2.js'),
       fredProject('no-change/3.js'),
     ])
-  } else if (globString.includes('ignored')) {
+  } else if (globString.includes('eslintignored')) {
     callback(null, [
-      fredProject('ignored1.js'),
-      fredProject('ignored2.js'),
-      fredProject('ignored3.js'),
+      fredProject('eslintignored1.js'),
+      fredProject('eslintignored2.js'),
+      fredProject('eslintignored3.js'),
       fredProject('applied4.js'),
     ])
-  } else if (globString.includes('no-eslint-ignore')) {
+  } else if (globString.includes('prettierignored')) {
+    callback(null, [
+      fredProject('prettierignored1.js'),
+      fredProject('prettierignored2.js'),
+      fredProject('prettierignored3.js'),
+      fredProject('applied4.js'),
+    ])
+  } else if (globString.includes('no-ignore')) {
     callback(null, [
       barneyProject('no-ignore/1.js'),
       barneyProject('no-ignore/2.js'),

@@ -20,9 +20,14 @@ const LINE_SEPERATOR_REGEX = /(\r|\n|\r\n)/
 const rxGlob = Rx.Observable.bindNodeCallback(glob)
 const rxReadFile = Rx.Observable.bindNodeCallback(fs.readFile)
 const rxWriteFile = Rx.Observable.bindNodeCallback(fs.writeFile)
-const findUpSyncMemoized = memoize(findUpSync, function resolver(...args) {
-  return args.join('::')
-})
+const findUpEslintignoreSyncMemoized = memoize(
+  findUpEslintignoreSync,
+  findUpMemoizeResolver,
+)
+const findUpPrettierignoreSyncMemoized = memoize(
+  findUpPrettierignoreSync,
+  findUpMemoizeResolver,
+)
 
 const getIsIgnoredMemoized = memoize(getIsIgnored)
 
@@ -41,6 +46,7 @@ function formatFilesFromArgv({
   prettierPath,
   ignore: ignoreGlobs = [],
   eslintIgnore: applyEslintIgnore = true,
+  prettierIgnore: applyPrettierIgnore = true,
   eslintConfigPath,
   prettierLast,
   ...prettierOptions
@@ -66,13 +72,14 @@ function formatFilesFromArgv({
   if (stdin) {
     return formatStdin({filePath: stdinFilepath, ...prettierESLintOptions})
   } else {
-    return formatFilesFromGlobs(
+    return formatFilesFromGlobs({
       fileGlobs,
-      [...ignoreGlobs], // make a copy to avoid manipulation
+      ignoreGlobs: [...ignoreGlobs], // make a copy to avoid manipulation
       cliOptions,
       prettierESLintOptions,
       applyEslintIgnore,
-    )
+      applyPrettierIgnore,
+    })
   }
 }
 
@@ -92,13 +99,14 @@ async function formatStdin(prettierESLintOptions) {
   }
 }
 
-function formatFilesFromGlobs(
+function formatFilesFromGlobs({
   fileGlobs,
   ignoreGlobs,
   cliOptions,
   prettierESLintOptions,
   applyEslintIgnore,
-) {
+  applyPrettierIgnore,
+}) {
   const concurrentGlobs = 3
   const concurrentFormats = 10
   return new Promise(resolve => {
@@ -108,7 +116,12 @@ function formatFilesFromGlobs(
     Rx.Observable
       .from(fileGlobs)
       .mergeMap(
-        getFilesFromGlob.bind(null, ignoreGlobs, applyEslintIgnore),
+        getFilesFromGlob.bind(
+          null,
+          ignoreGlobs,
+          applyEslintIgnore,
+          applyPrettierIgnore,
+        ),
         null,
         concurrentGlobs,
       )
@@ -180,7 +193,12 @@ function formatFilesFromGlobs(
   })
 }
 
-function getFilesFromGlob(ignoreGlobs, applyEslintIgnore, fileGlob) {
+function getFilesFromGlob(
+  ignoreGlobs,
+  applyEslintIgnore,
+  applyPrettierIgnore,
+  fileGlob,
+) {
   const globOptions = {ignore: ignoreGlobs}
   if (!fileGlob.includes('node_modules')) {
     // basically, we're going to protect you from doing something
@@ -189,9 +207,15 @@ function getFilesFromGlob(ignoreGlobs, applyEslintIgnore, fileGlob) {
   }
   return rxGlob(fileGlob, globOptions).map(filePaths => {
     return filePaths.filter(filePath => {
-      return applyEslintIgnore ?
-        !isFilePathMatchedByEslintignore(filePath) :
-        true
+      if (applyEslintIgnore && isFilePathMatchedByEslintignore(filePath)) {
+        return false
+      }
+
+      if (applyPrettierIgnore && isFilePathMatchedByPrettierignore(filePath)) {
+        return false
+      }
+
+      return true
     })
   })
 }
@@ -239,7 +263,7 @@ function formatFile(filePath, prettierESLintOptions, cliOptions) {
 
 function getNearestEslintignorePath(filePath) {
   const {dir} = path.parse(filePath)
-  return findUpSyncMemoized('.eslintignore', dir)
+  return findUpEslintignoreSyncMemoized('.eslintignore', dir)
 }
 
 function isFilePathMatchedByEslintignore(filePath) {
@@ -257,8 +281,36 @@ function isFilePathMatchedByEslintignore(filePath) {
   return isIgnored(filePathRelativeToEslintignoreDir)
 }
 
-function findUpSync(filename, cwd) {
+function getNearestPrettierignorePath(filePath) {
+  const {dir} = path.parse(filePath)
+  return findUpPrettierignoreSyncMemoized('.prettierignore', dir)
+}
+
+function isFilePathMatchedByPrettierignore(filePath) {
+  const prettierignorePath = getNearestPrettierignorePath(filePath)
+  if (!prettierignorePath) {
+    return false
+  }
+
+  const prettierignoreDir = path.parse(prettierignorePath).dir
+  const filePathRelativeToPrettierignoreDir = path.relative(
+    prettierignoreDir,
+    filePath,
+  )
+  const isIgnored = getIsIgnoredMemoized(prettierignorePath)
+  return isIgnored(filePathRelativeToPrettierignoreDir)
+}
+
+function findUpMemoizeResolver(...args) {
+  return args.join('::')
+}
+
+function findUpEslintignoreSync(filename, cwd) {
   return findUp.sync('.eslintignore', {cwd})
+}
+
+function findUpPrettierignoreSync(filename, cwd) {
+  return findUp.sync('.prettierignore', {cwd})
 }
 
 function getIsIgnored(filename) {
@@ -270,4 +322,3 @@ function getIsIgnored(filename) {
   instance.add(ignoreLines)
   return instance.ignores.bind(instance)
 }
-
