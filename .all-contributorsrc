@@ -192,6 +192,15 @@
         "code",
         "plugin"
       ]
+    },
+    {
+      "login": "jbalsas",
+      "name": "Chema Balsas",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/905006?v=4",
+      "profile": "https://twitter.com/jbalsas",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }
