@@ -1,5 +1,5 @@
-module.exports = {sync}
+module.exports = { sync };
 
 function sync(filename) {
-  return `/${filename}`
+  return `/${filename}`;
 }

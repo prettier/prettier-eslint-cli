@@ -4,8 +4,8 @@ Looks like you're trying to require/import \`prettier-eslint-cli\`.
 This module doesn't actually expose a NodeJS interface.
 This module's just the CLI for \`prettier-eslint\`.
 If you want to use this via NodeJS, install \`prettier-eslint\` instead.
-`.trim()
+`.trim();
 
-console.info(message)
+console.info(message);
 
-module.exports = message
+module.exports = message;
