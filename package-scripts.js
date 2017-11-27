@@ -43,7 +43,7 @@ module.exports = {
     },
     lint: {
       description: "lint the entire project",
-      script: "eslint .",
+      script: "eslint . --cache",
     },
     validate: {
       description:
