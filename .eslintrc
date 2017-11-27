@@ -1,24 +1,15 @@
 {
   "extends": [
     "kentcdodds",
-    "kentcdodds/prettier",
     "kentcdodds/jest"
   ],
   "rules": {
     "max-len": "off",
     "import/max-dependencies": "off",
-    "semi": [
-      "error",
-      "never"
-    ],
-    "object-curly-spacing": [
-      "error",
-      "never"
-    ],
-      "space-before-function-paren": ["error", {
+    "space-before-function-paren": ["error", {
       "anonymous": "never",
       "named": "never",
       "asyncArrow": "always"
-    }]
+    }],
   }
 }
