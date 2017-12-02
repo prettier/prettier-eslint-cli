@@ -2,7 +2,7 @@
 import path from 'path'
 import fs from 'fs'
 import glob from 'glob'
-import Rx from 'rxjs/Rx'
+import * as Rx from 'rxjs'
 import format from 'prettier-eslint'
 import chalk from 'chalk'
 import getStdin from 'get-stdin'
@@ -105,8 +105,7 @@ function formatFilesFromGlobs(
     const successes = []
     const failures = []
     const unchanged = []
-    Rx.Observable
-      .from(fileGlobs)
+    Rx.Observable.from(fileGlobs)
       .mergeMap(
         getFilesFromGlob.bind(null, ignoreGlobs, applyEslintIgnore),
         null,
@@ -270,4 +269,3 @@ function getIsIgnored(filename) {
   instance.add(ignoreLines)
   return instance.ignores.bind(instance)
 }
-
