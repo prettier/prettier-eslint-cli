@@ -2,7 +2,7 @@
 import path from "path";
 import fs from "fs";
 import glob from "glob";
-import Rx from "rxjs/Rx";
+import * as Rx from "rxjs";
 import format from "prettier-eslint";
 import chalk from "chalk";
 import getStdin from "get-stdin";
