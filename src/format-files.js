@@ -2,7 +2,7 @@
 import path from "path";
 import fs from "fs";
 import glob from "glob";
-import * as Rx from "rxjs";
+import { Observable } from "rxjs";
 import format from "prettier-eslint";
 import chalk from "chalk";
 import getStdin from "get-stdin";
@@ -17,9 +17,9 @@ import Config from "eslint/lib/config";
 import * as messages from "./messages";
 
 const LINE_SEPERATOR_REGEX = /(\r|\n|\r\n)/;
-const rxGlob = Rx.Observable.bindNodeCallback(glob);
-const rxReadFile = Rx.Observable.bindNodeCallback(fs.readFile);
-const rxWriteFile = Rx.Observable.bindNodeCallback(fs.writeFile);
+const rxGlob = Observable.bindNodeCallback(glob);
+const rxReadFile = Observable.bindNodeCallback(fs.readFile);
+const rxWriteFile = Observable.bindNodeCallback(fs.writeFile);
 const findUpSyncMemoized = memoize(findUpSync, function resolver(...args) {
   return args.join("::");
 });
@@ -105,7 +105,7 @@ function formatFilesFromGlobs(
     const successes = [];
     const failures = [];
     const unchanged = [];
-    Rx.Observable.from(fileGlobs)
+    Observable.from(fileGlobs)
       .mergeMap(
         getFilesFromGlob.bind(null, ignoreGlobs, applyEslintIgnore),
         null,
@@ -207,7 +207,7 @@ function formatFile(filePath, prettierESLintOptions, cliOptions) {
   if (cliOptions.write) {
     format$ = format$.mergeMap(info => {
       if (info.unchanged) {
-        return Rx.Observable.of(info);
+        return Observable.of(info);
       } else {
         return rxWriteFile(filePath, info.formatted).map(() => info);
       }
@@ -232,7 +232,7 @@ function formatFile(filePath, prettierESLintOptions, cliOptions) {
       `There was an error formatting "${fileInfo.filePath}":`,
       `\n${indentString(error.stack, 4)}`
     );
-    return Rx.Observable.of(Object.assign(fileInfo, { error }));
+    return Observable.of(Object.assign(fileInfo, { error }));
   });
 }
 
