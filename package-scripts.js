@@ -52,7 +52,7 @@ module.exports = {
     },
     format: {
       description: "Formats everything with prettier-eslint",
-      script: 'prettier-eslint "**/*.js" --write',
+      script: 'babel-node ./src/index.js --write "**/*.js"',
     },
   },
   options: {
