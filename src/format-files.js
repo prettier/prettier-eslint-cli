@@ -32,17 +32,30 @@ export default formatFilesFromArgv;
 
 function formatFilesFromArgv({
   _: fileGlobs,
+  $0: _$0,
+  help: _help,
+  h: _help_,
+  version: _version,
   logLevel = logger.getLevel(),
+  "log-level": _logLevel,
+  l: _logLevelAlias,
   listDifferent,
+  "list-different": _listDifferent,
   stdin,
   stdinFilepath,
+  "stdin-filepath": _stdinFilepath,
   write,
   eslintPath,
+  "eslint-path": _eslintPath,
   prettierPath,
+  "prettier-path": _prettierPath,
   ignore: ignoreGlobs = [],
   eslintIgnore: applyEslintIgnore = true,
+  "eslint-ignore": _eslintIgnore,
   eslintConfigPath,
+  "eslint-config-path": _eslintConfigPath,
   prettierLast,
+  "prettier-last": _prettierLast,
   ...prettierOptions
 }) {
   logger.setLevel(logLevel);
