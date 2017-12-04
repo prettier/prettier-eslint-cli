@@ -18,6 +18,7 @@
   "files": ["dist"],
   "keywords": [],
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
+  "maintainers": ["Simon Fridlund <simon@fridlund.email>"],
   "license": "MIT",
   "dependencies": {
     "arrify": "^1.0.1",
