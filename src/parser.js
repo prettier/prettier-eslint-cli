@@ -154,6 +154,17 @@ const parser = yargs
       type: "boolean",
       default: undefined,
       describe: "Use single quotes instead of double quotes."
+    },
+    "arrow-parens": {
+      type: "string",
+      default: undefined,
+      describe: stripIndent`
+        Include parentheses around a sole arrow function parameter.
+
+        Valid options:
+        - "avoid" - Omit parens when possible. Example: x => x
+        - "always" - Always include parens. Example: (x) => x
+      `
     }
     // TODO: support range-start and range-end
     // would require changes in prettier-eslint
