@@ -43,7 +43,7 @@ test("formats files and outputs to stdout", async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    "cli-test/fixtures/stdout*.js --no-eslint-ignore"
+    "cli-test/fixtures/stdout*.js --no-eslint-ignore --no-prettier-ignore"
   );
   expect(stdout).toContain(
     stripIndent(
@@ -75,7 +75,7 @@ test("list different files with the --list-different option", async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    "cli-test/fixtures/stdout*.js --list-different --no-eslint-ignore"
+    "cli-test/fixtures/stdout*.js --list-different --no-eslint-ignore --no-prettier-ignore"
   );
   expect(stdout).toContain("cli-test/fixtures/stdout1.js");
   expect(stdout).toContain("cli-test/fixtures/stdout2.js");
@@ -87,7 +87,8 @@ test("accepts stdin of code", async () => {
   expect(stdout).toEqual("console.log(window.baz, typeof []);\n");
 });
 
-const writeCommand = "cli-test/fixtures/example*.js --write --no-eslint-ignore";
+const writeCommand =
+  "cli-test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore";
 
 test(`prettier-eslint ${writeCommand}`, async () => {
   // because we're using --write,
