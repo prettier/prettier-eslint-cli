@@ -65,7 +65,7 @@
     "yargs-parser": "8.0.0"
   },
   "lint-staged": {
-    "*.+(js|json)": ["node ./dist/index --write", "git add"]
+    "*.+(js|json|md)": ["node ./dist/index --write", "git add"]
   },
   "repository": {
     "type": "git",
