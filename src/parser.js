@@ -174,6 +174,48 @@ const parser = yargs
         - "avoid" - Omit parens when possible. Example: x => x
         - "always" - Always include parens. Example: (x) => x
       `
+    },
+    "require-pragma": {
+      type: "boolean",
+      default: undefined,
+      describe: stripIndent`
+        Prettier can restrict itself to only format files
+        that contain a special comment, called a pragma,
+        at the top of the file.
+        This is very useful when gradually transitioning
+        large, unformatted codebases to prettier.
+      `
+    },
+    "insert-pragma": {
+      type: "boolean",
+      default: undefined,
+      describe: stripIndent`
+        Prettier can insert a special @format marker at the
+        top of files specifying that the file has been
+        formatted with prettier. This works well when used in
+        tandem with the --require-pragma option.
+        If there is already a docblock at the top of the file
+        then this option will add a newline to it with the
+        @format marker.
+      `
+    },
+    "prose-wrap": {
+      type: "boolean",
+      default: undefined,
+      describe: stripIndent`
+      By default, Prettier will wrap markdown text as-is
+      since some services use a linebreak-sensitive
+      renderer, e.g. GitHub comment and BitBucket.
+      In some cases you may want to rely on
+      editor/viewer soft wrapping instead, so this
+      option allows you to opt out with "never".
+
+      Valid options:
+
+      "always" - Wrap prose if it exceeds the print width.
+      "never" - Do not wrap prose.
+      "preserve" - Wrap prose as-is. available in v1.9.0+
+      `
     }
     // TODO: support range-start and range-end
     // would require changes in prettier-eslint
