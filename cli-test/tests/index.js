@@ -28,7 +28,7 @@ test("help outputs usage information and flags", async () => {
   expect(stdout).toContain("Options:\n");
   // just a sanity check.
   // If it's ever longer than 2000 then we've probably got a problem...
-  if (stdout.length > 6000) {
+  if (stdout.length > 6500) {
     console.error(stdout);
     throw new Error(
       oneLine`
