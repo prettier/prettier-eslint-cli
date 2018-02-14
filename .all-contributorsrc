@@ -203,6 +203,15 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "ReDrUm",
+      "name": "Tim Keir",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/103552?v=4",
+      "profile": "http://www.timkeir.co.nz",
+      "contributions": [
+        "code"
+      ]
     }
   ]
 }

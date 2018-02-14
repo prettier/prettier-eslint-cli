@@ -159,6 +159,7 @@ function formatFilesFromGlobs({
       resolve({ error, successes, failures });
     }
 
+    /* eslint complexity:0 */
     function onComplete() {
       const isNotSilent = logger.getLevel() !== logger.levels.SILENT;
 
