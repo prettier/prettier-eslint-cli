@@ -43,6 +43,7 @@ function formatFilesFromArgv({
   version: _version,
   logLevel = logger.getLevel(),
   l: _logLevelAlias,
+  config: _config,
   listDifferent,
   stdin,
   stdinFilepath,
