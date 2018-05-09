@@ -209,7 +209,7 @@ function getFilesFromGlob(
   applyPrettierIgnore,
   fileGlob
 ) {
-  const globOptions = { ignore: ignoreGlobs };
+  const globOptions = { dot: true, ignore: ignoreGlobs };
   if (!fileGlob.includes('node_modules')) {
     // basically, we're going to protect you from doing something
     // not smart unless you explicitly include it in your glob
