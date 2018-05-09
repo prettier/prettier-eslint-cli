@@ -279,6 +279,15 @@
         "code",
         "maintenance"
       ]
+    },
+    {
+      "login": "u3u",
+      "name": "さくら",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/20062482?v=4",
+      "profile": "https://qwq.cat",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "repoType": "github",
