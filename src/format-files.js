@@ -1,5 +1,6 @@
 /* eslint no-console:0 */
 /* eslint complexity:[1, 7] */
+/* eslint-disable import/no-dynamic-require */
 import path from "path";
 import fs from "fs";
 import glob from "glob";
@@ -12,9 +13,6 @@ import findUp from "find-up";
 import memoize from "lodash.memoize";
 import indentString from "indent-string";
 import getLogger from "loglevel-colored-level-prefix";
-import ConfigFile from "eslint/lib/config/config-file";
-import Linter from "eslint/lib/linter";
-import Config from "eslint/lib/config";
 import * as messages from "./messages";
 
 const LINE_SEPERATOR_REGEX = /(\r|\n|\r\n)/;
@@ -66,6 +64,11 @@ function formatFilesFromArgv({
     prettierLast,
     prettierOptions
   };
+
+  const eslintLoadPath = eslintPath || "eslint";
+  const ConfigFile = require(`${eslintLoadPath}/lib/config/config-file`);
+  const Linter = require(`${eslintLoadPath}/lib/linter`);
+  const Config = require(`${eslintLoadPath}/lib/config`);
 
   if (eslintConfigPath) {
     const configContext = new Config({}, new Linter());
