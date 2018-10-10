@@ -102,9 +102,8 @@ Options:
   --eslint-path            The path to the eslint module to use
                  [default: "./node_modules/eslint"]
   --eslint-config-path     Path to the eslint config to use for eslint --fix
-  --prettier-path          The path to the prettier module to use
+  --prettier-path          The path to the prettier module to use [default: "./node_modules/prettier"]
   --config                 Path to the prettier config
-               [default: "./node_modules/prettier"]
   --ignore                 pattern(s) you wish to ignore (can be used multiple
                            times and includes **/node_modules/** automatically)
   --log-level, -l          The log level to use
