@@ -1,5 +1,6 @@
 # prettier-eslint-cli
 
+test
 CLI for [`prettier-eslint`][prettier-eslint]
 
 [![Build Status][build-badge]][build]
