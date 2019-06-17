@@ -4,7 +4,7 @@
   "description": "CLI for prettier-eslint",
   "main": "dist/no-main.js",
   "engines": {
-    "node": ">=4"
+    "node": ">=8"
   },
   "bin": {
     "prettier-eslint": "dist/index.js"
@@ -12,13 +12,16 @@
   "scripts": {
     "start": "nps",
     "test": "nps test",
-    "precommit":
-      "lint-staged && opt --in pre-commit --exec \"npm start validate\""
+    "precommit": "lint-staged && opt --in pre-commit --exec \"npm start validate\""
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "keywords": [],
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
-  "maintainers": ["Simon Fridlund <simon@fridlund.email>"],
+  "maintainers": [
+    "Simon Fridlund <simon@fridlund.email>"
+  ],
   "license": "MIT",
   "dependencies": {
     "arrify": "^1.0.1",
@@ -27,12 +30,12 @@
     "camelcase-keys": "^4.1.0",
     "chalk": "2.3.0",
     "common-tags": "^1.4.0",
-    "eslint": "^4.5.0",
     "find-up": "^2.1.0",
     "get-stdin": "^5.0.1",
     "glob": "^7.1.1",
     "ignore": "^3.2.7",
     "indent-string": "^3.1.0",
+    "eslint": "^5.0.0",
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
     "messageformat": "^1.0.2",
@@ -65,7 +68,10 @@
     "yargs-parser": "8.0.0"
   },
   "lint-staged": {
-    "*.+(js|json|md)": ["node ./dist/index --write", "git add"]
+    "*.+(js|json|md)": [
+      "node ./dist/index --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
