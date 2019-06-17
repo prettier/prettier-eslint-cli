@@ -1,4 +1,4 @@
 /* istanbul ignore-next */
-import onUncaughtException from "./uncaught-exception-handler";
+import onUncaughtException from './uncaught-exception-handler';
 
-process.on("uncaughtException", onUncaughtException);
+process.on('uncaughtException', onUncaughtException);

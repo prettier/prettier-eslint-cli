@@ -1,9 +1,9 @@
 module.exports = {
-  testEnvironment: "node",
+  testEnvironment: 'node',
   // TODO: test all the files...
   // collectCoverageFrom: ['src/**/*.js'],
-  testPathIgnorePatterns: ["/node_modules/", "/fixtures/"],
-  coveragePathIgnorePatterns: ["/node_modules/", "/fixtures/"],
+  testPathIgnorePatterns: ['/node_modules/', '/fixtures/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/fixtures/', '/dist/'],
   coverageThreshold: {
     global: {
       branches: 100,
