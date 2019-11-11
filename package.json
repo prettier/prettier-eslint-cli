@@ -27,7 +27,7 @@
     "arrify": "^2.0.1",
     "boolify": "^1.0.0",
     "camelcase-keys": "^6.0.0",
-    "chalk": "^2.4.2",
+    "chalk": "^3.0.0",
     "common-tags": "^1.8.0",
     "core-js": "^3.1.4",
     "eslint": "^5.0.0",
