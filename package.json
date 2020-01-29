@@ -62,7 +62,7 @@
     "nps-utils": "^1.7.0",
     "opt-cli": "^1.5.1",
     "pify": "^4.0.1",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.1",
     "semantic-release": "^15.13.16",
     "spawn-command": "0.0.2-1",
     "strip-indent": "^3.0.0",
