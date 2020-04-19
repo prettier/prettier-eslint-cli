@@ -140,7 +140,8 @@ function formatFilesFromGlobs({
       .subscribe(onNext, onError, onComplete);
 
     function filePathToFormatted(filePath) {
-      return formatFile(filePath, prettierESLintOptions, cliOptions);
+      const absoluteFilePath = path.resolve(filePath);
+      return formatFile(absoluteFilePath, prettierESLintOptions, cliOptions);
     }
 
     function onNext(info) {
