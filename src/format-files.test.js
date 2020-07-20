@@ -275,12 +275,6 @@ describe('listDifferent', () => {
     expect(fsMock.readFile).toHaveBeenCalledTimes(7);
     expect(fsMock.writeFile).toHaveBeenCalledTimes(0);
 
-    const unchangedOutput = expect.stringMatching(/3.*files were.*unchanged/);
-    const successOutput = expect.stringMatching(/success.*4.*files/);
-    expect(console.error).toHaveBeenCalledTimes(2);
-    expect(console.error).toHaveBeenCalledWith(unchangedOutput);
-    expect(console.error).toHaveBeenCalledWith(successOutput);
-
     const path =
       '/Users/fredFlintstone/Developer/top-secret/footless-carriage/';
     expect(console.log).toHaveBeenCalledTimes(4);

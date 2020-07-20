@@ -162,39 +162,41 @@ function formatFilesFromGlobs({
     }
 
     function onComplete() {
-      const isNotSilent = logger.getLevel() !== logger.levels.SILENT;
+      const isSilent = logger.getLevel() === logger.levels.SILENT || cliOptions.listDifferent;
 
       /* use console.error directly here because
        * - we don't want these messages prefixed
        * - we want them to go to stderr, not stdout
        */
-      if (successes.length && isNotSilent) {
-        console.error(
-          messages.success({
-            success: chalk.green('success'),
-            count: successes.length,
-            countString: chalk.bold(successes.length)
-          })
-        );
-      }
-      if (failures.length && isNotSilent) {
-        process.exitCode = 1;
-        console.error(
-          messages.failure({
-            failure: chalk.red('failure'),
-            count: failures.length,
-            countString: chalk.bold(failures.length)
-          })
-        );
-      }
-      if (unchanged.length && isNotSilent) {
-        console.error(
-          messages.unchanged({
-            unchanged: chalk.gray('unchanged'),
-            count: unchanged.length,
-            countString: chalk.bold(unchanged.length)
-          })
-        );
+      if (!isSilent) {
+        if (successes.length) {
+          console.error(
+            messages.success({
+              success: chalk.green('success'),
+              count: successes.length,
+              countString: chalk.bold(successes.length)
+            })
+          );
+        }
+        if (failures.length) {
+          process.exitCode = 1;
+          console.error(
+            messages.failure({
+              failure: chalk.red('failure'),
+              count: failures.length,
+              countString: chalk.bold(failures.length)
+            })
+          );
+        }
+        if (unchanged.length) {
+          console.error(
+            messages.unchanged({
+              unchanged: chalk.gray('unchanged'),
+              count: unchanged.length,
+              countString: chalk.bold(unchanged.length)
+            })
+          );
+        }
       }
       resolve({ successes, failures });
     }
