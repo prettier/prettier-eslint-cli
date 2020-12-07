@@ -40,7 +40,7 @@
     "messageformat": "^2.2.1",
     "prettier-eslint": "^9.0.0",
     "rxjs": "^6.5.2",
-    "yargs": "^13.2.4"
+    "yargs": "^16.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
