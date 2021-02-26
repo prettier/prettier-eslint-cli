@@ -63,7 +63,7 @@
     "opt-cli": "^1.5.1",
     "pify": "^4.0.1",
     "rimraf": "^2.6.3",
-    "semantic-release": "^15.13.16",
+    "semantic-release": "^17.4.0",
     "spawn-command": "0.0.2-1",
     "strip-indent": "^3.0.0",
     "yargs-parser": "^13.1.1"
