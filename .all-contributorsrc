@@ -203,6 +203,36 @@
         "doc",
         "test"
       ]
+    },
+    {
+      "login": "bj00rn",
+      "name": "Björn Dalfors",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/10961167?v=4",
+      "profile": "https://github.com/bj00rn",
+      "contributions": [
+        "infra"
+      ]
+    },
+    {
+      "login": "sscaff1",
+      "name": "Steven Scaffidi",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1554424?v=4",
+      "profile": "https://github.com/sscaff1",
+      "contributions": [
+        "doc"
+      ]
+    },
+    {
+      "login": "dpwilhelmsen",
+      "name": "Daniel Wilhelmsen",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1758049?v=4",
+      "profile": "http://danielwilhelmsen.com",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
     }
-  ]
+  ],
+  "repoType": "github",
+  "commitConvention": "none"
 }

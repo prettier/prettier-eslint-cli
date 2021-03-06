@@ -1,7 +1,7 @@
-import getLoggerMock from "loglevel-colored-level-prefix";
-import onUncaughtException from "./uncaught-exception-handler";
+import getLoggerMock from 'loglevel-colored-level-prefix';
+import onUncaughtException from './uncaught-exception-handler';
 
-jest.mock("loglevel-colored-level-prefix", () => {
+jest.mock('loglevel-colored-level-prefix', () => {
   const logger = {};
   const __mock__ = { logger, level: 4, resetAll };
   const getLogger = jest.fn(() => resetAll());
@@ -26,26 +26,26 @@ beforeEach(() => {
   getLoggerMock.__mock__.resetAll();
 });
 
-test("logs all options", () => {
+test('logs all options', () => {
   const logger = getLoggerMock();
-  runWithCatch(new Error("my error"));
+  runWithCatch(new Error('my error'));
   expect(logger.error).toHaveBeenCalledTimes(1);
-  const errorLog = logger.error.mock.calls[0].join(" ");
+  const errorLog = logger.error.mock.calls[0].join(' ');
   expect(errorLog).toMatchSnapshot();
 });
 
-test("logs a check for trace", () => {
+test('logs a check for trace', () => {
   getLoggerMock.__mock__.level = 0;
   const logger = getLoggerMock();
-  runWithCatch(new Error("my error"));
+  runWithCatch(new Error('my error'));
   expect(logger.error).toHaveBeenCalledTimes(1);
-  const errorLog = logger.error.mock.calls[0].join(" ");
-  expect(errorLog).toContain("✅");
+  const errorLog = logger.error.mock.calls[0].join(' ');
+  expect(errorLog).toContain('✅');
   expect(errorLog).toMatchSnapshot();
 });
 
-test("re-throws the given error", () => {
-  const myError = new Error("my error");
+test('re-throws the given error', () => {
+  const myError = new Error('my error');
   expect(() => onUncaughtException(myError)).toThrow(myError);
 });
 

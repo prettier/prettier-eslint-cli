@@ -1,6 +1,6 @@
-import MessageFormat from "messageformat";
+import MessageFormat from 'messageformat';
 
-const mf = new MessageFormat("en");
+const mf = new MessageFormat('en');
 
 export { success, failure, unchanged };
 
