@@ -48,7 +48,7 @@ test('formats files and outputs to stdout', async () => {
   expect(stdout).toContain(
     stripIndent(
       `
-        import baz, { stuff } from "fdjakfdlfw-baz";
+        import baz, { stuff } from 'fdjakfdlfw-baz';
 
         export { bazzy };
 

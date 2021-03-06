@@ -221,7 +221,18 @@
       "contributions": [
         "doc"
       ]
+    },
+    {
+      "login": "dpwilhelmsen",
+      "name": "Daniel Wilhelmsen",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1758049?v=4",
+      "profile": "http://danielwilhelmsen.com",
+      "contributions": [
+        "code",
+        "maintenance"
+      ]
     }
   ],
-  "repoType": "github"
+  "repoType": "github",
+  "commitConvention": "none"
 }
