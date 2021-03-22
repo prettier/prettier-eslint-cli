@@ -49,7 +49,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
     "acorn": "^6.1.1",
-    "ajv": "^6.10.0",
+    "ajv": "^7.2.3",
     "all-contributors-cli": "^6.7.0",
     "babel-jest": "^24.8.0",
     "eslint-config-kentcdodds": "14.3.3",
