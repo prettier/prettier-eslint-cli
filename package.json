@@ -56,7 +56,7 @@
     "husky": "^2.4.1",
     "indent-string": "^4.0.0",
     "jest": "^24.8.0",
-    "jest-cli": "^24.8.0",
+    "jest-cli": "^27.0.1",
     "lint-staged": "^8.2.1",
     "nps": "^5.9.5",
     "nps-utils": "^1.7.0",
