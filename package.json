@@ -51,7 +51,7 @@
     "acorn": "^6.1.1",
     "ajv": "^6.10.0",
     "all-contributors-cli": "^6.7.0",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^27.0.2",
     "eslint-config-kentcdodds": "14.3.3",
     "husky": "^2.4.1",
     "indent-string": "^4.0.0",
