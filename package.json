@@ -10,6 +10,7 @@
     "prettier-eslint": "dist/index.js"
   },
   "scripts": {
+    "prepare": "nps build",
     "start": "nps",
     "test": "nps test",
     "precommit": "lint-staged && opt --in pre-commit --exec \"npm start validate\""
