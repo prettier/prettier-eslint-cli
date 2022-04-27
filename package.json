@@ -4,7 +4,7 @@
   "description": "CLI for prettier-eslint",
   "main": "dist/no-main.js",
   "engines": {
-    "node": ">=8"
+    "node": ">=12.22"
   },
   "bin": {
     "prettier-eslint": "dist/index.js"
@@ -30,7 +30,7 @@
     "chalk": "^2.4.2",
     "common-tags": "^1.8.0",
     "core-js": "^3.1.4",
-    "eslint": "^5.0.0",
+    "eslint": "^8.14.0",
     "find-up": "^4.1.0",
     "get-stdin": "^7.0.0",
     "glob": "^7.1.4",
@@ -39,7 +39,7 @@
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
     "messageformat": "^2.2.1",
-    "prettier-eslint": "^9.0.0",
+    "prettier-eslint": "^14.0.1",
     "rxjs": "^6.5.2",
     "yargs": "^13.2.4"
   },
@@ -53,7 +53,7 @@
     "ajv": "^6.10.0",
     "all-contributors-cli": "^6.7.0",
     "babel-jest": "^24.8.0",
-    "eslint-config-kentcdodds": "14.3.3",
+    "eslint-config-kentcdodds": "^20.2.0",
     "husky": "^2.4.1",
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",
