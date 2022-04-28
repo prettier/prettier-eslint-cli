@@ -11,8 +11,8 @@ jest.mock('fs');
 
 beforeEach(() => {
   process.stdout.write = jest.fn();
-  console.error = jest.fn(console.error);
-  console.log = jest.fn(console.log);
+  console.error = jest.fn();
+  console.log = jest.fn();
   formatMock.mockClear();
   fsMock.writeFile.mockClear();
   fsMock.readFile.mockClear();
