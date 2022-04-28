@@ -39,7 +39,7 @@
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
     "messageformat": "^2.2.1",
-    "prettier-eslint": "^14.0.1",
+    "prettier-eslint": "^14.0.2",
     "rxjs": "^6.5.2",
     "yargs": "^13.2.4"
   },
