@@ -96,8 +96,8 @@ test(`prettier-eslint ${writeCommand}`, async () => {
   const example1Path = path.resolve(__dirname, '../fixtures/example1.js');
   const example2Path = path.resolve(__dirname, '../fixtures/example2.js');
   try {
-    const example1 = `const {  example1  }  =  baz.bar`;
-    const example2 = `function example2(thing){return thing;};;;;;;;;;`;
+    const example1 = 'const {  example1  }  =  baz.bar';
+    const example2 = 'function example2(thing){return thing;};;;;;;;;;';
     await Promise.all([
       pWriteFile(example1Path, example1),
       pWriteFile(example2Path, example2)

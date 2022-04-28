@@ -63,7 +63,7 @@ module.exports = jest.fn(function mockGlob(globString, options, callback) {
   } else {
     throw new Error(
       `Your test globString: "${globString}"` +
-        ` doesn't have associated mock data.`
+        " doesn't have associated mock data."
     );
   }
 });
