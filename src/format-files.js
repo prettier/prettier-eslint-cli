@@ -13,9 +13,6 @@ import findUp from 'find-up';
 import memoize from 'lodash.memoize';
 import indentString from 'indent-string';
 import getLogger from 'loglevel-colored-level-prefix';
-import ConfigFile from 'eslint/lib/config/config-file';
-import Linter from 'eslint/lib/linter';
-import Config from 'eslint/lib/config';
 import * as messages from './messages';
 
 const LINE_SEPERATOR_REGEX = /(\r|\n|\r\n)/;
@@ -69,11 +66,9 @@ function formatFilesFromArgv({
   };
 
   if (eslintConfigPath) {
-    const configContext = new Config({}, new Linter());
-    prettierESLintOptions.eslintConfig = ConfigFile.load(
-      eslintConfigPath,
-      configContext
-    );
+    prettierESLintOptions.eslintConfig = {
+      overrideConfigFile: eslintConfigPath
+    };
   }
 
   const cliOptions = { write, listDifferent };
@@ -94,7 +89,10 @@ function formatFilesFromArgv({
 async function formatStdin(prettierESLintOptions) {
   const stdinValue = (await getStdin()).trim();
   try {
-    const formatted = format({ text: stdinValue, ...prettierESLintOptions });
+    const formatted = await format({
+      text: stdinValue,
+      ...prettierESLintOptions
+    });
     process.stdout.write(formatted);
     return Promise.resolve(formatted);
   } catch (error) {
@@ -238,9 +236,13 @@ function getFilesFromGlob(
 function formatFile(filePath, prettierESLintOptions, cliOptions) {
   const fileInfo = { filePath };
   let format$ = rxReadFile(filePath, 'utf8').pipe(
-    map(text => {
+    mergeMap(async text => {
       fileInfo.text = text;
-      fileInfo.formatted = format({ text, filePath, ...prettierESLintOptions });
+      fileInfo.formatted = await format({
+        text,
+        filePath,
+        ...prettierESLintOptions
+      });
       fileInfo.unchanged = fileInfo.text === fileInfo.formatted;
       return fileInfo;
     })

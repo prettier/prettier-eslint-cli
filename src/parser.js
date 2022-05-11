@@ -133,7 +133,6 @@ const parser = yargs
     },
     'jsx-bracket-same-line': {
       type: 'boolean',
-      default: undefined,
       describe: oneLine`
         Put the > of a multi-line JSX element at
         the end of the last line instead of

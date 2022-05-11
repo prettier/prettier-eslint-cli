@@ -71,6 +71,27 @@ test('formats files and outputs to stdout', async () => {
   );
 });
 
+test('handles --eslint-config-path', async () => {
+  // can't just do the testOutput function here because
+  // the output is in an undeterministic order
+  const stdout = await runPrettierESLintCLI(
+    `cli-test/fixtures/stdout1.js --no-eslint-ignore --no-prettier-ignore --eslint-config-path ${__dirname}/../override-config.js`
+  );
+  expect(stdout).toContain(
+    stripIndent(
+      `
+        import baz, { stuff } from "fdjakfdlfw-baz";
+
+        export { bazzy };
+
+        function bazzy(something) {
+          return baz(stuff(something));
+        }
+      `
+    ).trim()
+  );
+});
+
 test('list different files with the --list-different option', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
@@ -96,8 +117,8 @@ test(`prettier-eslint ${writeCommand}`, async () => {
   const example1Path = path.resolve(__dirname, '../fixtures/example1.js');
   const example2Path = path.resolve(__dirname, '../fixtures/example2.js');
   try {
-    const example1 = `const {  example1  }  =  baz.bar`;
-    const example2 = `function example2(thing){return thing;};;;;;;;;;`;
+    const example1 = 'const {  example1  }  =  baz.bar';
+    const example2 = 'function example2(thing){return thing;};;;;;;;;;';
     await Promise.all([
       pWriteFile(example1Path, example1),
       pWriteFile(example2Path, example2)

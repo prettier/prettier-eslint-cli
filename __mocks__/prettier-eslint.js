@@ -11,9 +11,9 @@ const format = jest.fn(({ text, filePath = '' }) => {
   } else if (filePath.includes('eslint-config-error')) {
     throw new Error('Some weird eslint config error');
   } else if (filePath.includes('no-change')) {
-    return text;
+    return Promise.resolve(text);
   }
-  return `MOCK_OUTPUT for ${filePath || 'stdin'}`;
+  return Promise.resolve(`MOCK_OUTPUT for ${filePath || 'stdin'}`);
 });
 
 export default format;
