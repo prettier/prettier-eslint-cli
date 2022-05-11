@@ -196,9 +196,8 @@ function runPrettierESLintCLI(args = '', stdin = '') {
 }
 
 function relativeizePath(stringWithAbsolutePaths) {
-  // return stringWithAbsolutePaths.replace(
-  //   new RegExp(path.resolve(__dirname, '../../'), 'g'),
-  //   '<projectRootDir>'
-  // );
-  return stringWithAbsolutePaths;
+  return stringWithAbsolutePaths.replace(
+    new RegExp(path.resolve(__dirname, '../../'), 'g'),
+    '<projectRootDir>'
+  );
 }
