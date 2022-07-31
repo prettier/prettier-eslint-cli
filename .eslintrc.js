@@ -1,5 +1,5 @@
 const config = {
-  extends: ['kentcdodds', 'kentcdodds/jest'],
+  parser: '@babel/eslint-parser',
   rules: {
     quotes: ['error', 'single', { avoidEscape: true }],
     'arrow-parens': ['error', 'as-needed'],
@@ -10,10 +10,10 @@ const config = {
       {
         anonymous: 'never',
         named: 'never',
-        asyncArrow: 'always'
-      }
-    ]
-  }
+        asyncArrow: 'always',
+      },
+    ],
+  },
 };
 
 module.exports = config;

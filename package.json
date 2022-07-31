@@ -46,6 +46,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
+    "@babel/eslint-parser": "^7.18.9",
     "@babel/node": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/register": "^7.4.4",
@@ -53,7 +54,6 @@
     "ajv": "^6.10.0",
     "all-contributors-cli": "^6.7.0",
     "babel-jest": "^24.8.0",
-    "eslint-config-kentcdodds": "^20.2.0",
     "husky": "^2.4.1",
     "jest": "^24.8.0",
     "jest-cli": "^24.8.0",
