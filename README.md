@@ -281,6 +281,7 @@ Thanks goes to these people ([emoji key][emojis]):
     <td align="center"><a href="http://danielwilhelmsen.com"><img src="https://avatars3.githubusercontent.com/u/1758049?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Daniel Wilhelmsen</b></sub></a><br /><a href="https://github.com/prettier/prettier-eslint-cli/commits?author=dpwilhelmsen" title="Code">💻</a> <a href="#maintenance-dpwilhelmsen" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://github.com/gwhitney"><img src="https://avatars.githubusercontent.com/u/3825429?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Glen Whitney</b></sub></a><br /><a href="#maintenance-gwhitney" title="Maintenance">🚧</a></td>
     <td align="center"><a href="https://campcode.dev/"><img src="https://avatars.githubusercontent.com/u/10620169?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Rebecca Vest</b></sub></a><br /><a href="https://github.com/prettier/prettier-eslint-cli/commits?author=idahogurl" title="Code">💻</a></td>
+    <td align="center"><a href="https://mattbrannon.dev/"><img src="https://avatars.githubusercontent.com/u/36570183?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Matt Brannon</b></sub></a><br /><a href="https://github.com/prettier/prettier-eslint-cli/commits?author=mattbrannon" title="Code">💻</a></td>
   </tr>
 </table>
 

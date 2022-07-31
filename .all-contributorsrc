@@ -249,6 +249,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "mattbrannon",
+      "name": "Matt Brannon",
+      "avatar_url": "https://avatars.githubusercontent.com/u/36570183?v=4",
+      "profile": "https://mattbrannon.dev/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "repoType": "github",
