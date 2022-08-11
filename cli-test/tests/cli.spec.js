@@ -1,4 +1,3 @@
-/* global jasmine */
 /* eslint no-console:0 */
 import path from 'path';
 import fs from 'fs';
@@ -10,9 +9,6 @@ import stripIndent from 'strip-indent';
 const pWriteFile = pify(fs.writeFile);
 const pReadFile = pify(fs.readFile);
 const pUnlink = pify(fs.unlink);
-
-// this is a bit of a long running test...
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
 
 const PRETTIER_ESLINT_PATH = require.resolve('../../src/index');
 const BABEL_BIN_PATH = require.resolve('@babel/node/bin/babel-node');
@@ -28,7 +24,8 @@ test('help outputs usage information and flags', async () => {
   expect(stdout).toContain('Options:\n');
   // just a sanity check.
   // If it's ever longer than 2000 then we've probably got a problem...
-  if (stdout.length > 6500) {
+  // eslint-disable-next-line jest/no-conditional-in-test
+  if (stdout.length > 7200) {
     console.error(stdout);
     throw new Error(
       oneLine`

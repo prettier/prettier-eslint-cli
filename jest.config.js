@@ -1,3 +1,8 @@
+// @ts-check
+
+/**
+ * @type {import('@jest/types').Config.InitialOptions}
+ */
 module.exports = {
   testEnvironment: 'node',
   // TODO: test all the files...
