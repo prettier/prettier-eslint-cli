@@ -1,5 +1,0 @@
-{
-  "roots": ["<rootDir>/tests"],
-  "testEnvironment": "node",
-  "testPathIgnorePatterns": ["/node_modules/", "/helpers/", "/fixtures/"]
-}

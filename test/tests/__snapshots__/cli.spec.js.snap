@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`prettier-eslint --version: stdout: --version 1`] = `
+"0.0.0-development
+"
+`;
+
+exports[`prettier-eslint test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore: file contents: prettier-eslint test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore 1`] = `
+Object {
+  "example1Result": "const { example1 } = baz.bar;
+",
+  "example2Result": "function example2(thing) {
+  return thing;
+}
+",
+}
+`;
+
+exports[`prettier-eslint test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore: stdout: prettier-eslint test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore 1`] = `
+"success formatting 2 files with prettier-eslint
+"
+`;

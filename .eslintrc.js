@@ -3,8 +3,9 @@ const config = {
   rules: {
     quotes: ['error', 'single', { avoidEscape: true }],
     'arrow-parens': ['error', 'as-needed'],
-    'max-len': 'off',
     'import/max-dependencies': 'off',
+    'jest/prefer-snapshot-hint': 'off',
+    'max-len': 'off',
     'space-before-function-paren': [
       'error',
       {

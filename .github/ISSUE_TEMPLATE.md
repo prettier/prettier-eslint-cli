@@ -23,8 +23,6 @@ Relevant code/config.
 
 What you did:
 
-
-
 What happened:
 
 <!-- Please provide the full error message/screenshots/anything -->
@@ -40,7 +38,5 @@ with as minimal amount of code possible. Then paste a link below:
 -- paste your link here --
 
 Problem description:
-
-
 
 Suggested solution:

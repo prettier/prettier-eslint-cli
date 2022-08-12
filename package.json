@@ -66,7 +66,11 @@
     "yargs-parser": "^21.1.1"
   },
   "lint-staged": {
-    "*.+(js|json|md)": "node ./dist/index --write"
+    "*.+(js|json|md|yml)": "node ./dist/index --write"
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "singleQuote": true
   },
   "simple-git-hooks": {
     "pre-commit": "npx lint-staged && npx opt --in pre-commit --exec \"npm start validate\""

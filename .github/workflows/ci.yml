@@ -17,18 +17,18 @@ jobs:
           - 18
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
 
-    - name: Install dependencies
-      run: npm i
+      - name: Install dependencies
+        run: npm i
 
-    - name: Lint, test, and build
-      run: npm start validate
+      - name: Lint, test, and build
+        run: npm start validate
 
-    - name: Check test coverage
-      uses: codecov/codecov-action@v3
+      - name: Check test coverage
+        uses: codecov/codecov-action@v3
