@@ -10,6 +10,9 @@ const pWriteFile = pify(fs.writeFile);
 const pReadFile = pify(fs.readFile);
 const pUnlink = pify(fs.unlink);
 
+// this is a bit of a long running test...
+jest.setTimeout(20000);
+
 const PRETTIER_ESLINT_PATH = require.resolve('../../src/index');
 const BABEL_BIN_PATH = require.resolve('@babel/node/bin/babel-node');
 
