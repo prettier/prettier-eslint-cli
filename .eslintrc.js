@@ -1,5 +1,9 @@
 const config = {
-  extends: ['kentcdodds', 'kentcdodds/jest'],
+  extends: [
+    'kentcdodds',
+    'kentcdodds/jest',
+    'plugin:node-dependencies/recommended'
+  ],
   rules: {
     quotes: ['error', 'single', { avoidEscape: true }],
     'arrow-parens': ['error', 'as-needed'],
