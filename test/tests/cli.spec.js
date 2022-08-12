@@ -24,7 +24,7 @@ test('help outputs usage information and flags', async () => {
   // terminal I think)...
   const stdout = await runPrettierESLintCLI('--help');
   expect(stdout).toMatch(/Usage:.*?<globs>.../);
-  expect(stdout).toContain('Options:\n');
+  expect(stdout).toContain('Valid options:\n');
   // just a sanity check.
   // If it's ever longer than 2000 then we've probably got a problem...
   // eslint-disable-next-line jest/no-conditional-in-test

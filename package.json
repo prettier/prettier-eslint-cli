@@ -26,7 +26,16 @@
     "JounQin (https://www.1stG.me) <admin@1stg.me>"
   ],
   "license": "MIT",
+  "peerDependencies": {
+    "prettier-eslint": "*"
+  },
+  "peerDependenciesMeta": {
+    "prettier-eslint": {
+      "optional": true
+    }
+  },
   "dependencies": {
+    "@prettier/eslint": "npm:prettier-eslint@^15.0.1",
     "arrify": "^2.0.1",
     "boolify": "^1.0.1",
     "camelcase-keys": "^7.0.2",
@@ -42,7 +51,6 @@
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
     "messageformat": "^2.3.0",
-    "prettier-eslint": "^15.0.1",
     "rxjs": "^7.5.6",
     "yargs": "^13.1.1"
   },
