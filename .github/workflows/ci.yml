@@ -1,6 +1,8 @@
 name: CI
 
-on: [push]
+on:
+  - push
+  - pull_request
 
 jobs:
   ci:
@@ -8,24 +10,25 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version:
+          - 12
+          - 14
+          - 16
+          - 18
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node }}
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
 
-    - name: Install dependencies
-      run: npm i
+      - name: Install dependencies
+        run: npm i
 
-    - name: Lint, test, and build
-      run: npm start validate
+      - name: Lint, test, and build
+        run: npm start validate
 
-    - name: Check test coverage
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-
+      - name: Check test coverage
+        uses: codecov/codecov-action@v3

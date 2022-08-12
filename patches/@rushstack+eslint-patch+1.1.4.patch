@@ -1,0 +1,13 @@
+diff --git a/node_modules/@rushstack/eslint-patch/lib/modern-module-resolution.js b/node_modules/@rushstack/eslint-patch/lib/modern-module-resolution.js
+index 6d665b7..888509d 100644
+--- a/node_modules/@rushstack/eslint-patch/lib/modern-module-resolution.js
++++ b/node_modules/@rushstack/eslint-patch/lib/modern-module-resolution.js
+@@ -198,7 +198,7 @@ if (!ConfigArrayFactory.__patched) {
+             try {
+                 ModuleResolver.resolve = function (moduleName, relativeToPath) {
+                     // resolve using ctx.filePath instead of relativeToPath
+-                    return originalResolve.call(this, moduleName, ctx.filePath);
++                    return originalResolve.call(this, moduleName, ctx.filePath || relativeToPath);
+                 };
+                 return originalLoadPlugin.apply(this, arguments);
+             }

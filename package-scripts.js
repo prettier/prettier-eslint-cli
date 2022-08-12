@@ -48,7 +48,7 @@ module.exports = {
     validate: {
       description:
         'This runs several scripts to make sure things look good before committing or on clean install',
-      script: concurrent.nps('lint', 'build', 'test', 'test.cli'),
+      script: concurrent.nps('lint', 'build', 'test'),
     },
     format: {
       description: 'Formats everything with prettier-eslint',

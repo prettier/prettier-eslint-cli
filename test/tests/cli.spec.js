@@ -1,4 +1,3 @@
-/* global jasmine */
 /* eslint no-console:0 */
 import path from 'path';
 import fs from 'fs';
@@ -12,7 +11,7 @@ const pReadFile = pify(fs.readFile);
 const pUnlink = pify(fs.unlink);
 
 // this is a bit of a long running test...
-jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+jest.setTimeout(20000);
 
 const PRETTIER_ESLINT_PATH = require.resolve('../../src/index');
 const BABEL_BIN_PATH = require.resolve('@babel/node/bin/babel-node');
@@ -28,7 +27,8 @@ test('help outputs usage information and flags', async () => {
   expect(stdout).toContain('Options:\n');
   // just a sanity check.
   // If it's ever longer than 2000 then we've probably got a problem...
-  if (stdout.length > 6500) {
+  // eslint-disable-next-line jest/no-conditional-in-test
+  if (stdout.length > 7200) {
     console.error(stdout);
     throw new Error(
       oneLine`
@@ -43,7 +43,7 @@ test('formats files and outputs to stdout', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    'cli-test/fixtures/stdout*.js --no-eslint-ignore --no-prettier-ignore'
+    'test/fixtures/stdout*.js --no-eslint-ignore --no-prettier-ignore'
   );
   expect(stdout).toContain(
     stripIndent(
@@ -75,7 +75,7 @@ test('handles --eslint-config-path', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    `cli-test/fixtures/stdout1.js --no-eslint-ignore --no-prettier-ignore --eslint-config-path ${__dirname}/../override-config.js`
+    `test/fixtures/stdout1.js --no-eslint-ignore --no-prettier-ignore --eslint-config-path ${__dirname}/../override-config.js`
   );
   expect(stdout).toContain(
     stripIndent(
@@ -96,10 +96,10 @@ test('list different files with the --list-different option', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    'cli-test/fixtures/stdout*.js --list-different --no-eslint-ignore --no-prettier-ignore'
+    'test/fixtures/stdout*.js --list-different --no-eslint-ignore --no-prettier-ignore'
   );
-  expect(stdout).toContain('cli-test/fixtures/stdout1.js');
-  expect(stdout).toContain('cli-test/fixtures/stdout2.js');
+  expect(stdout).toContain('test/fixtures/stdout1.js');
+  expect(stdout).toContain('test/fixtures/stdout2.js');
 });
 
 test('accepts stdin of code', async () => {
@@ -109,7 +109,7 @@ test('accepts stdin of code', async () => {
 });
 
 const writeCommand =
-  'cli-test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore';
+  'test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore';
 
 test(`prettier-eslint ${writeCommand}`, async () => {
   // because we're using --write,
@@ -147,6 +147,7 @@ function testOutput(command) {
       const stdout = await runPrettierESLintCLI(command);
       expect(stdout).toMatchSnapshot(`stdout: ${command}`);
     } catch (stderr) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(stderr).toMatchSnapshot(`stderr: ${command}`);
     }
   });
