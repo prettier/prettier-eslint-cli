@@ -8,6 +8,7 @@ CLI for [`prettier-eslint`][prettier-eslint]
 [![downloads][downloads-badge]][npm-stat]
 [![MIT License][license-badge]][license]
 
+[![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/prettier?style=flat-square)](https://opencollective.com/prettier)
 [![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Donate][donate-badge]][donate]
@@ -18,8 +19,6 @@ CLI for [`prettier-eslint`][prettier-eslint]
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
 [![Tweet][twitter-badge]][twitter]
-
-<a href="https://app.codesponsor.io/link/PKGFLnhDiFvsUA5P4kAXfiPs/prettier/prettier-eslint-cli" rel="nofollow"><img src="https://app.codesponsor.io/embed/PKGFLnhDiFvsUA5P4kAXfiPs/prettier/prettier-eslint-cli.svg" style="width: 888px; height: 68px;" alt="Sponsor" /></a>
 
 ## The problem
 
@@ -299,8 +298,8 @@ MIT
 [yarn]: https://yarnpkg.com/
 [npm]: https://www.npmjs.com/
 [node]: https://nodejs.org
-[build-badge]: https://img.shields.io/travis/prettier/prettier-eslint-cli.svg?style=flat-square
-[build]: https://travis-ci.org/prettier/prettier-eslint-cli
+[build-badge]: https://img.shields.io/github/workflow/status/prettier/prettier-eslint-cli/CI?style=flat-square
+[build]: https://github.com/prettier/prettier-eslint-cli/actions/workflows/ci.yml
 [coverage-badge]: https://img.shields.io/codecov/c/github/prettier/prettier-eslint-cli.svg?style=flat-square
 [coverage]: https://codecov.io/github/prettier/prettier-eslint-cli
 [version-badge]: https://img.shields.io/npm/v/prettier-eslint-cli.svg?style=flat-square
