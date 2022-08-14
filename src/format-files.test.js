@@ -1,10 +1,10 @@
 /* eslint no-console:0 */
 import fsMock from 'fs';
 import findUpMock from 'find-up';
-import formatMock from 'prettier-eslint';
 import globMock from 'glob';
 import mockGetStdin from 'get-stdin';
 import getLogger from 'loglevel-colored-level-prefix';
+import formatMock from './prettier-eslint';
 import formatFiles from './format-files';
 
 jest.mock('fs');

@@ -5,7 +5,6 @@ import fs from 'fs';
 import glob from 'glob';
 import { bindNodeCallback, from, of } from 'rxjs';
 import { catchError, concatAll, distinct, map, mergeMap } from 'rxjs/operators';
-import format from 'prettier-eslint';
 import chalk from 'chalk';
 import getStdin from 'get-stdin';
 import nodeIgnore from 'ignore';
@@ -13,6 +12,7 @@ import findUp from 'find-up';
 import memoize from 'lodash.memoize';
 import indentString from 'indent-string';
 import getLogger from 'loglevel-colored-level-prefix';
+import format from './prettier-eslint';
 import * as messages from './messages';
 
 const LINE_SEPERATOR_REGEX = /(\r|\n|\r\n)/;
