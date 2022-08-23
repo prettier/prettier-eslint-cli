@@ -17,6 +17,10 @@ Object {
 `;
 
 exports[`prettier-eslint test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore: stdout: prettier-eslint test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore 1`] = `
-"success formatting 2 files with prettier-eslint
+"can't resolve reference #/definitions/directiveConfigSchema from id #
+can't resolve reference #/definitions/directiveConfigSchema from id #
+can't resolve reference #/definitions/directiveConfigSchema from id #
+can't resolve reference #/definitions/directiveConfigSchema from id #
+success formatting 2 files with prettier-eslint
 "
 `;
