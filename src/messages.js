@@ -1,4 +1,4 @@
-import MessageFormat from 'messageformat';
+import MessageFormat from '@messageformat/core';
 
 const mf = new MessageFormat('en');
 
