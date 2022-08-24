@@ -73,7 +73,6 @@
     "lint-staged": "^12.5.0",
     "nps": "^5.10.0",
     "nps-utils": "^1.7.0",
-    "opt-cli": "^1.6.0",
     "patch-package": "^6.4.7",
     "pify": "^5.0.0",
     "rimraf": "^3.0.2",
@@ -90,7 +89,7 @@
     "singleQuote": true
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged && npx opt --in pre-commit --exec \"npm start validate\""
+    "pre-commit": "npx lint-staged && npm start validate"
   },
   "repository": {
     "type": "git",
