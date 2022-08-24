@@ -16,7 +16,7 @@
     "prerelease": "nps build",
     "release": "clean-pkg-json && changeset release",
     "version": "changeset version",
-    "postversion": "jest -u",
+    "postversion": "npm start test.update",
     "start": "nps",
     "test": "nps test"
   },
