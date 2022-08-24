@@ -48,8 +48,8 @@ contribution type.
 
 ## Committing and Pushing changes
 
-This project uses [`semantic-release`][semantic-release] to do automatic
-releases and generate a changelog based on the commit history. So we follow
+This project uses [`changesets`][changesets] to do automatic
+releases and generate a changelog based on the changeset files. We follow
 [a convention][convention] for commit messages. You don't have to follow this
 convention if you don't like to. Just know that when we merge your commit, we'll
 probably use "Squash and Merge" so we can change the commit message :)
@@ -58,17 +58,16 @@ Please make sure to run the tests before you commit your changes. You can run
 `npm start test.update` which will update any snapshots that need updating.
 Make sure to include those changes (if they exist) in your commit.
 
-### opt into git hooks
+You or a maintainer will need to add a changeset file on you pull request if we
+want to draft a new release for your PR. If there are changeset files on the
+master branch, [`changeset-bot`][changeset-bot] will raise a PR for releasing
+automatically. When the release is finally ready, we will only need to merge
+that PR.
+
+### simple-git-hooks
 
 There are git hooks set up with this project that are automatically installed
-when you install dependencies. They're really handy, but are turned off by
-default (so as to not hinder new contributors). You can opt into these by
-creating a file called `.opt-in` at the root of the project and putting this
-inside:
-
-```
-pre-commit
-```
+when you install dependencies.
 
 ## Help needed
 
@@ -77,8 +76,9 @@ Please checkout the [the open issues][issues]
 Also, please watch the repo and respond to questions/bug reports/feature requests! Thanks!
 
 [egghead]: https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github
-[semantic-release]: https://npmjs.com/package/semantic-release
-[convention]: https://github.com/conventional-changelog/conventional-changelog-angular/blob/ed32559941719a130bb0327f886d6a32a8cbc2ba/convention.md
+[changesets]: https://github.com/changesets/changesets
+[changeset-bot]: https://github.com/apps/changeset-bot
+[convention]: https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional
 [all-contributors]: https://github.com/kentcdodds/all-contributors
 [issues]: https://github.com/prettier/prettier-eslint-cli/issues
 [nps]: https://github.com/kentcdodds/nps

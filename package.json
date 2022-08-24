@@ -1,6 +1,6 @@
 {
   "name": "prettier-eslint-cli",
-  "version": "0.0.0-development",
+  "version": "7.0.1",
   "description": "CLI for prettier-eslint",
   "main": "dist/no-main.js",
   "engines": {
@@ -13,6 +13,10 @@
     "build": "nps build",
     "lint": "nps lint",
     "prepare": "patch-package && simple-git-hooks",
+    "prerelease": "nps build",
+    "release": "clean-pkg-json && changeset release",
+    "version": "changeset version",
+    "postversion": "npm start test.update",
     "start": "nps",
     "test": "nps test"
   },
@@ -59,18 +63,19 @@
     "@babel/core": "^7.18.10",
     "@babel/node": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
+    "@changesets/changelog-github": "^0.4.6",
+    "@changesets/cli": "^2.24.3",
     "all-contributors-cli": "^6.20.0",
+    "clean-pkg-json": "^1.0.1",
     "eslint-config-kentcdodds": "^20.3.1",
     "eslint-plugin-node-dependencies": "^0.8.0",
     "jest": "^28.1.3",
     "lint-staged": "^12.5.0",
     "nps": "^5.10.0",
     "nps-utils": "^1.7.0",
-    "opt-cli": "^1.6.0",
     "patch-package": "^6.4.7",
     "pify": "^5.0.0",
     "rimraf": "^3.0.2",
-    "semantic-release": "^17.4.7",
     "simple-git-hooks": "^2.8.0",
     "spawn-command": "0.0.2-1",
     "strip-indent": "^3.0.0",
@@ -84,7 +89,7 @@
     "singleQuote": true
   },
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged && npx opt --in pre-commit --exec \"npm start validate\""
+    "pre-commit": "npx lint-staged && npm start validate"
   },
   "repository": {
     "type": "git",

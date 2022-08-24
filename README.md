@@ -7,6 +7,7 @@ CLI for [`prettier-eslint`][prettier-eslint]
 [![version][version-badge]][package]
 [![downloads][downloads-badge]][npm-stat]
 [![MIT License][license-badge]][license]
+[![changesets](https://img.shields.io/badge/maintained%20with-changesets-176de3.svg?style=flat-square)](https://github.com/atlassian/changesets)
 
 [![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/prettier?style=flat-square)](https://opencollective.com/prettier)
 [![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors)
