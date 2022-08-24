@@ -14,7 +14,7 @@
     "lint": "nps lint",
     "prepare": "patch-package && simple-git-hooks",
     "prerelease": "nps build",
-    "release": "clean-pkg-json && changeset release",
+    "release": "clean-pkg-json && changeset publish",
     "version": "changeset version",
     "postversion": "npm start test.update",
     "start": "nps",
