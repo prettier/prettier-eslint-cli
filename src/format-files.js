@@ -54,6 +54,7 @@ function formatFilesFromArgv({
   prettierIgnore: applyPrettierIgnore = true,
   eslintConfigPath,
   prettierLast,
+  includeDotFiles,
   ...prettierOptions
 }) {
   logger.setLevel(logLevel);
@@ -71,7 +72,7 @@ function formatFilesFromArgv({
     };
   }
 
-  const cliOptions = { write, listDifferent };
+  const cliOptions = { write, listDifferent, includeDotFiles };
   if (stdin) {
     return formatStdin({ filePath: stdinFilepath, ...prettierESLintOptions });
   } else {
@@ -122,12 +123,14 @@ function formatFilesFromGlobs({
     from(fileGlobs)
       .pipe(
         mergeMap(
-          getFilesFromGlob.bind(
-            null,
-            ignoreGlobs,
-            applyEslintIgnore,
-            applyPrettierIgnore
-          ),
+          fileGlob =>
+            getFilesFromGlob(
+              ignoreGlobs,
+              applyEslintIgnore,
+              applyPrettierIgnore,
+              fileGlob,
+              cliOptions
+            ),
           null,
           concurrentGlobs
         ),
@@ -207,9 +210,10 @@ function getFilesFromGlob(
   ignoreGlobs,
   applyEslintIgnore,
   applyPrettierIgnore,
-  fileGlob
+  fileGlob,
+  cliOptions
 ) {
-  const globOptions = { dot: true, ignore: ignoreGlobs };
+  const globOptions = { dot: cliOptions.includeDotFiles, ignore: ignoreGlobs };
   if (!fileGlob.includes('node_modules')) {
     // basically, we're going to protect you from doing something
     // not smart unless you explicitly include it in your glob
