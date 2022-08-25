@@ -56,6 +56,13 @@ const parser = yargs
         from Prettier + Eslint formatting.
       `
     },
+    'include-dot-files': {
+      default: false,
+      type: 'boolean',
+      describe: oneLine`
+        Include files that start with a dot in the search.
+      `
+    },
     // allow `--eslint-path` and `--eslintPath`
     'eslint-path': {
       describe: 'The path to the eslint module to use',
