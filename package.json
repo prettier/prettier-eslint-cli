@@ -1,6 +1,6 @@
 {
   "name": "prettier-eslint-cli",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "CLI for prettier-eslint",
   "main": "dist/no-main.js",
   "engines": {
