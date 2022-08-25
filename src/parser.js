@@ -56,7 +56,7 @@ const parser = yargs
         from Prettier + Eslint formatting.
       `
     },
-    includeDotFiles: {
+    'include-dot-files': {
       default: false,
       type: 'boolean',
       describe: oneLine`

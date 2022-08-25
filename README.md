@@ -99,6 +99,8 @@ Options:
   --list-different         Print filenames of files that are different from
                            Prettier + Eslint formatting.
                                                       [boolean] [default: false]
+  --include-dot-files      Include files that start with a dot in the search.
+                                                      [boolean] [default: false]
   --eslint-path            The path to the eslint module to use
                  [default: "./node_modules/eslint"]
   --eslint-config-path     Path to the eslint config to use for eslint --fix
