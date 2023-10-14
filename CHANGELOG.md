@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 8.0.0
+
+### Major Changes
+
+- [#449](https://github.com/prettier/prettier-eslint-cli/pull/449) [`5fd8eea`](https://github.com/prettier/prettier-eslint-cli/commit/5fd8eea1eb9f17fe0fab931aa8e59c8a2fc87529) Thanks [@JounQin](https://github.com/JounQin)! - feat!: bump all (dev)Dependencies, drop node < 16
+
 ## 7.1.0
 
 ### Minor Changes
