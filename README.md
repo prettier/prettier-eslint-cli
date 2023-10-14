@@ -303,7 +303,7 @@ MIT
 [yarn]: https://yarnpkg.com/
 [npm]: https://www.npmjs.com/
 [node]: https://nodejs.org
-[build-badge]: https://img.shields.io/github/workflow/status/prettier/prettier-eslint-cli/CI?style=flat-square
+[build-badge]: https://img.shields.io/github/actions/workflow/status/prettier/prettier-eslint-cli/ci.yml?style=flat-square
 [build]: https://github.com/prettier/prettier-eslint-cli/actions/workflows/ci.yml
 [coverage-badge]: https://img.shields.io/codecov/c/github/prettier/prettier-eslint-cli.svg?style=flat-square
 [coverage]: https://codecov.io/github/prettier/prettier-eslint-cli
