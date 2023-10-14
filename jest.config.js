@@ -7,7 +7,7 @@ module.exports = {
   testEnvironment: 'node',
   // TODO: test all the files...
   // collectCoverageFrom: ['src/**/*.js'],
-  testPathIgnorePatterns: ['/node_modules/', '/fixtures/'],
+  testPathIgnorePatterns: ['/node_modules/', '/fixtures/', '/dist/'],
   coveragePathIgnorePatterns: ['/node_modules/', '/fixtures/', '/dist/'],
   coverageThreshold: {
     global: {

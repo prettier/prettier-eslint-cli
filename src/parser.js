@@ -226,7 +226,7 @@ const parser = yargs
     // TODO: support range-start and range-end
     // would require changes in prettier-eslint
   })
-  .strict();
+  .strictOptions();
 
 export default parser;
 

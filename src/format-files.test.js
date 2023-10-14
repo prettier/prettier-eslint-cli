@@ -1,7 +1,7 @@
 /* eslint no-console:0 */
 import fsMock from 'fs';
 import findUpMock from 'find-up';
-import globMock from 'glob';
+import { glob as globMock } from 'glob';
 import mockGetStdin from 'get-stdin';
 import getLogger from 'loglevel-colored-level-prefix';
 import formatMock from './prettier-eslint';
@@ -43,8 +43,7 @@ test('glob call inclues an ignore of node_modules', async () => {
   const globOptions = expect.objectContaining({
     ignore: expect.arrayContaining(['**/node_modules/**'])
   });
-  const callback = expect.any(Function);
-  expect(globMock).toHaveBeenCalledWith(fileGlob, globOptions, callback);
+  expect(globMock).toHaveBeenCalledWith(fileGlob, globOptions);
 });
 
 test('glob call excludes an ignore of node_modules', async () => {
@@ -55,8 +54,7 @@ test('glob call excludes an ignore of node_modules', async () => {
     expect.objectContaining({
       // should not have an ignore with **/node_modules/**
       ignore: expect.arrayContaining(['**/node_modules/**'])
-    }),
-    expect.any
+    })
   );
 });
 
@@ -189,8 +187,7 @@ test('allows you to specify an ignore glob', async () => {
   const globOptions = expect.objectContaining({
     ignore: [...ignore, '**/node_modules/**']
   });
-  const callback = expect.any(Function);
-  expect(globMock).toHaveBeenCalledWith(fileGlob, globOptions, callback);
+  expect(globMock).toHaveBeenCalledWith(fileGlob, globOptions);
 });
 
 test('wont modify a file if it is eslint ignored', async () => {

@@ -2,7 +2,7 @@
 /* eslint complexity:[1, 7] */
 import path from 'path';
 import fs from 'fs';
-import glob from 'glob';
+import { glob } from 'glob';
 import { bindNodeCallback, from, of } from 'rxjs';
 import { catchError, concatAll, distinct, map, mergeMap } from 'rxjs/operators';
 import chalk from 'chalk';
@@ -16,7 +16,6 @@ import format from './prettier-eslint';
 import * as messages from './messages';
 
 const LINE_SEPERATOR_REGEX = /(\r|\n|\r\n)/;
-const rxGlob = bindNodeCallback(glob);
 const rxReadFile = bindNodeCallback(fs.readFile);
 const rxWriteFile = bindNodeCallback(fs.writeFile);
 const findUpEslintignoreSyncMemoized = memoize(
@@ -165,7 +164,8 @@ function formatFilesFromGlobs({
     }
 
     function onComplete() {
-      const isSilent = logger.getLevel() === logger.levels.SILENT || cliOptions.listDifferent;
+      const isSilent =
+        logger.getLevel() === logger.levels.SILENT || cliOptions.listDifferent;
 
       /* use console.error directly here because
        * - we don't want these messages prefixed
@@ -219,7 +219,7 @@ function getFilesFromGlob(
     // not smart unless you explicitly include it in your glob
     globOptions.ignore.push('**/node_modules/**');
   }
-  return rxGlob(fileGlob, globOptions).pipe(
+  return from(glob(fileGlob, globOptions)).pipe(
     map(filePaths => {
       return filePaths.filter(filePath => {
         if (applyEslintIgnore && isFilePathMatchedByEslintignore(filePath)) {
