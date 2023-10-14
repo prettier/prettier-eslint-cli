@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 8.0.1
+
+### Patch Changes
+
+- [#451](https://github.com/prettier/prettier-eslint-cli/pull/451) [`df191a1`](https://github.com/prettier/prettier-eslint-cli/commit/df191a1415ecb2529849d99eff66b2f5616b410b) Thanks [@JounQin](https://github.com/JounQin)! - chore: update node version align with prettier-eslint
+
 ## 8.0.0
 
 ### Major Changes
