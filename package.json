@@ -4,7 +4,7 @@
   "description": "CLI for prettier-eslint",
   "main": "dist/no-main.js",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.10.0"
   },
   "bin": {
     "prettier-eslint": "dist/index.js"
@@ -40,7 +40,7 @@
   },
   "dependencies": {
     "@messageformat/core": "^3.2.0",
-    "@prettier/eslint": "npm:prettier-eslint@^16.0.0",
+    "@prettier/eslint": "npm:prettier-eslint@^16.1.0",
     "arrify": "^2.0.1",
     "boolify": "^1.0.1",
     "camelcase-keys": "^9.1.0",
@@ -78,8 +78,7 @@
     "rimraf": "^5.0.5",
     "simple-git-hooks": "^2.9.0",
     "spawn-command": "0.0.2-1",
-    "strip-indent": "^3.0.0",
-    "yargs-parser": "^21.1.1"
+    "strip-indent": "^3.0.0"
   },
   "lint-staged": {
     "*.+(js|json|md|yml)": "node ./dist/index --write"
