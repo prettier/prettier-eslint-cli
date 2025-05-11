@@ -9,7 +9,7 @@ CLI for [`prettier-eslint`][prettier-eslint]
 [![MIT License][license-badge]][license]
 [![changesets](https://img.shields.io/badge/maintained%20with-changesets-176de3.svg?style=flat-square)](https://github.com/atlassian/changesets)
 
-[![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/prettier?style=flat-square)](https://opencollective.com/prettier)
+[![Open Collective backers and sponsors](https://img.shields.io/opencollective/all/prettier-eslint?style=flat-square)](https://opencollective.com/prettier-eslint)
 [![All Contributors](https://img.shields.io/badge/all_contributors-21-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome][prs-badge]][prs]
 [![Donate][donate-badge]][donate]
@@ -317,7 +317,7 @@ MIT
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prs]: http://makeapullrequest.com
 [donate-badge]: https://img.shields.io/badge/$-support-green.svg?style=flat-square
-[donate]: https://www.paypal.me/zimme
+[donate]: https://github.com/sponsors/prettier-eslint
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
 [coc]: https://github.com/prettier/prettier-eslint-cli/blob/master/CODE_OF_CONDUCT.md
 [roadmap-badge]: https://img.shields.io/badge/%F0%9F%93%94-roadmap-CD9523.svg?style=flat-square
