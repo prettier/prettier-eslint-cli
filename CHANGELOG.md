@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 9.0.0-alpha.0
+
+### Major Changes
+
+- [#460](https://github.com/prettier/prettier-eslint-cli/pull/460) [`4fe5b81`](https://github.com/prettier/prettier-eslint-cli/commit/4fe5b814185e386c351545c0769287b306d9729b) Thanks [@JounQin](https://github.com/JounQin)! - feat!: bump `prettier-eslint` to support ESLint v9 flat config
+
 ## 8.0.1
 
 ### Patch Changes
