@@ -8,11 +8,11 @@ Thanks for being willing to contribute!
 ## Project setup
 
 1. Fork and clone the repo
-2. `$ npm install` to install dependencies
-3. `$ npm start validate` to validate you've got it working
+2. `$ yarn install` to install dependencies
+3. `$ yarn start validate` to validate you've got it working
 4. Create a branch for your PR
 
-This project uses [`nps`][nps] and you can run `npm start help` to see what
+This project uses [`nps`][nps] and you can run `yarn start help` to see what
 scripts are available.
 
 > Tip: Keep your `master` branch pointing at the original repository and make
@@ -38,7 +38,7 @@ To add yourself to the table of contributors on the README.md, please use the
 automated script as part of your PR:
 
 ```console
-npm start contributors.add
+yarn start contributors.add
 ```
 
 Follow the prompt and commit `.all-contributorsrc` and `README.md` in the PR.
@@ -55,7 +55,7 @@ convention if you don't like to. Just know that when we merge your commit, we'll
 probably use "Squash and Merge" so we can change the commit message :)
 
 Please make sure to run the tests before you commit your changes. You can run
-`npm start test.update` which will update any snapshots that need updating.
+`yarn start test.update` which will update any snapshots that need updating.
 Make sure to include those changes (if they exist) in your commit.
 
 You or a maintainer will need to add a changeset file on you pull request if we

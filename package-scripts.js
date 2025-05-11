@@ -52,8 +52,7 @@ module.exports = {
     },
     format: {
       description: 'Formats everything with prettier-eslint',
-      script:
-        'babel-node ./src/index.js --write "**/*.{js,json,md,yml}" ".eslintrc.js"',
+      script: 'babel-node ./src/index.js --write "**/*.{js,json,md,mjs,yml}"',
     },
   },
   options: {

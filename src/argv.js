@@ -4,7 +4,7 @@ function normalize(options) {
       key.includes('-')
         ? optionsAccumulator
         : { ...optionsAccumulator, [key]: value },
-    {}
+    {},
   );
 }
 

@@ -5,7 +5,7 @@ const glob = jest.fn(async function mockGlob(globString) {
       fredProject('index.js'),
       fredProject('start.js'),
       fredProject('stop/index.js'),
-      fredProject('stop/log.js')
+      fredProject('stop/log.js'),
     ];
   }
 
@@ -14,7 +14,7 @@ const glob = jest.fn(async function mockGlob(globString) {
       fredProject('index.js'),
       fredProject('start.js'),
       fredProject('continue/index.js'),
-      fredProject('continue/forever.js')
+      fredProject('continue/forever.js'),
     ];
   }
 
@@ -22,7 +22,7 @@ const glob = jest.fn(async function mockGlob(globString) {
     return [
       fredProject('foo/node_modules/stuff1.js'),
       fredProject('foo/node_modules/stuff2.js'),
-      fredProject('foo/node_modules/stuff3.js')
+      fredProject('foo/node_modules/stuff3.js'),
     ];
   }
 
@@ -42,7 +42,7 @@ const glob = jest.fn(async function mockGlob(globString) {
     return [
       fredProject('no-change/1.js'),
       fredProject('no-change/2.js'),
-      fredProject('no-change/3.js')
+      fredProject('no-change/3.js'),
     ];
   }
 
@@ -51,7 +51,7 @@ const glob = jest.fn(async function mockGlob(globString) {
       fredProject('eslintignored1.js'),
       fredProject('eslintignored2.js'),
       fredProject('eslintignored3.js'),
-      fredProject('applied4.js')
+      fredProject('applied4.js'),
     ];
   }
 
@@ -60,7 +60,7 @@ const glob = jest.fn(async function mockGlob(globString) {
       fredProject('prettierignored1.js'),
       fredProject('prettierignored2.js'),
       fredProject('prettierignored3.js'),
-      fredProject('applied4.js')
+      fredProject('applied4.js'),
     ];
   }
 
@@ -68,20 +68,20 @@ const glob = jest.fn(async function mockGlob(globString) {
     return [
       barneyProject('no-ignore/1.js'),
       barneyProject('no-ignore/2.js'),
-      barneyProject('no-ignore/3.js')
+      barneyProject('no-ignore/3.js'),
     ];
   }
 
   if (globString.includes('eslint-config-error')) {
     return [
       fredProject('eslint-config-error/1.js'),
-      fredProject('eslint-config-error/2.js')
+      fredProject('eslint-config-error/2.js'),
     ];
   }
 
   throw new Error(
     `Your test globString: "${globString}"` +
-      " doesn't have associated mock data."
+      " doesn't have associated mock data.",
   );
 });
 

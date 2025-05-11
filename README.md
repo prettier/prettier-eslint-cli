@@ -15,7 +15,6 @@ CLI for [`prettier-eslint`][prettier-eslint]
 [![Donate][donate-badge]][donate]
 [![Code of Conduct][coc-badge]][coc]
 [![Roadmap][roadmap-badge]][roadmap]
-[![Examples][examples-badge]][examples]
 
 [![Watch on GitHub][github-watch-badge]][github-watch]
 [![Star on GitHub][github-star-badge]][github-star]
@@ -314,17 +313,15 @@ MIT
 [downloads-badge]: https://img.shields.io/npm/dm/prettier-eslint-cli.svg?style=flat-square
 [npm-stat]: http://npm-stat.com/charts.html?package=prettier-eslint-cli&from=2016-04-01
 [license-badge]: https://img.shields.io/npm/l/prettier-eslint-cli.svg?style=flat-square
-[license]: https://github.com/prettier/prettier-eslint-cli/blob/master/other/LICENSE
+[license]: https://github.com/prettier/prettier-eslint-cli/blob/master/LICENSE
 [prs-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
 [prs]: http://makeapullrequest.com
 [donate-badge]: https://img.shields.io/badge/$-support-green.svg?style=flat-square
 [donate]: https://www.paypal.me/zimme
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
-[coc]: https://github.com/prettier/prettier-eslint-cli/blob/master/other/CODE_OF_CONDUCT.md
+[coc]: https://github.com/prettier/prettier-eslint-cli/blob/master/CODE_OF_CONDUCT.md
 [roadmap-badge]: https://img.shields.io/badge/%F0%9F%93%94-roadmap-CD9523.svg?style=flat-square
-[roadmap]: https://github.com/prettier/prettier-eslint-cli/blob/master/other/ROADMAP.md
-[examples-badge]: https://img.shields.io/badge/%F0%9F%92%A1-examples-8C8E93.svg?style=flat-square
-[examples]: https://github.com/prettier/prettier-eslint-cli/blob/master/other/EXAMPLES.md
+[roadmap]: https://github.com/prettier/prettier-eslint-cli/blob/master/ROADMAP.md
 [github-watch-badge]: https://img.shields.io/github/watchers/prettier/prettier-eslint-cli.svg?style=social
 [github-watch]: https://github.com/prettier/prettier-eslint-cli/watchers
 [github-star-badge]: https://img.shields.io/github/stars/prettier/prettier-eslint-cli.svg?style=social

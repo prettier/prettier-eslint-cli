@@ -4,13 +4,13 @@ const config = {
       '@babel/preset-env',
       {
         targets: {
-          node: '12'
+          node: '18',
         },
         useBuiltIns: 'usage',
-        corejs: 3
-      }
-    ]
-  ]
+        corejs: 3,
+      },
+    ],
+  ],
 };
 
 module.exports = config;

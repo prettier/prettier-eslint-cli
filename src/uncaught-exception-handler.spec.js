@@ -1,4 +1,5 @@
 import getLoggerMock from 'loglevel-colored-level-prefix';
+
 import onUncaughtException from './uncaught-exception-handler';
 
 jest.mock('loglevel-colored-level-prefix', () => {
@@ -16,7 +17,7 @@ jest.mock('loglevel-colored-level-prefix', () => {
       debug: jest.fn(),
       info: jest.fn(),
       warn: jest.fn(),
-      error: jest.fn()
+      error: jest.fn(),
     });
     return logger;
   }
@@ -52,7 +53,7 @@ test('re-throws the given error', () => {
 function runWithCatch(...args) {
   try {
     onUncaughtException(...args);
-  } catch (e) {
+  } catch {
     // ignore
   }
 }

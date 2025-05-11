@@ -1,7 +1,8 @@
 // @ts-check
 
 /**
- * @type {import('@jest/types').Config.InitialOptions}
+ * @type {Config}
+ * @import { Config } from 'jest'
  */
 module.exports = {
   testEnvironment: 'node',
@@ -14,7 +15,7 @@ module.exports = {
       branches: 100,
       functions: 100,
       lines: 100,
-      statements: 100
-    }
-  }
+      statements: 100,
+    },
+  },
 };

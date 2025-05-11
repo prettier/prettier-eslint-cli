@@ -29,14 +29,14 @@ function onUncaughtException(err) {
     oneLine`
       4. Post an issue with a link to your reproduction to the issues
       on GitHub: https://github.com/prettier/prettier-eslint-cli/issues/new
-    `
+    `,
   ].join('\n  ');
   logger.error(
     oneLine`
       There has been an unknown error when running the prettier-eslint CLI.
       If it's unclear to you what went wrong, then try this:
     `,
-    `\n  ${resolutionSteps}`
+    `\n  ${resolutionSteps}`,
   );
   throw err;
 }

@@ -1,17 +1,17 @@
 /* eslint no-console:0 */
-import path from 'path';
-import fs from 'fs';
-import spawn from 'spawn-command';
+import fs from 'node:fs';
+import path from 'node:path';
+
+import { oneLine, stripIndent } from 'common-tags';
 import pify from 'pify';
-import { oneLine } from 'common-tags';
-import stripIndent from 'strip-indent';
+import spawn from 'spawn-command';
 
 const pWriteFile = pify(fs.writeFile);
 const pReadFile = pify(fs.readFile);
 const pUnlink = pify(fs.unlink);
 
 // this is a bit of a long running test...
-jest.setTimeout(20000);
+jest.setTimeout(20_000);
 
 const PRETTIER_ESLINT_PATH = require.resolve('../../src/index');
 const BABEL_BIN_PATH = require.resolve('@babel/node/bin/babel-node');
@@ -27,14 +27,14 @@ test('help outputs usage information and flags', async () => {
   expect(stdout).toContain('Valid options:\n');
   // just a sanity check.
   // If it's ever longer than 2000 then we've probably got a problem...
-  // eslint-disable-next-line jest/no-conditional-in-test
+
   if (stdout.length > 7200) {
     console.error(stdout);
     throw new Error(
       oneLine`
         We probably have a problem.
         The --help output is probably too long (${stdout.length})...
-      `
+      `,
     );
   }
 });
@@ -43,7 +43,7 @@ test('formats files and outputs to stdout', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    'test/fixtures/stdout*.js --no-eslint-ignore --no-prettier-ignore'
+    'test/fixtures/stdout*.js --no-eslint-ignore --no-prettier-ignore',
   );
   expect(stdout).toContain(
     stripIndent(
@@ -55,8 +55,8 @@ test('formats files and outputs to stdout', async () => {
         function bazzy(something) {
           return baz(stuff(something));
         }
-      `
-    ).trim()
+      `,
+    ).trim(),
   );
   expect(stdout).toContain(
     stripIndent(
@@ -66,8 +66,8 @@ test('formats files and outputs to stdout', async () => {
         function foo(thing) {
           return thing;
         }
-      `
-    ).trim()
+      `,
+    ).trim(),
   );
 });
 
@@ -75,7 +75,7 @@ test('handles --eslint-config-path', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    `test/fixtures/stdout1.js --no-eslint-ignore --no-prettier-ignore --eslint-config-path ${__dirname}/../override-config.js`
+    `test/fixtures/stdout1.js --no-eslint-ignore --no-prettier-ignore --eslint-config-path ${__dirname}/../override-config.js`,
   );
   expect(stdout).toContain(
     stripIndent(
@@ -87,8 +87,8 @@ test('handles --eslint-config-path', async () => {
         function bazzy(something) {
           return baz(stuff(something));
         }
-      `
-    ).trim()
+      `,
+    ).trim(),
   );
 });
 
@@ -96,7 +96,7 @@ test('list different files with the --list-different option', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    'test/fixtures/stdout*.js --list-different --no-eslint-ignore --no-prettier-ignore'
+    'test/fixtures/stdout*.js --list-different --no-eslint-ignore --no-prettier-ignore',
   );
   expect(stdout).toContain('test/fixtures/stdout1.js');
   expect(stdout).toContain('test/fixtures/stdout2.js');
@@ -105,7 +105,7 @@ test('list different files with the --list-different option', async () => {
 test('accepts stdin of code', async () => {
   const stdin = 'echo "console.log(   window.baz , typeof [] )  "';
   const stdout = await runPrettierESLintCLI('--stdin --parser babel', stdin);
-  expect(stdout).toEqual('console.log(window.baz, typeof []);\n');
+  expect(stdout).toEqual('console.log(globalThis.baz, typeof []);\n');
 });
 
 const writeCommand =
@@ -121,21 +121,21 @@ test(`prettier-eslint ${writeCommand}`, async () => {
     const example2 = 'function example2(thing){return thing;};;;;;;;;;';
     await Promise.all([
       pWriteFile(example1Path, example1),
-      pWriteFile(example2Path, example2)
+      pWriteFile(example2Path, example2),
     ]);
     const stdout = await runPrettierESLintCLI(writeCommand);
     expect(stdout).toMatchSnapshot(`stdout: prettier-eslint ${writeCommand}`);
     const [example1Result, example2Result] = await Promise.all([
       pReadFile(example1Path, 'utf8'),
-      pReadFile(example2Path, 'utf8')
+      pReadFile(example2Path, 'utf8'),
     ]);
     expect({ example1Result, example2Result }).toMatchSnapshot(
-      `file contents: prettier-eslint ${writeCommand}`
+      `file contents: prettier-eslint ${writeCommand}`,
     );
   } finally {
     try {
       await Promise.all([pUnlink(example1Path), pUnlink(example2Path)]);
-    } catch (error) {
+    } catch {
       // ignore error
     }
   }
@@ -146,9 +146,9 @@ function testOutput(command) {
     try {
       const stdout = await runPrettierESLintCLI(command);
       expect(stdout).toMatchSnapshot(`stdout: ${command}`);
-    } catch (stderr) {
+    } catch (error) {
       // eslint-disable-next-line jest/no-conditional-expect
-      expect(stderr).toMatchSnapshot(`stderr: ${command}`);
+      expect(error).toMatchSnapshot(`stderr: ${command}`);
     }
   });
 }
@@ -197,8 +197,8 @@ function runPrettierESLintCLI(args = '', stdin = '') {
 }
 
 function relativeizePath(stringWithAbsolutePaths) {
-  return stringWithAbsolutePaths.replace(
+  return stringWithAbsolutePaths.replaceAll(
     new RegExp(path.resolve(__dirname, '../../'), 'g'),
-    '<projectRootDir>'
+    '<projectRootDir>',
   );
 }

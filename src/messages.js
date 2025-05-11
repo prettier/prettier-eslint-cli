@@ -2,19 +2,19 @@ import MessageFormat from '@messageformat/core';
 
 const mf = new MessageFormat('en');
 
-export { success, failure, unchanged };
+export { failure, success, unchanged };
 
 function success(data) {
   const files = '{count, plural, one{file} other{files}}';
   return mf.compile(
-    `{success} formatting {countString} ${files} with prettier-eslint`
+    `{success} formatting {countString} ${files} with prettier-eslint`,
   )(data);
 }
 
 function failure(data) {
   const files = '{count, plural, one{file} other{files}}';
   return mf.compile(
-    `{failure} formatting {countString} ${files} with prettier-eslint`
+    `{failure} formatting {countString} ${files} with prettier-eslint`,
   )(data);
 }
 
