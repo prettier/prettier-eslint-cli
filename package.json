@@ -1,35 +1,39 @@
 {
   "name": "prettier-eslint-cli",
   "version": "8.0.1",
+  "type": "commonjs",
   "description": "CLI for prettier-eslint",
-  "main": "dist/no-main.js",
-  "engines": {
-    "node": ">=16.10.0"
-  },
-  "bin": {
-    "prettier-eslint": "dist/index.js"
-  },
-  "scripts": {
-    "build": "nps build",
-    "lint": "nps lint",
-    "prepare": "patch-package && simple-git-hooks",
-    "prerelease": "nps build",
-    "release": "clean-pkg-json && changeset publish",
-    "version": "changeset version",
-    "postversion": "npm start test.update",
-    "start": "nps",
-    "test": "nps test"
-  },
-  "files": [
-    "dist"
-  ],
-  "keywords": [],
+  "repository": "git+https://github.com/prettier/prettier-eslint-cli.git",
+  "homepage": "https://github.com/prettier/prettier-eslint-cli#readme",
   "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
   "maintainers": [
     "Simon Fridlund <simon@fridlund.email>",
     "JounQin (https://www.1stG.me) <admin@1stg.me>"
   ],
   "license": "MIT",
+  "packageManager": "yarn@4.9.1",
+  "engines": {
+    "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+  },
+  "bin": {
+    "prettier-eslint": "dist/index.js"
+  },
+  "main": "dist/no-main.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [],
+  "scripts": {
+    "build": "nps build",
+    "format": "nps format",
+    "lint": "nps lint",
+    "prepare": "patch-package && simple-git-hooks && yarn-berry-deduplicate || exit 0",
+    "prerelease": "nps build",
+    "release": "clean-pkg-json && changeset publish",
+    "start": "nps",
+    "test": "nps test",
+    "version": "changeset version && yarn --no-immutable && npm start test.update"
+  },
   "peerDependencies": {
     "prettier-eslint": "*"
   },
@@ -39,63 +43,57 @@
     }
   },
   "dependencies": {
-    "@messageformat/core": "^3.2.0",
-    "@prettier/eslint": "npm:prettier-eslint@^16.1.0",
-    "arrify": "^2.0.1",
+    "@esm2cjs/indent-string": "^5.0.0",
+    "@messageformat/core": "^3.4.0",
+    "@prettier/eslint": "npm:prettier-eslint@^17.0.0-alpha.0",
+    "arrify": "^3.0.0",
     "boolify": "^1.0.1",
-    "camelcase-keys": "^9.1.0",
-    "chalk": "^4.1.2",
+    "camelcase-keys": "^9.1.3",
+    "chalk-cjs": "^5.2.0",
     "common-tags": "^1.8.2",
-    "core-js": "^3.33.0",
-    "eslint": "^8.51.0",
+    "core-js": "^3.42.0",
+    "eslint": "^9.26.0",
     "find-up": "^5.0.0",
-    "get-stdin": "^8.0.0",
+    "get-stdin": "^9.0.0",
     "glob": "^10.3.10",
-    "ignore": "^5.2.4",
-    "indent-string": "^4.0.0",
+    "ignore": "^7.0.4",
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
-    "rxjs": "^7.8.1",
+    "rxjs": "^7.8.2",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.23.0",
-    "@babel/core": "^7.23.2",
-    "@babel/node": "^7.22.19",
-    "@babel/preset-env": "^7.23.2",
-    "@changesets/changelog-github": "^0.4.8",
-    "@changesets/cli": "^2.26.2",
+    "@1stg/eslint-config": "^9.0.6",
+    "@1stg/prettier-config": "^5.2.0",
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.1",
+    "@babel/node": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "@changesets/changelog-github": "^0.5.1",
+    "@changesets/cli": "^2.29.3",
+    "@types/jest": "^29.5.14",
     "all-contributors-cli": "^6.26.1",
-    "clean-pkg-json": "^1.2.0",
-    "eslint-config-kentcdodds": "^20.5.0",
-    "eslint-plugin-node-dependencies": "^0.11.0",
+    "clean-pkg-json": "^1.3.0",
+    "eslint-plugin-jest": "^28.11.0",
+    "eslint-plugin-node-dependencies": "^1.0.1",
     "jest": "^29.7.0",
-    "lint-staged": "^14.0.1",
+    "nano-staged": "^0.8.0",
     "nps": "^5.10.0",
     "nps-utils": "^1.7.0",
     "patch-package": "^8.0.0",
     "pify": "^5.0.0",
-    "rimraf": "^5.0.5",
-    "simple-git-hooks": "^2.9.0",
-    "spawn-command": "0.0.2-1",
-    "strip-indent": "^3.0.0"
+    "prettier": "^3.5.3",
+    "rimraf": "^6.0.1",
+    "simple-git-hooks": "^2.13.0",
+    "spawn-command": "1.0.0",
+    "typescript-eslint": "^8.32.0",
+    "yarn-berry-deduplicate": "^6.1.3"
   },
-  "lint-staged": {
-    "*.+(js|json|md|yml)": "node ./dist/index --write"
+  "nano-staged": {
+    "*.+(js|json|md|mjs|yml)": "node ./dist --write"
   },
-  "prettier": {
-    "arrowParens": "avoid",
-    "singleQuote": true
-  },
+  "prettier": "@1stg/prettier-config/semi",
   "simple-git-hooks": {
-    "pre-commit": "npx lint-staged && npm start validate"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/prettier/prettier-eslint-cli.git"
-  },
-  "bugs": {
-    "url": "https://github.com/prettier/prettier-eslint-cli/issues"
-  },
-  "homepage": "https://github.com/prettier/prettier-eslint-cli#readme"
+    "pre-commit": "yarn nano-staged && yarn start validate"
+  }
 }

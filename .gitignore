@@ -1,13 +1,10 @@
-node_modules
 coverage
 dist
-.opt-in
-.opt-out
+node_modules
 .DS_Store
-.eslintcache
+.*cache
 *.log
-
-# these cause more harm than good
-# when working with contributors
-package-lock.json
-yarn.lock
+.*cache
+.yarn/*
+!.yarn/releases
+!.yarn/plugins

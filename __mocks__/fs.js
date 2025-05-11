@@ -6,23 +6,21 @@ const writeFile = jest.fn((filePath, contents, callback) => {
 });
 
 const readFileSync = jest.fn(filePath => {
-  if (filePath.indexOf('.eslintrc') !== -1) {
+  if (filePath.includes('.eslintrc') || filePath.includes('eslint.config.')) {
     return '{ "rules": { "semi": "error" } }';
   }
 
-  if (filePath.indexOf('eslintignore') >= 0) {
+  if (filePath.includes('eslintignore')) {
     return '**/*eslintignored*\n';
   }
 
-  if (filePath.indexOf('prettierignore') >= 0) {
+  if (filePath.includes('prettierignore')) {
     return '**/*prettierignored*\n';
-  } else {
-    throw new Error('readFileSync mock does not yet handle ', filePath);
   }
+
+  throw new Error(`readFileSync mock does not yet handle ${filePath}`);
 });
 
-const readdirSync = jest.fn(() => {
-  return [];
-});
+const readdirSync = jest.fn(() => []);
 
 module.exports = { readFile, writeFile, readFileSync, readdirSync };
