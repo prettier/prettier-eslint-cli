@@ -4,5 +4,7 @@
   "initialVersions": {
     "prettier-eslint-cli": "8.0.1"
   },
-  "changesets": []
+  "changesets": [
+    "dry-cobras-fold"
+  ]
 }
