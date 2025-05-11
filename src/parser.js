@@ -1,8 +1,19 @@
 import path from 'node:path';
 
-import arrify from 'arrify';
 import { oneLine, stripIndent } from 'common-tags';
 import yargs from 'yargs';
+
+const arrify = value => {
+  if (value == null) {
+    return [];
+  }
+
+  if (Array.isArray(value)) {
+    return value;
+  }
+
+  return [value];
+};
 
 const parser = yargs
   .usage(

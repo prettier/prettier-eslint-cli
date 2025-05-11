@@ -3789,13 +3789,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"arrify@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "arrify@npm:3.0.0"
-  checksum: 10c0/2e26601b8486f29780f1f70f7ac05a226755814c2a3ab42e196748f650af1dc310cd575a11dd4b9841c70fd7460b2dd2b8fe6fb7a3375878e2660706efafa58e
-  languageName: node
-  linkType: hard
-
 "async-function@npm:^1.0.0":
   version: 1.0.0
   resolution: "async-function@npm:1.0.0"
@@ -4012,13 +4005,6 @@ __metadata:
     raw-body: "npm:^3.0.0"
     type-is: "npm:^2.0.0"
   checksum: 10c0/a9ded39e71ac9668e2211afa72e82ff86cc5ef94de1250b7d1ba9cc299e4150408aaa5f1e8b03dd4578472a3ce6d1caa2a23b27a6c18e526e48b4595174c116c
-  languageName: node
-  linkType: hard
-
-"boolify@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "boolify@npm:1.0.1"
-  checksum: 10c0/255b28d587854f5c47073c68d98c1c5b009a6bdcdc163f2793deb8da927ce43e7b8a89b955414c22d0192979f97ece80e953336606cd4de214ffaec19a4e39ed
   languageName: node
   linkType: hard
 
@@ -6669,7 +6655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-stdin@npm:9.0.0, get-stdin@npm:^9.0.0":
+"get-stdin@npm:9.0.0":
   version: 9.0.0
   resolution: "get-stdin@npm:9.0.0"
   checksum: 10c0/7ef2edc0c81a0644ca9f051aad8a96ae9373d901485abafaabe59fd347a1c378689d8a3d8825fb3067415d1d09dfcaa43cb9b9516ecac6b74b3138b65a8ccc6b
@@ -6687,6 +6673,13 @@ __metadata:
   version: 5.0.1
   resolution: "get-stdin@npm:5.0.1"
   checksum: 10c0/309f933f08a4d6783681674451027802299124e596324cd628c5e5138bbc5de843bbaa345a8ce0fc72304869f9de3b50086407aca551e292b13f7cb02351479e
+  languageName: node
+  linkType: hard
+
+"get-stdin@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "get-stdin@npm:8.0.0"
+  checksum: 10c0/b71b72b83928221052f713b3b6247ebf1ceaeb4ef76937778557537fd51ad3f586c9e6a7476865022d9394b39b74eed1dc7514052fa74d80625276253571b76f
   languageName: node
   linkType: hard
 
@@ -10688,8 +10681,6 @@ __metadata:
     "@prettier/eslint": "npm:prettier-eslint@^17.0.0-alpha.0"
     "@types/jest": "npm:^29.5.14"
     all-contributors-cli: "npm:^6.26.1"
-    arrify: "npm:^3.0.0"
-    boolify: "npm:^1.0.1"
     camelcase-keys: "npm:^9.1.3"
     chalk-cjs: "npm:^5.2.0"
     clean-pkg-json: "npm:^1.3.0"
@@ -10699,7 +10690,7 @@ __metadata:
     eslint-plugin-jest: "npm:^28.11.0"
     eslint-plugin-node-dependencies: "npm:^1.0.1"
     find-up: "npm:^5.0.0"
-    get-stdin: "npm:^9.0.0"
+    get-stdin: "npm:^8.0.0"
     glob: "npm:^10.3.10"
     ignore: "npm:^7.0.4"
     jest: "npm:^29.7.0"
