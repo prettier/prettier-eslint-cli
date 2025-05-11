@@ -17,7 +17,7 @@ import format from './prettier-eslint';
 
 const INDENT_COUNT = 4;
 
-const LINE_SEPARATOR_REGEX = /(\r|\r?\n)/;
+const LINE_SEPARATOR_REGEX = /\r|\r?\n/;
 
 const rxReadFile = bindNodeCallback(fs.readFile);
 const rxWriteFile = bindNodeCallback(fs.writeFile);

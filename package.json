@@ -22,17 +22,22 @@
   "files": [
     "dist"
   ],
-  "keywords": [],
+  "keywords": [
+    "eslint",
+    "formatter",
+    "prettier",
+    "prettier-eslint",
+    "prettier-eslint-cli"
+  ],
   "scripts": {
     "build": "nps build",
     "format": "nps format",
     "lint": "nps lint",
     "prepare": "patch-package && simple-git-hooks && yarn-berry-deduplicate || exit 0",
-    "prerelease": "nps build",
-    "release": "clean-pkg-json && changeset publish",
+    "release": "nps build && clean-pkg-json && changeset publish",
     "start": "nps",
     "test": "nps test",
-    "version": "changeset version && yarn --no-immutable && npm start test.update"
+    "version": "changeset version && yarn --no-immutable && nps test.update"
   },
   "peerDependencies": {
     "prettier-eslint": "*"
