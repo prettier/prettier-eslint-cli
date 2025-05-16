@@ -105,7 +105,7 @@ test('list different files with the --list-different option', async () => {
 test('accepts stdin of code', async () => {
   const stdin = 'echo "console.log(   window.baz , typeof [] )  "';
   const stdout = await runPrettierESLintCLI('--stdin --parser babel', stdin);
-  expect(stdout).toEqual('console.log(globalThis.baz, typeof []);\n');
+  expect(stdout).toEqual('console.log(window.baz, typeof []);\n');
 });
 
 const writeCommand =
