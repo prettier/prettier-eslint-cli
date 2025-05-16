@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`prettier-eslint --version: stdout: --version 1`] = `
-"9.0.0-alpha.0
+"9.0.0-alpha.1
 "
 `;
 
