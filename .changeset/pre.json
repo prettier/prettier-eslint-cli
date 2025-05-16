@@ -5,6 +5,7 @@
     "prettier-eslint-cli": "8.0.1"
   },
   "changesets": [
-    "dry-cobras-fold"
+    "dry-cobras-fold",
+    "wet-forks-sneeze"
   ]
 }

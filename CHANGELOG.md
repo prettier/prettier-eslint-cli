@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 9.0.0-alpha.1
+
+### Patch Changes
+
+- [#463](https://github.com/prettier/prettier-eslint-cli/pull/463) [`568521e`](https://github.com/prettier/prettier-eslint-cli/commit/568521e25ea41056338d1772dda8bcb4029e682d) Thanks [@JounQin](https://github.com/JounQin)! - chore: bump prettier-eslint v17.0.0-alpha.1
+
 ## 9.0.0-alpha.0
 
 ### Major Changes
