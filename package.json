@@ -51,7 +51,7 @@
   "dependencies": {
     "@esm2cjs/indent-string": "^5.0.0",
     "@messageformat/core": "^3.4.0",
-    "@prettier/eslint": "npm:prettier-eslint@^17.0.0-alpha.0",
+    "@prettier/eslint": "npm:prettier-eslint@^17.0.0-alpha.1",
     "camelcase-keys": "^9.1.3",
     "chalk-cjs": "^5.2.0",
     "common-tags": "^1.8.2",
@@ -59,7 +59,7 @@
     "eslint": "^9.26.0",
     "find-up": "^5.0.0",
     "get-stdin": "^8.0.0",
-    "glob": "^10.3.10",
+    "glob": "^10.4.5",
     "ignore": "^7.0.4",
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
@@ -74,7 +74,7 @@
     "@babel/node": "^7.27.1",
     "@babel/preset-env": "^7.27.2",
     "@changesets/changelog-github": "^0.5.1",
-    "@changesets/cli": "^2.29.3",
+    "@changesets/cli": "^2.29.4",
     "@types/jest": "^29.5.14",
     "@unts/patch-package": "^8.1.1",
     "all-contributors-cli": "^6.26.1",
@@ -90,7 +90,7 @@
     "rimraf": "^6.0.1",
     "simple-git-hooks": "^2.13.0",
     "spawn-command": "1.0.0",
-    "typescript-eslint": "^8.32.0",
+    "typescript-eslint": "^8.32.1",
     "yarn-berry-deduplicate": "^6.1.3"
   },
   "nano-staged": {
