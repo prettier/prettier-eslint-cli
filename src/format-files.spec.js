@@ -307,7 +307,9 @@ test('should handle TTY stdin', async () => {
     expect(mockText).not.toHaveBeenCalled();
 
     expect(formatMock).toHaveBeenCalledTimes(1);
-    expect(formatMock).toHaveBeenCalledWith(expect.objectContaining({ text: '' }));
+    expect(formatMock).toHaveBeenCalledWith(
+      expect.objectContaining({ text: '' }),
+    );
 
     expect(process.stdout.write).toHaveBeenCalledTimes(1);
     expect(process.stdout.write).toHaveBeenCalledWith('MOCK_OUTPUT for stdin');
@@ -330,9 +332,11 @@ test('should handle non-TTY stdin', async () => {
     expect(mockText).toHaveBeenCalledWith(process.stdin);
 
     expect(formatMock).toHaveBeenCalledTimes(1);
-    expect(formatMock).toHaveBeenCalledWith(expect.objectContaining({
-      text: stdinContent.trim()
-    }));
+    expect(formatMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        text: stdinContent.trim(),
+      }),
+    );
 
     expect(process.stdout.write).toHaveBeenCalledTimes(1);
     expect(process.stdout.write).toHaveBeenCalledWith('MOCK_OUTPUT for stdin');
