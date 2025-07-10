@@ -92,17 +92,8 @@ async function formatStdin(prettierESLintOptions) {
   let stdinValue = '';
 
   if (!process.stdin.isTTY) {
-    try {
-      const stdin = await text(process.stdin);
-      stdinValue = stdin.trim();
-    } catch (error) {
-      logger.error(
-        'There was a problem reading from stdin',
-        `\n${indentString(error.stack, INDENT_COUNT)}`,
-      );
-      process.exitCode = 1;
-      return '';
-    }
+    const stdin = await text(process.stdin);
+    stdinValue = stdin.trim();
   }
 
   try {
