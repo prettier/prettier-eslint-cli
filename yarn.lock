@@ -6712,13 +6712,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-stdin@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "get-stdin@npm:8.0.0"
-  checksum: 10c0/b71b72b83928221052f713b3b6247ebf1ceaeb4ef76937778557537fd51ad3f586c9e6a7476865022d9394b39b74eed1dc7514052fa74d80625276253571b76f
-  languageName: node
-  linkType: hard
-
 "get-stream@npm:^5.1.0":
   version: 5.2.0
   resolution: "get-stream@npm:5.2.0"
@@ -10682,7 +10675,6 @@ __metadata:
     eslint-plugin-jest: "npm:^28.11.0"
     eslint-plugin-node-dependencies: "npm:^1.0.1"
     find-up: "npm:^5.0.0"
-    get-stdin: "npm:^8.0.0"
     glob: "npm:^10.4.5"
     ignore: "npm:^7.0.4"
     jest: "npm:^29.7.0"

@@ -1,10 +1,10 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { text } from 'node:stream/consumers';
 
 import indentString from '@esm2cjs/indent-string';
 import chalk from 'chalk-cjs';
 import findUp from 'find-up';
-import getStdin from 'get-stdin';
 import { glob } from 'glob';
 import nodeIgnore from 'ignore';
 import memoize from 'lodash.memoize';
@@ -89,7 +89,7 @@ function formatFilesFromArgv({
 }
 
 async function formatStdin(prettierESLintOptions) {
-  const stdin = await getStdin();
+  const stdin = await text(process.stdin);
   const stdinValue = stdin.trim();
   try {
     const formatted = await format({
