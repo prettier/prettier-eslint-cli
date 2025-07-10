@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 9.0.0-alpha.2
+
+### Patch Changes
+
+- [#465](https://github.com/prettier/prettier-eslint-cli/pull/465) [`9fb86bc`](https://github.com/prettier/prettier-eslint-cli/commit/9fb86bc68266c084af8116488120d62de0cef23d) Thanks [@outslept](https://github.com/outslept)! - chore: replace `get-stdin` with node api, removed unused `camelcase-keys`
+
 ## 9.0.0-alpha.1
 
 ### Patch Changes
