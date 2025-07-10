@@ -91,9 +91,7 @@ function formatFilesFromArgv({
 async function formatStdin(prettierESLintOptions) {
   let stdinValue = '';
 
-  if (process.stdin.isTTY) {
-    stdinValue = '';
-  } else {
+  if (!process.stdin.isTTY) {
     try {
       const stdin = await text(process.stdin);
       stdinValue = stdin.trim();
