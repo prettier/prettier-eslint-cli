@@ -21,6 +21,7 @@ jest.mock('node:stream/consumers', () => ({
 
 beforeEach(() => {
   process.stdout.write = jest.fn();
+  process.stdin.isTTY = undefined;
   console.error = jest.fn();
   console.log = jest.fn();
   formatMock.mockClear();
@@ -293,6 +294,50 @@ test('will not blow up if an .eslintignore or .prettierignore cannot be found', 
     ).resolves.not.toThrow();
   } finally {
     findUpMock.sync = originalSync;
+  }
+});
+
+test('should handle TTY stdin', async () => {
+  const originalIsTTY = process.stdin.isTTY;
+  process.stdin.isTTY = true;
+
+  try {
+    await formatFiles({ stdin: true });
+
+    expect(mockText).not.toHaveBeenCalled();
+
+    expect(formatMock).toHaveBeenCalledTimes(1);
+    expect(formatMock).toHaveBeenCalledWith(expect.objectContaining({ text: '' }));
+
+    expect(process.stdout.write).toHaveBeenCalledTimes(1);
+    expect(process.stdout.write).toHaveBeenCalledWith('MOCK_OUTPUT for stdin');
+  } finally {
+    process.stdin.isTTY = originalIsTTY;
+  }
+});
+
+test('should handle non-TTY stdin', async () => {
+  const originalIsTTY = process.stdin.isTTY;
+  process.stdin.isTTY = false;
+
+  const stdinContent = '  var [ foo, {  bar } ] = window.APP ;';
+  mockText.mockResolvedValue(stdinContent);
+
+  try {
+    await formatFiles({ stdin: true });
+
+    expect(mockText).toHaveBeenCalledTimes(1);
+    expect(mockText).toHaveBeenCalledWith(process.stdin);
+
+    expect(formatMock).toHaveBeenCalledTimes(1);
+    expect(formatMock).toHaveBeenCalledWith(expect.objectContaining({
+      text: stdinContent.trim()
+    }));
+
+    expect(process.stdout.write).toHaveBeenCalledTimes(1);
+    expect(process.stdout.write).toHaveBeenCalledWith('MOCK_OUTPUT for stdin');
+  } finally {
+    process.stdin.isTTY = originalIsTTY;
   }
 });
 
