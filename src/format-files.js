@@ -89,8 +89,24 @@ function formatFilesFromArgv({
 }
 
 async function formatStdin(prettierESLintOptions) {
-  const stdin = await text(process.stdin);
-  const stdinValue = stdin.trim();
+  let stdinValue = '';
+
+  if (process.stdin.isTTY) {
+    stdinValue = '';
+  } else {
+    try {
+      const stdin = await text(process.stdin);
+      stdinValue = stdin.trim();
+    } catch (error) {
+      logger.error(
+        'There was a problem reading from stdin',
+        `\n${indentString(error.stack, INDENT_COUNT)}`,
+      );
+      process.exitCode = 1;
+      return '';
+    }
+  }
+
   try {
     const formatted = await format({
       text: stdinValue,
