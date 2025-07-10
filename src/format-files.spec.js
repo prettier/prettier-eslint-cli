@@ -1,8 +1,8 @@
 // eslint-disable-next-line unicorn/prefer-node-protocol -- mocked
 import mockFs from 'fs';
+import { text as mockText } from 'node:stream/consumers';
 
 import findUpMock from 'find-up';
-import mockGetStdin from 'get-stdin';
 import { glob as globMock } from 'glob';
 import getLogger from 'loglevel-colored-level-prefix';
 
@@ -14,13 +14,20 @@ jest.mock('fs');
 // !NOTE: this is a workaround to also mock `node:fs`
 jest.mock('node:fs', () => mockFs);
 
+// Mock stream consumers
+jest.mock('node:stream/consumers', () => ({
+  text: jest.fn(),
+}));
+
 beforeEach(() => {
   process.stdout.write = jest.fn();
+  process.stdin.isTTY = undefined;
   console.error = jest.fn();
   console.log = jest.fn();
   formatMock.mockClear();
   mockFs.writeFile.mockClear();
   mockFs.readFile.mockClear();
+  mockText.mockClear();
 });
 
 afterEach(() => {
@@ -66,11 +73,13 @@ test('glob call excludes an ignore of node_modules', async () => {
 });
 
 test('should accept stdin', async () => {
-  mockGetStdin.stdin = '  var [ foo, {  bar } ] = window.APP ;';
+  const stdinContent = '  var [ foo, {  bar } ] = window.APP ;';
+  mockText.mockResolvedValue(stdinContent);
+
   await formatFiles({ stdin: true });
   expect(formatMock).toHaveBeenCalledTimes(1);
   // the trim is part of the test
-  const text = mockGetStdin.stdin.trim();
+  const text = stdinContent.trim();
   expect(formatMock).toHaveBeenCalledWith(expect.objectContaining({ text }));
   expect(process.stdout.write).toHaveBeenCalledTimes(1);
   expect(process.stdout.write).toHaveBeenCalledWith('MOCK_OUTPUT for stdin');
@@ -83,7 +92,7 @@ test('will write to files if that is specified', async () => {
 });
 
 test('handles stdin errors gracefully', async () => {
-  mockGetStdin.stdin = 'MOCK_SYNTAX_ERROR';
+  mockText.mockResolvedValue('MOCK_SYNTAX_ERROR');
   await formatFiles({ stdin: true });
   expect(console.error).toHaveBeenCalledTimes(1);
 });
@@ -285,6 +294,54 @@ test('will not blow up if an .eslintignore or .prettierignore cannot be found', 
     ).resolves.not.toThrow();
   } finally {
     findUpMock.sync = originalSync;
+  }
+});
+
+test('should handle TTY stdin', async () => {
+  const originalIsTTY = process.stdin.isTTY;
+  process.stdin.isTTY = true;
+
+  try {
+    await formatFiles({ stdin: true });
+
+    expect(mockText).not.toHaveBeenCalled();
+
+    expect(formatMock).toHaveBeenCalledTimes(1);
+    expect(formatMock).toHaveBeenCalledWith(
+      expect.objectContaining({ text: '' }),
+    );
+
+    expect(process.stdout.write).toHaveBeenCalledTimes(1);
+    expect(process.stdout.write).toHaveBeenCalledWith('MOCK_OUTPUT for stdin');
+  } finally {
+    process.stdin.isTTY = originalIsTTY;
+  }
+});
+
+test('should handle non-TTY stdin', async () => {
+  const originalIsTTY = process.stdin.isTTY;
+  process.stdin.isTTY = false;
+
+  const stdinContent = '  var [ foo, {  bar } ] = window.APP ;';
+  mockText.mockResolvedValue(stdinContent);
+
+  try {
+    await formatFiles({ stdin: true });
+
+    expect(mockText).toHaveBeenCalledTimes(1);
+    expect(mockText).toHaveBeenCalledWith(process.stdin);
+
+    expect(formatMock).toHaveBeenCalledTimes(1);
+    expect(formatMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        text: stdinContent.trim(),
+      }),
+    );
+
+    expect(process.stdout.write).toHaveBeenCalledTimes(1);
+    expect(process.stdout.write).toHaveBeenCalledWith('MOCK_OUTPUT for stdin');
+  } finally {
+    process.stdin.isTTY = originalIsTTY;
   }
 });
 

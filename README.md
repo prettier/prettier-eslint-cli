@@ -287,6 +287,9 @@ Thanks goes to these people ([emoji key][emojis]):
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/dorser"><img src="https://avatars2.githubusercontent.com/u/20969462?v=4?s=100" width="100px;" alt="dorser"/><br /><sub><b>dorser</b></sub></a><br /><a href="https://github.com/prettier/prettier-eslint-cli/commits?author=dorser" title="Code">💻</a> <a href="#maintenance-dorser" title="Maintenance">🚧</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://qwq.cat"><img src="https://avatars2.githubusercontent.com/u/20062482?v=4?s=100" width="100px;" alt="さくら"/><br /><sub><b>さくら</b></sub></a><br /><a href="https://github.com/prettier/prettier-eslint-cli/commits?author=u3u" title="Code">💻</a></td>
     </tr>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/outslept"><img src="https://avatars.githubusercontent.com/u/135520429?v=4?s=100" width="100px;" alt="outslept"/><br /><sub><b>outslept</b></sub></a><br /><a href="https://github.com/prettier/prettier-eslint-cli/commits?author=outslept" title="Code">💻</a></td>
+    </tr>
   </tbody>
 </table>
 

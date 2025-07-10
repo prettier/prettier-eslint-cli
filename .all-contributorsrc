@@ -288,6 +288,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "outslept",
+      "name": "outslept",
+      "avatar_url": "https://avatars.githubusercontent.com/u/135520429?v=4",
+      "profile": "https://github.com/outslept",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "repoType": "github",
