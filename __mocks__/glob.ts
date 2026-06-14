@@ -1,4 +1,6 @@
-const glob = jest.fn(async function mockGlob(globString) {
+const glob = jest.fn(async function mockGlob(
+  globString: string,
+): Promise<string[]> {
   /* eslint complexity:0 */
   if (globString.includes('1')) {
     return [
@@ -85,14 +87,12 @@ const glob = jest.fn(async function mockGlob(globString) {
   );
 });
 
-glob.glob = glob;
+export { glob };
 
-exports.glob = glob;
-
-function fredProject(path) {
-  return `/Users/fredFlintstone/Developer/top-secret/footless-carriage/${path}`;
+function fredProject(filePath: string): string {
+  return `/Users/fredFlintstone/Developer/top-secret/footless-carriage/${filePath}`;
 }
 
-function barneyProject(path) {
-  return `/Users/barneyRubble/Developer/top-secret/tesla/${path}`;
+function barneyProject(filePath: string): string {
+  return `/Users/barneyRubble/Developer/top-secret/tesla/${filePath}`;
 }

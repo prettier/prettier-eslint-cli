@@ -3,7 +3,7 @@ import path from 'node:path';
 import { oneLine, stripIndent } from 'common-tags';
 import yargs from 'yargs';
 
-const arrify = value => {
+const arrify = <T>(value: T | T[] | null | undefined): T[] => {
   if (value == null) {
     return [];
   }
@@ -242,6 +242,6 @@ const parser = yargs
 
 export default parser;
 
-function coercePath(input) {
+function coercePath(input: string): string {
   return path.isAbsolute(input) ? input : path.join(process.cwd(), input);
 }

@@ -5,7 +5,7 @@ const logger = getLogger({ prefix: 'prettier-eslint-cli' });
 
 export default onUncaughtException;
 
-function onUncaughtException(err) {
+function onUncaughtException(err: Error): never {
   const level = logger.getLevel();
   const isTrace = level === 0;
   const traceResolution = oneLine`

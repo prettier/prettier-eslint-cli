@@ -1,10 +1,15 @@
-const getLogger = require('loglevel-colored-level-prefix');
+/* eslint-disable @typescript-eslint/no-require-imports */
+
+import type { Format } from '@prettier/eslint';
+import getLogger from 'loglevel-colored-level-prefix';
 
 const logger = getLogger({ prefix: 'prettier-eslint-cli' });
 
+let format: Format;
+
 try {
   // if `prettier-eslint` is installed by the user manually
-  module.exports = require('prettier-eslint');
+  format = require('prettier-eslint') as Format;
 } catch /* istanbul ignore next */ {
   logger.info('We detected that no `prettier-eslint` is installed.');
   logger.info('We will use our internal fallback one instead.');
@@ -13,5 +18,7 @@ try {
   );
 
   // it is an internal dependency using `prettier-eslint` as fallback
-  module.exports = require('@prettier/eslint');
+  format = require('@prettier/eslint') as Format;
 }
+
+export = format;

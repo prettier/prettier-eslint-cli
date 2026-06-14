@@ -1,0 +1,9 @@
+{
+  "extends": "@1stg/tsconfig/node",
+  "compilerOptions": {
+    "importHelpers": false,
+    "noEmit": true,
+    "types": ["jest", "node"]
+  },
+  "exclude": ["coverage", "dist", "node_modules"]
+}

@@ -1,13 +1,19 @@
 // @ts-check
 
 /**
- * @type {Config}
- * @import { Config } from 'jest'
+ * @import { Config } from 'jest';
  */
-module.exports = {
-  testEnvironment: 'node',
+
+/**
+ * @type {Config}
+ */
+const config = {
+  transform: {
+    '^.+\\.ts$': '@swc/jest',
+  },
+  moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   // TODO: test all the files...
-  // collectCoverageFrom: ['src/**/*.js'],
+  // collectCoverageFrom: ['src/**/*.ts'],
   testPathIgnorePatterns: ['/node_modules/', '/fixtures/', '/dist/'],
   coveragePathIgnorePatterns: ['/node_modules/', '/fixtures/', '/dist/'],
   coverageThreshold: {
@@ -19,3 +25,5 @@ module.exports = {
     },
   },
 };
+
+export default config;

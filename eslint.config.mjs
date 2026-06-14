@@ -9,7 +9,12 @@ export default tseslint.config(
   ...base,
   ...nodeDependencies.configs['flat/recommended'],
   {
-    ignores: ['test/fixtures', '!test/fixtures/paths/node_modules/**/*.js'],
+    ignores: [
+      'coverage',
+      'dist',
+      'test/fixtures',
+      '!test/fixtures/paths/node_modules/**/*.js',
+    ],
   },
   {
     rules: {
@@ -34,17 +39,32 @@ export default tseslint.config(
     },
   },
   {
-    files: ['__mocks__/**/*.js', '**/*.spec.js'],
+    files: ['__mocks__/**/*.ts', '**/*.spec.ts'],
     languageOptions: {
       globals: globals.jest,
     },
     rules: {
+      '@typescript-eslint/no-magic-numbers': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/prefer-promise-reject-errors': 'off',
+      '@typescript-eslint/require-await': 'off',
       'no-magic-numbers': 'off',
       'sonarjs/slow-regex': 'off',
+      'unicorn-x/no-useless-undefined': 'off',
+      '@typescript-eslint/unbound-method': 'off',
     },
   },
   {
-    files: ['src/index.js'],
+    files: ['**/*.d.ts'],
+    rules: {
+      '@typescript-eslint/prefer-function-type': 'off',
+      'no-unused-vars': 'off',
+    },
+  },
+  {
+    files: ['src/index.ts'],
     rules: {
       'n/hashbang': 'off',
     },

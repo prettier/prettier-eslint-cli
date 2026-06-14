@@ -2,7 +2,14 @@
 
 import * as messages from './messages';
 
-const tests = {
+type MessageKey = keyof typeof messages;
+
+interface MessageCase {
+  input: Parameters<(typeof messages)[MessageKey]>[0];
+  output: string;
+}
+
+const tests: Record<MessageKey, MessageCase[]> = {
   success: [
     {
       input: { success: 'success', count: 1, countString: '1String' },
@@ -35,7 +42,7 @@ const tests = {
   ],
 };
 
-for (const messageKey of Object.keys(tests)) {
+for (const messageKey of Object.keys(tests) as MessageKey[]) {
   for (const { input, output } of tests[messageKey]) {
     test(`${messageKey} ${JSON.stringify(input)}`, () => {
       expect(messages[messageKey](input)).toEqual(output);
