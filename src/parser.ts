@@ -15,7 +15,7 @@ const arrify = <T>(value: T | T[] | null | undefined): T[] => {
   return [value];
 };
 
-const parser = yargs
+const parser = yargs()
   .usage(
     stripIndent`
       Usage: $0 <globs>... [--option-1 option-1-value --option-2]

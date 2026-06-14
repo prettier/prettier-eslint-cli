@@ -1,17 +1,18 @@
 import getLoggerMock from 'loglevel-colored-level-prefix';
+import { vi, type Mock } from 'vitest';
 
-import onUncaughtException from './uncaught-exception-handler';
+import onUncaughtException from './uncaught-exception-handler.ts';
 
 interface MockLogger {
-  debug: jest.Mock;
-  error: jest.Mock;
-  getLevel: jest.Mock;
-  info: jest.Mock;
-  trace: jest.Mock;
-  warn: jest.Mock;
+  debug: Mock;
+  error: Mock;
+  getLevel: Mock;
+  info: Mock;
+  trace: Mock;
+  warn: Mock;
 }
 
-interface MockGetLogger extends jest.Mock<MockLogger, []> {
+interface MockGetLogger extends Mock<() => MockLogger> {
   __mock__: {
     level: number;
     logger: Partial<MockLogger>;
@@ -19,22 +20,22 @@ interface MockGetLogger extends jest.Mock<MockLogger, []> {
   };
 }
 
-jest.mock('loglevel-colored-level-prefix', () => {
+vi.mock('loglevel-colored-level-prefix', () => {
   const logger: Partial<MockLogger> = {};
-  const getLogger = jest.fn(() => resetAll()) as MockGetLogger;
+  const getLogger = vi.fn(() => resetAll()) as unknown as MockGetLogger;
   const __mock__ = { logger, level: 4, resetAll };
   getLogger.__mock__ = __mock__;
-  return getLogger;
+  return { default: getLogger };
 
   function resetAll(): MockLogger {
     getLogger.mockClear();
     Object.assign(logger, {
-      getLevel: jest.fn(() => getLogger.__mock__.level),
-      trace: jest.fn(),
-      debug: jest.fn(),
-      info: jest.fn(),
-      warn: jest.fn(),
-      error: jest.fn(),
+      getLevel: vi.fn(() => getLogger.__mock__.level),
+      trace: vi.fn(),
+      debug: vi.fn(),
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
     });
     return logger as MockLogger;
   }

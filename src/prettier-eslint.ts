@@ -1,9 +1,10 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+import { createRequire } from 'node:module';
 
 import type { Format } from '@prettier/eslint';
 import getLogger from 'loglevel-colored-level-prefix';
 
 const logger = getLogger({ prefix: 'prettier-eslint-cli' });
+const require = createRequire(import.meta.url);
 
 let format: Format;
 
@@ -21,4 +22,4 @@ try {
   format = require('@prettier/eslint') as Format;
 }
 
-export = format;
+export default format;

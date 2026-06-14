@@ -5,6 +5,10 @@ const concurrent = npsUtils.concurrent;
 const rimraf = npsUtils.rimraf;
 const crossEnv = npsUtils.crossEnv;
 
+const nodeCommand = process.features.typescript
+  ? 'node'
+  : 'node --import @oxc-node/core/register';
+
 module.exports = {
   scripts: {
     contributors: {
@@ -18,29 +22,22 @@ module.exports = {
       },
     },
     test: {
-      default: crossEnv('NODE_ENV=test jest --coverage'),
-      update: crossEnv('NODE_ENV=test jest --coverage --updateSnapshot'),
-      watch: crossEnv('NODE_ENV=test jest --watch'),
-      openCoverage: 'open coverage/lcov-report/index.html',
+      default: crossEnv('NODE_ENV=test vitest run --coverage'),
+      update: crossEnv('NODE_ENV=test vitest run --coverage --update'),
+      watch: crossEnv('NODE_ENV=test vitest'),
+      openCoverage: 'open coverage/index.html',
       cli: {
-        default: crossEnv(
-          'NODE_ENV=test jest --config cli-test/jest.config.json'
-        ),
+        default: crossEnv('NODE_ENV=test vitest run test/tests'),
         update: crossEnv(
-          'NODE_ENV=test jest --config cli-test/jest.config.json --coverage --updateSnapshot'
+          'NODE_ENV=test vitest run test/tests --coverage --update'
         ),
-        watch: crossEnv(
-          'NODE_ENV=test jest --config cli-test/jest.config.json --watch'
-        ),
+        watch: crossEnv('NODE_ENV=test vitest test/tests'),
       },
     },
     build: {
-      description: 'delete the dist directory and compile the files with swc',
-      script: series(
-        rimraf('dist'),
-        'swc src -d dist --copy-files --strip-leading-paths --extensions .ts --ignore **/*.spec.ts,**/__snapshots__/**',
-        'tsc --noEmit'
-      ),
+      description:
+        'delete the dist directory and compile the files with TypeScript',
+      script: series(rimraf('dist'), 'tsc -p tsconfig.build.json'),
     },
     lint: {
       description: 'lint the entire project',
@@ -53,8 +50,7 @@ module.exports = {
     },
     format: {
       description: 'Formats everything with prettier-eslint',
-      script:
-        'node -r @swc-node/register ./src/index.ts --write "**/*.{js,json,md,mjs,ts,yml}"',
+      script: `${nodeCommand} src/index.ts --write "**/*.{cjs,js,json,md,ts,yml}"`,
     },
   },
   options: {

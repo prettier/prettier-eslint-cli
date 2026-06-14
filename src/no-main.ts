@@ -8,4 +8,4 @@ If you want to use this via NodeJS, install \`prettier-eslint\` instead.
 
 console.info(message);
 
-export = message;
+export default message;

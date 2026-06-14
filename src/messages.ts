@@ -9,7 +9,10 @@ interface MessageData {
   unchanged?: string;
 }
 
-const mf = new MessageFormat('en');
+const mf =
+  new (MessageFormat as unknown as typeof import('@messageformat/core/lib/messageformat.js').default)(
+    'en',
+  );
 
 export function success(data: MessageData): string {
   const files = '{count, plural, one{file} other{files}}';

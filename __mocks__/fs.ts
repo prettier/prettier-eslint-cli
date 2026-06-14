@@ -1,4 +1,6 @@
-const readFile = jest.fn(
+import { vi } from 'vitest';
+
+const readFile = vi.fn(
   (
     filePath: string,
     _encoding: BufferEncoding,
@@ -7,7 +9,7 @@ const readFile = jest.fn(
     callback(null, `console.log('this is a mock thing for file: ${filePath}')`);
   },
 );
-const writeFile = jest.fn(
+const writeFile = vi.fn(
   (
     _filePath: string,
     _contents: string,
@@ -17,7 +19,7 @@ const writeFile = jest.fn(
   },
 );
 
-const readFileSync = jest.fn((filePath: string) => {
+const readFileSync = vi.fn((filePath: string) => {
   if (filePath.includes('.eslintrc') || filePath.includes('eslint.config.')) {
     return '{ "rules": { "semi": "error" } }';
   }
@@ -33,6 +35,6 @@ const readFileSync = jest.fn((filePath: string) => {
   throw new Error(`readFileSync mock does not yet handle ${filePath}`);
 });
 
-const readdirSync = jest.fn(() => []);
+const readdirSync = vi.fn(() => []);
 
-export = { readFile, writeFile, readFileSync, readdirSync };
+export default { readdirSync, readFile, readFileSync, writeFile };

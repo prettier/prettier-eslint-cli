@@ -2,12 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { text } from 'node:stream/consumers';
 
-import indentString from '@esm2cjs/indent-string';
 import type { FormatOptions } from '@prettier/eslint';
-import chalk from 'chalk-cjs';
-import findUp from 'find-up';
+import chalk from 'chalk';
+import { findUpSync } from 'find-up';
 import { glob } from 'glob';
 import nodeIgnore from 'ignore';
+import indentString from 'indent-string';
 import memoize from 'lodash.memoize';
 import type { LogLevelDesc } from 'loglevel';
 import getLogger from 'loglevel-colored-level-prefix';
@@ -15,8 +15,8 @@ import type { Options as PrettierOptions } from 'prettier';
 import { bindNodeCallback, from, of, type Observable } from 'rxjs';
 import { catchError, concatAll, distinct, map, mergeMap } from 'rxjs/operators';
 
-import * as messages from './messages';
-import format from './prettier-eslint';
+import * as messages from './messages.ts';
+import format from './prettier-eslint.ts';
 
 const INDENT_COUNT = 4;
 
@@ -414,14 +414,14 @@ function findUpEslintignoreSync(
   _filename: string,
   cwd: string,
 ): string | undefined {
-  return findUp.sync('.eslintignore', { cwd });
+  return findUpSync('.eslintignore', { cwd });
 }
 
 function findUpPrettierignoreSync(
   _filename: string,
   cwd: string,
 ): string | undefined {
-  return findUp.sync('.prettierignore', { cwd });
+  return findUpSync('.prettierignore', { cwd });
 }
 
 function getIsIgnored(filename: string): (_filePath: string) => boolean {

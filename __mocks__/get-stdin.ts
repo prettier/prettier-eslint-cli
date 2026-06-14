@@ -1,11 +1,13 @@
-interface MockGetStdin extends jest.Mock<Promise<string>, []> {
+import { vi, type Mock } from 'vitest';
+
+interface MockGetStdin extends Mock<() => Promise<string>> {
   stdin: string;
 }
 
-const mockGetStdin = jest.fn(function getStdin() {
+const mockGetStdin = vi.fn(function getStdin() {
   return Promise.resolve(mockGetStdin.stdin);
 }) as MockGetStdin;
 
 mockGetStdin.stdin = '';
 
-export = mockGetStdin;
+export default mockGetStdin;

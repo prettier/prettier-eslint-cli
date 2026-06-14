@@ -41,7 +41,7 @@ export default tseslint.config(
   {
     files: ['__mocks__/**/*.ts', '**/*.spec.ts'],
     languageOptions: {
-      globals: globals.jest,
+      globals: globals.vitest,
     },
     rules: {
       '@typescript-eslint/no-magic-numbers': 'off',
