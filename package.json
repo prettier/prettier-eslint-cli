@@ -67,11 +67,13 @@
   "devDependencies": {
     "@1stg/eslint-config": "^10.3.1",
     "@1stg/prettier-config": "^5.4.0",
+    "@1stg/tsconfig": "^4.0.0",
     "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.31.0",
     "@swc-node/register": "^1.11.1",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.41",
+    "@swc/helpers": "^0.5.23",
     "@swc/jest": "^0.2.39",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.9.3",
