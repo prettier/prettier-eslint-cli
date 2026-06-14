@@ -14,6 +14,10 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(dirname, '../..');
 const PRETTIER_ESLINT_PATH = path.join(projectRoot, 'src/index.ts');
 
+const nodeCommand = process.features.typescript
+  ? 'node'
+  : 'node --import @oxc-node/core/register';
+
 testOutput('--version');
 
 test('help outputs usage information and flags', async () => {
@@ -157,7 +161,7 @@ function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
   return new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
-    const command = `${stdin}node --import @oxc-node/core/register ${PRETTIER_ESLINT_PATH} ${args}`;
+    const command = `${stdin}${nodeCommand} ${PRETTIER_ESLINT_PATH} ${args}`;
 
     // prevent chalk to output colors
     const env = { ...process.env };

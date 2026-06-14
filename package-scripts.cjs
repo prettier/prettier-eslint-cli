@@ -5,7 +5,9 @@ const concurrent = npsUtils.concurrent;
 const rimraf = npsUtils.rimraf;
 const crossEnv = npsUtils.crossEnv;
 
-const oxcNode = 'node --import @oxc-node/core/register';
+const nodeCommand = process.features.typescript
+  ? 'node'
+  : 'node --import @oxc-node/core/register';
 
 module.exports = {
   scripts: {
@@ -48,7 +50,7 @@ module.exports = {
     },
     format: {
       description: 'Formats everything with prettier-eslint',
-      script: `${oxcNode} src/index.ts --write "**/*.{cjs,js,json,md,ts,yml}"`,
+      script: `${nodeCommand} src/index.ts --write "**/*.{cjs,js,json,md,ts,yml}"`,
     },
   },
   options: {

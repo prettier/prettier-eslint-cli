@@ -6,8 +6,8 @@ import { glob as globMock } from 'glob';
 import getLogger from 'loglevel-colored-level-prefix';
 import { vi, type Mock, type Mocked } from 'vitest';
 
-import formatFiles from './format-files.js';
-import formatMock from './prettier-eslint.js';
+import formatFiles from './format-files.ts';
+import formatMock from './prettier-eslint.ts';
 
 const mockedFs = mockFs as Mocked<typeof mockFs>;
 const mockedFormat = formatMock as Mock;
@@ -16,7 +16,7 @@ const mockedText = mockText as Mock;
 vi.mock('find-up');
 vi.mock('fs');
 vi.mock('glob');
-vi.mock('./prettier-eslint.js', () => ({
+vi.mock('./prettier-eslint.ts', () => ({
   default: vi.fn(
     ({ text, filePath = '' }: { filePath?: string; text: string }) => {
       if (text === 'MOCK_SYNTAX_ERROR' || filePath.includes('syntax-error')) {

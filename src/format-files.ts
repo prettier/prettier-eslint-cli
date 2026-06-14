@@ -15,8 +15,8 @@ import type { Options as PrettierOptions } from 'prettier';
 import { bindNodeCallback, from, of, type Observable } from 'rxjs';
 import { catchError, concatAll, distinct, map, mergeMap } from 'rxjs/operators';
 
-import * as messages from './messages.js';
-import format from './prettier-eslint.js';
+import * as messages from './messages.ts';
+import format from './prettier-eslint.ts';
 
 const INDENT_COUNT = 4;
 

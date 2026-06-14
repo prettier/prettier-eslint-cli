@@ -1,6 +1,6 @@
 /* eslint import-x/namespace: [2, { allowComputed: true }] */
 
-import * as messages from './messages.js';
+import * as messages from './messages.ts';
 
 type MessageKey = keyof typeof messages;
 
