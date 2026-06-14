@@ -1,5 +1,4 @@
-// eslint-disable-next-line unicorn/prefer-node-protocol -- mocked
-import mockFs from 'fs';
+import mockFs from 'node:fs';
 import { text as mockText } from 'node:stream/consumers';
 
 import findUpMock from 'find-up';
@@ -10,9 +9,6 @@ import formatFiles from './format-files';
 import formatMock from './prettier-eslint';
 
 jest.mock('fs');
-
-// !NOTE: this is a workaround to also mock `node:fs`
-jest.mock('node:fs', () => mockFs);
 
 // Mock stream consumers
 jest.mock('node:stream/consumers', () => ({

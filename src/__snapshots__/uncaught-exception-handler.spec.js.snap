@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`logs a check for trace 1`] = `
 "There has been an unknown error when running the prettier-eslint CLI. If it's unclear to you what went wrong, then try this: 

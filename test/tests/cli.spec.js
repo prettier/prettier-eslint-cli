@@ -1,14 +1,9 @@
 /* eslint no-console:0 */
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { oneLine, stripIndent } from 'common-tags';
-import pify from 'pify';
 import spawn from 'spawn-command';
-
-const pWriteFile = pify(fs.writeFile);
-const pReadFile = pify(fs.readFile);
-const pUnlink = pify(fs.unlink);
 
 // this is a bit of a long running test...
 jest.setTimeout(20_000);
@@ -120,21 +115,21 @@ test(`prettier-eslint ${writeCommand}`, async () => {
     const example1 = 'const {  example1  }  =  baz.bar';
     const example2 = 'function example2(thing){return thing;};;;;;;;;;';
     await Promise.all([
-      pWriteFile(example1Path, example1),
-      pWriteFile(example2Path, example2),
+      fs.writeFile(example1Path, example1),
+      fs.writeFile(example2Path, example2),
     ]);
     const stdout = await runPrettierESLintCLI(writeCommand);
     expect(stdout).toMatchSnapshot(`stdout: prettier-eslint ${writeCommand}`);
     const [example1Result, example2Result] = await Promise.all([
-      pReadFile(example1Path, 'utf8'),
-      pReadFile(example2Path, 'utf8'),
+      fs.readFile(example1Path, 'utf8'),
+      fs.readFile(example2Path, 'utf8'),
     ]);
     expect({ example1Result, example2Result }).toMatchSnapshot(
       `file contents: prettier-eslint ${writeCommand}`,
     );
   } finally {
     try {
-      await Promise.all([pUnlink(example1Path), pUnlink(example2Path)]);
+      await Promise.all([fs.unlink(example1Path), fs.unlink(example2Path)]);
     } catch {
       // ignore error
     }
