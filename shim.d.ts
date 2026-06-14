@@ -1,34 +1,13 @@
 declare module 'loglevel-colored-level-prefix' {
-  namespace getLogger {
-    type LowerLogLevel =
-      | 'debug'
-      | 'error'
-      | 'info'
-      | 'silent'
-      | 'trace'
-      | 'warn';
+  import { LogLevelDesc, Logger } from 'loglevel';
 
-    type UpperLogLevel = Uppercase<LowerLogLevel>;
-
-    type LogLevel = LowerLogLevel | UpperLogLevel | number;
-
-    interface Logger extends Record<
-      LogLevel,
-      (message: string, ...args: unknown[]) => void
-    > {
-      levels: Record<LogLevel, number>;
-      getLevel: () => number;
-      setLevel: (level: LogLevel) => void;
-    }
-
-    interface GetLogger {
-      (options?: { prefix: string }): Logger;
-    }
+  export interface GetLogger {
+    (options?: { level?: LogLevelDesc; prefix?: string }): Logger;
   }
 
-  const getLogger: getLogger.GetLogger;
+  const getLogger: GetLogger;
 
-  export = getLogger;
+  export default getLogger;
 }
 
 declare module 'spawn-command' {

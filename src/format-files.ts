@@ -8,7 +8,8 @@ import findUp from 'find-up';
 import { glob } from 'glob';
 import nodeIgnore from 'ignore';
 import memoize from 'lodash.memoize';
-import getLogger, { type LogLevel } from 'loglevel-colored-level-prefix';
+import type { LogLevelDesc } from 'loglevel';
+import getLogger from 'loglevel-colored-level-prefix';
 import { bindNodeCallback, from, of, type Observable } from 'rxjs';
 import { catchError, concatAll, distinct, map, mergeMap } from 'rxjs/operators';
 
@@ -32,9 +33,9 @@ export interface FormatFilesArgv extends PrettierOptions {
   help?: boolean;
   ignore?: string[];
   includeDotFiles?: boolean;
-  l?: LogLevel;
+  l?: LogLevelDesc;
   listDifferent?: boolean;
-  logLevel?: LogLevel;
+  logLevel?: LogLevelDesc;
   prettierIgnore?: boolean;
   prettierLast?: boolean;
   prettierPath?: string;
@@ -56,7 +57,7 @@ interface PrettierESLintOptions {
   };
   eslintPath?: string;
   filePath?: string;
-  logLevel: LogLevel;
+  logLevel: LogLevelDesc;
   prettierLast?: boolean;
   prettierOptions: PrettierOptions;
   prettierPath?: string;
@@ -180,7 +181,7 @@ async function formatStdin(
   } catch (error) {
     logger.error(
       'There was a problem trying to format the stdin text',
-      `\n${indentString((error as Error).stack as string, INDENT_COUNT)}`,
+      `\n${indentString((error as Error).stack!, INDENT_COUNT)}`,
     );
     process.exitCode = 1;
     return stdinValue;
@@ -242,7 +243,7 @@ function formatFilesFromGlobs({
     function onError(error: Error): void {
       logger.error(
         'There was an unhandled error while formatting the files',
-        `\n${indentString(error.stack as string, INDENT_COUNT)}`,
+        `\n${indentString(error.stack!, INDENT_COUNT)}`,
       );
       process.exitCode = 1;
       resolve({ error, successes, failures });
@@ -344,9 +345,7 @@ function formatFile(
         if (info.unchanged) {
           return of(info);
         }
-        return rxWriteFile(filePath, info.formatted as string).pipe(
-          map(() => info),
-        );
+        return rxWriteFile(filePath, info.formatted!).pipe(map(() => info));
       }),
     );
   } else if (cliOptions.listDifferent) {
@@ -362,17 +361,17 @@ function formatFile(
   } else {
     format$ = format$.pipe(
       map(info => {
-        process.stdout.write(info.formatted as string);
+        process.stdout.write(info.formatted!);
         return info;
       }),
     );
   }
 
   return format$.pipe(
-    catchError((error: unknown) => {
+    catchError((error: Error) => {
       logger.error(
         `There was an error formatting "${fileInfo.filePath}":`,
-        `\n${indentString((error as Error).stack as string, INDENT_COUNT)}`,
+        `\n${indentString(error.stack!, INDENT_COUNT)}`,
       );
       return of({ ...fileInfo, error });
     }),

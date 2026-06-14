@@ -41,7 +41,7 @@
     "version": "changeset version && yarn --no-immutable && nps test.update"
   },
   "peerDependencies": {
-    "prettier-eslint": ">=17.0.0"
+    "prettier-eslint": ">=17.0.1"
   },
   "peerDependenciesMeta": {
     "prettier-eslint": {
@@ -51,7 +51,7 @@
   "dependencies": {
     "@esm2cjs/indent-string": "^5.0.0",
     "@messageformat/core": "^3.4.0",
-    "@prettier/eslint": "npm:prettier-eslint@^17.0.0",
+    "@prettier/eslint": "npm:prettier-eslint@^17.0.1",
     "chalk-cjs": "^5.2.0",
     "common-tags": "^1.8.2",
     "core-js": "^3.49.0",
