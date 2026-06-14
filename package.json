@@ -12,7 +12,7 @@
   ],
   "funding": "https://opencollective.com/prettier-eslint-cli",
   "license": "MIT",
-  "packageManager": "yarn@4.9.1",
+  "packageManager": "yarn@4.16.0",
   "engines": {
     "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
   },
