@@ -3,6 +3,7 @@ import path from 'node:path';
 import { text } from 'node:stream/consumers';
 
 import indentString from '@esm2cjs/indent-string';
+import type { FormatOptions } from '@prettier/eslint';
 import chalk from 'chalk-cjs';
 import findUp from 'find-up';
 import { glob } from 'glob';
@@ -10,6 +11,7 @@ import nodeIgnore from 'ignore';
 import memoize from 'lodash.memoize';
 import type { LogLevelDesc } from 'loglevel';
 import getLogger from 'loglevel-colored-level-prefix';
+import type { Options as PrettierOptions } from 'prettier';
 import { bindNodeCallback, from, of, type Observable } from 'rxjs';
 import { catchError, concatAll, distinct, map, mergeMap } from 'rxjs/operators';
 
@@ -19,8 +21,6 @@ import format from './prettier-eslint';
 const INDENT_COUNT = 4;
 
 const LINE_SEPARATOR_REGEX = /\r|\r?\n/;
-
-type PrettierOptions = Record<string, unknown>;
 
 export interface FormatFilesArgv extends PrettierOptions {
   $0?: string;
@@ -51,25 +51,13 @@ interface CliOptions {
   write?: boolean;
 }
 
-interface PrettierESLintOptions {
-  eslintConfig?: {
-    overrideConfigFile: string;
-  };
-  eslintPath?: string;
-  filePath?: string;
-  logLevel: LogLevelDesc;
-  prettierLast?: boolean;
-  prettierOptions: PrettierOptions;
-  prettierPath?: string;
-}
-
 interface FormatFilesFromGlobsOptions {
   applyEslintIgnore: boolean;
   applyPrettierIgnore: boolean;
   cliOptions: CliOptions;
   fileGlobs: string[];
   ignoreGlobs: string[];
-  prettierESLintOptions: PrettierESLintOptions;
+  prettierESLintOptions: FormatOptions;
 }
 
 interface FileInfo {
@@ -133,7 +121,7 @@ function formatFilesFromArgv({
   ...prettierOptions
 }: FormatFilesArgv): Promise<FormatFilesResult | string> {
   logger.setLevel(logLevel);
-  const prettierESLintOptions: PrettierESLintOptions = {
+  const prettierESLintOptions: FormatOptions = {
     logLevel,
     eslintPath,
     prettierPath,
@@ -162,7 +150,7 @@ function formatFilesFromArgv({
 }
 
 async function formatStdin(
-  prettierESLintOptions: PrettierESLintOptions,
+  prettierESLintOptions: FormatOptions,
 ): Promise<string> {
   let stdinValue = '';
 
@@ -322,7 +310,7 @@ function getFilesFromGlob(
 
 function formatFile(
   filePath: string,
-  prettierESLintOptions: PrettierESLintOptions,
+  prettierESLintOptions: FormatOptions,
   cliOptions: CliOptions,
 ): Observable<FileInfo> {
   const fileInfo: FileInfo = { filePath };

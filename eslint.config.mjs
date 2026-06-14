@@ -10,6 +10,7 @@ export default tseslint.config(
   ...nodeDependencies.configs['flat/recommended'],
   {
     ignores: [
+      'coverage',
       'dist',
       'test/fixtures',
       '!test/fixtures/paths/node_modules/**/*.js',
