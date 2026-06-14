@@ -1,4 +1,6 @@
-const glob = jest.fn(async function mockGlob(
+import { vi } from 'vitest';
+
+const glob = vi.fn(async function mockGlob(
   globString: string,
 ): Promise<string[]> {
   /* eslint complexity:0 */

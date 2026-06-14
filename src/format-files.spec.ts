@@ -4,26 +4,42 @@ import { text as mockText } from 'node:stream/consumers';
 import findUpMock from 'find-up';
 import { glob as globMock } from 'glob';
 import getLogger from 'loglevel-colored-level-prefix';
+import { vi, type Mock, type Mocked } from 'vitest';
 
 import formatFiles from './format-files';
 import formatMock from './prettier-eslint';
 
-const mockedFs = mockFs as jest.Mocked<typeof mockFs>;
-const mockedFormat = formatMock as jest.Mock;
-const mockedText = mockText as jest.Mock;
+const mockedFs = mockFs as Mocked<typeof mockFs>;
+const mockedFormat = formatMock as Mock;
+const mockedText = mockText as Mock;
 
-jest.mock('fs');
+vi.mock('find-up');
+vi.mock('fs');
+vi.mock('glob');
+vi.mock('./prettier-eslint', () => ({
+  default: vi.fn(
+    ({ text, filePath = '' }: { filePath?: string; text: string }) => {
+      if (text === 'MOCK_SYNTAX_ERROR' || filePath.includes('syntax-error')) {
+        throw new Error('Mock error for a syntax error');
+      } else if (filePath.includes('eslint-config-error')) {
+        throw new Error('Some weird eslint config error');
+      } else if (filePath.includes('no-change')) {
+        return Promise.resolve(text);
+      }
+      return Promise.resolve(`MOCK_OUTPUT for ${filePath || 'stdin'}`);
+    },
+  ),
+}));
 
-// Mock stream consumers
-jest.mock('node:stream/consumers', () => ({
-  text: jest.fn(),
+vi.mock('node:stream/consumers', () => ({
+  text: vi.fn(),
 }));
 
 beforeEach(() => {
-  process.stdout.write = jest.fn();
+  process.stdout.write = vi.fn();
   process.stdin.isTTY = undefined as unknown as boolean;
-  console.error = jest.fn();
-  console.log = jest.fn();
+  console.error = vi.fn();
+  console.log = vi.fn();
   mockedFormat.mockClear();
   mockedFs.writeFile.mockClear();
   mockedFs.readFile.mockClear();

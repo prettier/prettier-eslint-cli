@@ -4,12 +4,12 @@ import path from 'node:path';
 
 import { oneLine, stripIndent } from 'common-tags';
 import spawn from 'spawn-command';
+import { vi } from 'vitest';
 
 // this is a bit of a long running test...
-jest.setTimeout(20_000);
+vi.setConfig({ testTimeout: 20_000 });
 
-const PRETTIER_ESLINT_PATH = require.resolve('../../src/index.ts');
-const SWC_REGISTER_PATH = require.resolve('@swc-node/register');
+const PRETTIER_ESLINT_PATH = require.resolve('../../dist/index.js');
 
 testOutput('--version');
 
@@ -138,13 +138,10 @@ test(`prettier-eslint ${writeCommand}`, async () => {
 
 function testOutput(command: string): void {
   test(`prettier-eslint ${command}`, async () => {
-    try {
-      const stdout = await runPrettierESLintCLI(command);
-      expect(stdout).toMatchSnapshot(`stdout: ${command}`);
-    } catch (error) {
-      // eslint-disable-next-line jest/no-conditional-expect
-      expect(error).toMatchSnapshot(`stderr: ${command}`);
-    }
+    const result = await runPrettierESLintCLI(command)
+      .then(stdout => ({ output: stdout, type: 'stdout' as const }))
+      .catch(error => ({ output: error, type: 'stderr' as const }));
+    expect(result.output).toMatchSnapshot(`${result.type}: ${command}`);
   });
 }
 
@@ -157,8 +154,7 @@ function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
   return new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
-    const command = `${PRETTIER_ESLINT_PATH} ${args}`;
-    const swcCommand = `${stdin}node -r ${SWC_REGISTER_PATH} ${command}`;
+    const command = `${stdin}node ${PRETTIER_ESLINT_PATH} ${args}`;
 
     // prevent chalk to output colors
     const env = { ...process.env };
@@ -167,7 +163,7 @@ function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
     delete env.COLORTERM;
     delete env.FORCE_COLOR;
 
-    const child = spawn(swcCommand, { cwd, env });
+    const child = spawn(command, { cwd, env });
 
     child.on('error', error => {
       reject(error);
