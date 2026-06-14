@@ -41,7 +41,7 @@
     "version": "changeset version && yarn --no-immutable && nps test.update"
   },
   "peerDependencies": {
-    "prettier-eslint": "*"
+    "prettier-eslint": ">=17.0.0"
   },
   "peerDependenciesMeta": {
     "prettier-eslint": {
