@@ -1,5 +1,5 @@
-export = { sync };
+import { vi } from 'vitest';
 
-function sync(filename: string): string {
-  return `/${filename}`;
-}
+const findUpSync = vi.fn((filename: string) => `/${filename}`);
+
+export { findUpSync };

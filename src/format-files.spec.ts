@@ -1,13 +1,13 @@
 import mockFs from 'node:fs';
 import { text as mockText } from 'node:stream/consumers';
 
-import findUpMock from 'find-up';
+import { findUpSync } from 'find-up';
 import { glob as globMock } from 'glob';
 import getLogger from 'loglevel-colored-level-prefix';
 import { vi, type Mock, type Mocked } from 'vitest';
 
-import formatFiles from './format-files';
-import formatMock from './prettier-eslint';
+import formatFiles from './format-files.js';
+import formatMock from './prettier-eslint.js';
 
 const mockedFs = mockFs as Mocked<typeof mockFs>;
 const mockedFormat = formatMock as Mock;
@@ -16,7 +16,7 @@ const mockedText = mockText as Mock;
 vi.mock('find-up');
 vi.mock('fs');
 vi.mock('glob');
-vi.mock('./prettier-eslint', () => ({
+vi.mock('./prettier-eslint.js', () => ({
   default: vi.fn(
     ({ text, filePath = '' }: { filePath?: string; text: string }) => {
       if (text === 'MOCK_SYNTAX_ERROR' || filePath.includes('syntax-error')) {
@@ -299,18 +299,16 @@ test('will modify a file if it is prettier ignored with noIgnore', async () => {
 });
 
 test('will not blow up if an .eslintignore or .prettierignore cannot be found', async () => {
-  const originalSync = findUpMock.sync;
-  findUpMock.sync = (() => undefined) as unknown as typeof findUpMock.sync;
-  try {
-    await expect(
-      formatFiles({
-        _: ['src/**/no-ignore/*.js'],
-        write: true,
-      }),
-    ).resolves.not.toThrow();
-  } finally {
-    findUpMock.sync = originalSync;
-  }
+  vi.mocked(findUpSync)
+    .mockReturnValueOnce(undefined)
+    .mockReturnValueOnce(undefined);
+
+  await expect(
+    formatFiles({
+      _: ['src/**/no-ignore/*.js'],
+      write: true,
+    }),
+  ).resolves.not.toThrow();
 });
 
 test('should handle TTY stdin', async () => {

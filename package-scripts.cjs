@@ -2,7 +2,10 @@ const npsUtils = require('nps-utils');
 
 const series = npsUtils.series;
 const concurrent = npsUtils.concurrent;
+const rimraf = npsUtils.rimraf;
 const crossEnv = npsUtils.crossEnv;
+
+const oxcNode = 'node --import @oxc-node/core/register';
 
 module.exports = {
   scripts: {
@@ -31,8 +34,8 @@ module.exports = {
     },
     build: {
       description:
-        'delete the dist directory and compile the files with tsdown',
-      script: series('tsdown', 'tsc --noEmit'),
+        'delete the dist directory and compile the files with TypeScript',
+      script: series(rimraf('dist'), 'tsc -p tsconfig.build.json'),
     },
     lint: {
       description: 'lint the entire project',
@@ -45,7 +48,7 @@ module.exports = {
     },
     format: {
       description: 'Formats everything with prettier-eslint',
-      script: 'node ./dist/index.js --write "**/*.{js,json,md,mjs,ts,yml}"',
+      script: `${oxcNode} src/index.ts --write "**/*.{cjs,js,json,md,ts,yml}"`,
     },
   },
   options: {

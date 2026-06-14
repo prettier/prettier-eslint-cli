@@ -1,6 +1,7 @@
 /* eslint no-console:0 */
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { oneLine, stripIndent } from 'common-tags';
 import spawn from 'spawn-command';
@@ -9,7 +10,9 @@ import { vi } from 'vitest';
 // this is a bit of a long running test...
 vi.setConfig({ testTimeout: 20_000 });
 
-const PRETTIER_ESLINT_PATH = require.resolve('../../dist/index.js');
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const projectRoot = path.resolve(dirname, '../..');
+const PRETTIER_ESLINT_PATH = path.join(projectRoot, 'src/index.ts');
 
 testOutput('--version');
 
@@ -70,7 +73,7 @@ test('handles --eslint-config-path', async () => {
   // can't just do the testOutput function here because
   // the output is in an undeterministic order
   const stdout = await runPrettierESLintCLI(
-    `test/fixtures/stdout1.js --no-eslint-ignore --no-prettier-ignore --eslint-config-path ${__dirname}/../override-config.js`,
+    `test/fixtures/stdout1.js --no-eslint-ignore --no-prettier-ignore --eslint-config-path ${dirname}/../override-config.js`,
   );
   expect(stdout).toContain(
     stripIndent(
@@ -89,7 +92,7 @@ test('handles --eslint-config-path', async () => {
 
 test('list different files with the --list-different option', async () => {
   // can't just do the testOutput function here because
-  // the output is in an undeterministic order
+  // the output is in an indeterministic order
   const stdout = await runPrettierESLintCLI(
     'test/fixtures/stdout*.js --list-different --no-eslint-ignore --no-prettier-ignore',
   );
@@ -109,8 +112,8 @@ const writeCommand =
 test(`prettier-eslint ${writeCommand}`, async () => {
   // because we're using --write,
   // we have to recreate and delete the files every time
-  const example1Path = path.resolve(__dirname, '../fixtures/example1.js');
-  const example2Path = path.resolve(__dirname, '../fixtures/example2.js');
+  const example1Path = path.resolve(dirname, '../fixtures/example1.js');
+  const example2Path = path.resolve(dirname, '../fixtures/example2.js');
   try {
     const example1 = 'const {  example1  }  =  baz.bar';
     const example2 = 'function example2(thing){return thing;};;;;;;;;;';
@@ -146,7 +149,7 @@ function testOutput(command: string): void {
 }
 
 function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
-  const cwd = process.cwd();
+  const cwd = projectRoot;
   if (stdin) {
     stdin = `${stdin} |`;
   }
@@ -154,7 +157,7 @@ function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
   return new Promise((resolve, reject) => {
     let stdout = '';
     let stderr = '';
-    const command = `${stdin}node ${PRETTIER_ESLINT_PATH} ${args}`;
+    const command = `${stdin}node --import @oxc-node/core/register ${PRETTIER_ESLINT_PATH} ${args}`;
 
     // prevent chalk to output colors
     const env = { ...process.env };
@@ -189,7 +192,7 @@ function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
 
 function relativeizePath(stringWithAbsolutePaths: string): string {
   return stringWithAbsolutePaths.replaceAll(
-    new RegExp(path.resolve(__dirname, '../../'), 'g'),
+    new RegExp(projectRoot, 'g'),
     '<projectRootDir>',
   );
 }

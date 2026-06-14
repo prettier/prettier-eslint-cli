@@ -12,7 +12,12 @@ export default defineConfig({
         statements: 100,
       },
     },
-    exclude: ['**/node_modules/**', '**/fixtures/**', '**/dist/**'],
+    exclude: [
+      '**/coverage/**',
+      '**/dist/**',
+      '**/fixtures/**',
+      '**/node_modules/**',
+    ],
     globals: true,
   },
 });

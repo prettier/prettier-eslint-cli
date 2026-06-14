@@ -37,4 +37,4 @@ const readFileSync = vi.fn((filePath: string) => {
 
 const readdirSync = vi.fn(() => []);
 
-export = { readFile, writeFile, readFileSync, readdirSync };
+export default { readdirSync, readFile, readFileSync, writeFile };

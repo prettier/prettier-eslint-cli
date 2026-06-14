@@ -1,5 +1,5 @@
 {
-  "extends": "@1stg/tsconfig/node",
+  "extends": "@1stg/tsconfig/nodenext",
   "compilerOptions": {
     "importHelpers": false,
     "noEmit": true,

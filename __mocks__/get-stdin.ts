@@ -10,4 +10,4 @@ const mockGetStdin = vi.fn(function getStdin() {
 
 mockGetStdin.stdin = '';
 
-export = mockGetStdin;
+export default mockGetStdin;
