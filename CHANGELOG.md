@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 9.0.0
+
+### Major Changes
+
+- [#460](https://github.com/prettier/prettier-eslint-cli/pull/460) [`4fe5b81`](https://github.com/prettier/prettier-eslint-cli/commit/4fe5b814185e386c351545c0769287b306d9729b) Thanks [@JounQin](https://github.com/JounQin)! - feat!: bump `prettier-eslint` and ESLint v10 with only flat config support
+
+### Patch Changes
+
+- [#465](https://github.com/prettier/prettier-eslint-cli/pull/465) [`9fb86bc`](https://github.com/prettier/prettier-eslint-cli/commit/9fb86bc68266c084af8116488120d62de0cef23d) Thanks [@outslept](https://github.com/outslept)! - chore: replace `get-stdin` with node api, removed unused `camelcase-keys`
+
+- [#463](https://github.com/prettier/prettier-eslint-cli/pull/463) [`568521e`](https://github.com/prettier/prettier-eslint-cli/commit/568521e25ea41056338d1772dda8bcb4029e682d) Thanks [@JounQin](https://github.com/JounQin)! - chore: bump prettier-eslint v17.0.0
+
 ## 9.0.0-alpha.2
 
 ### Patch Changes
