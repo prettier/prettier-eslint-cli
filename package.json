@@ -1,6 +1,6 @@
 {
   "name": "prettier-eslint-cli",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "type": "module",
   "description": "CLI for prettier-eslint",
   "repository": "git+https://github.com/prettier/prettier-eslint-cli.git",

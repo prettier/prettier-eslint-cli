@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 9.1.0
+
+### Minor Changes
+
+- [#473](https://github.com/prettier/prettier-eslint-cli/pull/473) [`6aac5b1`](https://github.com/prettier/prettier-eslint-cli/commit/6aac5b164c47ed3aee18040b93e81f3a2b7b44ae) Thanks [@JounQin](https://github.com/JounQin)! - feat: migrate source to TypeScript with 100% compatibility
+
+- [#475](https://github.com/prettier/prettier-eslint-cli/pull/475) [`48bbff2`](https://github.com/prettier/prettier-eslint-cli/commit/48bbff2b1dd1efdfd1797f48e8e2f25c239f7807) Thanks [@JounQin](https://github.com/JounQin)! - feat: migrate to pure ESM with tsc and Vitest
+
 ## 9.0.0
 
 ### Major Changes
