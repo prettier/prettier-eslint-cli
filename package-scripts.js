@@ -35,10 +35,11 @@ module.exports = {
       },
     },
     build: {
-      description: 'delete the dist directory and run babel to build the files',
+      description: 'delete the dist directory and compile the files with swc',
       script: series(
         rimraf('dist'),
-        'babel --copy-files --out-dir dist --ignore *.test.js,__mocks__ src'
+        'swc src -d dist --copy-files --strip-leading-paths --extensions .ts --ignore **/*.spec.ts,**/__snapshots__/**',
+        'tsc --noEmit'
       ),
     },
     lint: {
@@ -52,7 +53,8 @@ module.exports = {
     },
     format: {
       description: 'Formats everything with prettier-eslint',
-      script: 'babel-node ./src/index.js --write "**/*.{js,json,md,mjs,yml}"',
+      script:
+        'node -r @swc-node/register ./src/index.ts --write "**/*.{js,json,md,mjs,ts,yml}"',
     },
   },
   options: {

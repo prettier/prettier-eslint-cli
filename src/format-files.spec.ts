@@ -8,6 +8,10 @@ import getLogger from 'loglevel-colored-level-prefix';
 import formatFiles from './format-files';
 import formatMock from './prettier-eslint';
 
+const mockedFs = mockFs as jest.Mocked<typeof mockFs>;
+const mockedFormat = formatMock as jest.Mock;
+const mockedText = mockText as jest.Mock;
+
 jest.mock('fs');
 
 // Mock stream consumers
@@ -17,13 +21,13 @@ jest.mock('node:stream/consumers', () => ({
 
 beforeEach(() => {
   process.stdout.write = jest.fn();
-  process.stdin.isTTY = undefined;
+  process.stdin.isTTY = undefined as unknown as boolean;
   console.error = jest.fn();
   console.log = jest.fn();
-  formatMock.mockClear();
-  mockFs.writeFile.mockClear();
-  mockFs.readFile.mockClear();
-  mockText.mockClear();
+  mockedFormat.mockClear();
+  mockedFs.writeFile.mockClear();
+  mockedFs.readFile.mockClear();
+  mockedText.mockClear();
 });
 
 afterEach(() => {
@@ -70,7 +74,7 @@ test('glob call excludes an ignore of node_modules', async () => {
 
 test('should accept stdin', async () => {
   const stdinContent = '  var [ foo, {  bar } ] = window.APP ;';
-  mockText.mockResolvedValue(stdinContent);
+  mockedText.mockResolvedValue(stdinContent);
 
   await formatFiles({ stdin: true });
   expect(formatMock).toHaveBeenCalledTimes(1);
@@ -88,7 +92,7 @@ test('will write to files if that is specified', async () => {
 });
 
 test('handles stdin errors gracefully', async () => {
-  mockText.mockResolvedValue('MOCK_SYNTAX_ERROR');
+  mockedText.mockResolvedValue('MOCK_SYNTAX_ERROR');
   await formatFiles({ stdin: true });
   expect(console.error).toHaveBeenCalledTimes(1);
 });
@@ -280,7 +284,7 @@ test('will modify a file if it is prettier ignored with noIgnore', async () => {
 
 test('will not blow up if an .eslintignore or .prettierignore cannot be found', async () => {
   const originalSync = findUpMock.sync;
-  findUpMock.sync = () => null;
+  findUpMock.sync = (() => undefined) as unknown as typeof findUpMock.sync;
   try {
     await expect(
       formatFiles({
@@ -319,7 +323,7 @@ test('should handle non-TTY stdin', async () => {
   process.stdin.isTTY = false;
 
   const stdinContent = '  var [ foo, {  bar } ] = window.APP ;';
-  mockText.mockResolvedValue(stdinContent);
+  mockedText.mockResolvedValue(stdinContent);
 
   try {
     await formatFiles({ stdin: true });

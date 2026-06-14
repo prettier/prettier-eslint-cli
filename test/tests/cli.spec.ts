@@ -8,8 +8,8 @@ import spawn from 'spawn-command';
 // this is a bit of a long running test...
 jest.setTimeout(20_000);
 
-const PRETTIER_ESLINT_PATH = require.resolve('../../src/index');
-const BABEL_BIN_PATH = require.resolve('@babel/node/bin/babel-node');
+const PRETTIER_ESLINT_PATH = require.resolve('../../src/index.ts');
+const SWC_REGISTER_PATH = require.resolve('@swc-node/register');
 
 testOutput('--version');
 
@@ -136,7 +136,7 @@ test(`prettier-eslint ${writeCommand}`, async () => {
   }
 });
 
-function testOutput(command) {
+function testOutput(command: string): void {
   test(`prettier-eslint ${command}`, async () => {
     try {
       const stdout = await runPrettierESLintCLI(command);
@@ -148,7 +148,7 @@ function testOutput(command) {
   });
 }
 
-function runPrettierESLintCLI(args = '', stdin = '') {
+function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
   const cwd = process.cwd();
   if (stdin) {
     stdin = `${stdin} |`;
@@ -158,7 +158,7 @@ function runPrettierESLintCLI(args = '', stdin = '') {
     let stdout = '';
     let stderr = '';
     const command = `${PRETTIER_ESLINT_PATH} ${args}`;
-    const babelCommand = `${stdin}${BABEL_BIN_PATH} -- ${command}`;
+    const swcCommand = `${stdin}node -r ${SWC_REGISTER_PATH} ${command}`;
 
     // prevent chalk to output colors
     const env = { ...process.env };
@@ -167,7 +167,7 @@ function runPrettierESLintCLI(args = '', stdin = '') {
     delete env.COLORTERM;
     delete env.FORCE_COLOR;
 
-    const child = spawn(babelCommand, { cwd, env });
+    const child = spawn(swcCommand, { cwd, env });
 
     child.on('error', error => {
       reject(error);
@@ -191,7 +191,7 @@ function runPrettierESLintCLI(args = '', stdin = '') {
   });
 }
 
-function relativeizePath(stringWithAbsolutePaths) {
+function relativeizePath(stringWithAbsolutePaths: string): string {
   return stringWithAbsolutePaths.replaceAll(
     new RegExp(path.resolve(__dirname, '../../'), 'g'),
     '<projectRootDir>',

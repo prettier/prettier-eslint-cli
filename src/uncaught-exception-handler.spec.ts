@@ -2,14 +2,31 @@ import getLoggerMock from 'loglevel-colored-level-prefix';
 
 import onUncaughtException from './uncaught-exception-handler';
 
+interface MockLogger {
+  debug: jest.Mock;
+  error: jest.Mock;
+  getLevel: jest.Mock;
+  info: jest.Mock;
+  trace: jest.Mock;
+  warn: jest.Mock;
+}
+
+interface MockGetLogger extends jest.Mock<MockLogger, []> {
+  __mock__: {
+    level: number;
+    logger: Partial<MockLogger>;
+    resetAll(): MockLogger;
+  };
+}
+
 jest.mock('loglevel-colored-level-prefix', () => {
-  const logger = {};
+  const logger: Partial<MockLogger> = {};
+  const getLogger = jest.fn(() => resetAll()) as MockGetLogger;
   const __mock__ = { logger, level: 4, resetAll };
-  const getLogger = jest.fn(() => resetAll());
   getLogger.__mock__ = __mock__;
   return getLogger;
 
-  function resetAll() {
+  function resetAll(): MockLogger {
     getLogger.mockClear();
     Object.assign(logger, {
       getLevel: jest.fn(() => getLogger.__mock__.level),
@@ -19,16 +36,18 @@ jest.mock('loglevel-colored-level-prefix', () => {
       warn: jest.fn(),
       error: jest.fn(),
     });
-    return logger;
+    return logger as MockLogger;
   }
 });
 
+const mockedGetLogger = getLoggerMock as unknown as MockGetLogger;
+
 beforeEach(() => {
-  getLoggerMock.__mock__.resetAll();
+  mockedGetLogger.__mock__.resetAll();
 });
 
 test('logs all options', () => {
-  const logger = getLoggerMock();
+  const logger = mockedGetLogger();
   runWithCatch(new Error('my error'));
   expect(logger.error).toHaveBeenCalledTimes(1);
   const errorLog = logger.error.mock.calls[0].join(' ');
@@ -36,8 +55,8 @@ test('logs all options', () => {
 });
 
 test('logs a check for trace', () => {
-  getLoggerMock.__mock__.level = 0;
-  const logger = getLoggerMock();
+  mockedGetLogger.__mock__.level = 0;
+  const logger = mockedGetLogger();
   runWithCatch(new Error('my error'));
   expect(logger.error).toHaveBeenCalledTimes(1);
   const errorLog = logger.error.mock.calls[0].join(' ');
@@ -50,9 +69,9 @@ test('re-throws the given error', () => {
   expect(() => onUncaughtException(myError)).toThrow(myError);
 });
 
-function runWithCatch(...args) {
+function runWithCatch(error: Error): void {
   try {
-    onUncaughtException(...args);
+    onUncaughtException(error);
   } catch {
     // ignore
   }
