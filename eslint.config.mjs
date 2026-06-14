@@ -63,12 +63,6 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/format-files.ts', 'src/parser.ts'],
-    rules: {
-      'sonarjs/todo-tag': 'off',
-    },
-  },
-  {
     files: ['src/index.ts'],
     rules: {
       'n/hashbang': 'off',

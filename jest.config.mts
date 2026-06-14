@@ -1,10 +1,6 @@
-// @ts-check
+import type { Config } from 'jest';
 
-/**
- * @type {Config}
- * @import { Config } from 'jest'
- */
-module.exports = {
+const config: Config = {
   transform: {
     '^.+\\.ts$': '@swc/jest',
   },
@@ -22,3 +18,5 @@ module.exports = {
     },
   },
 };
+
+export default config;

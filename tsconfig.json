@@ -16,6 +16,7 @@
   },
   "include": [
     "__mocks__/**/*.ts",
+    "jest.config.mts",
     "src/**/*.ts",
     "test/**/*.ts",
     "types/**/*.d.ts"
