@@ -1,15 +1,9 @@
 {
   "extends": "@1stg/tsconfig/node",
   "compilerOptions": {
+    "importHelpers": false,
     "noEmit": true,
     "types": ["jest", "node"]
   },
-  "include": [
-    "__mocks__/**/*.ts",
-    "jest.config.mts",
-    "src/**/*.ts",
-    "test/**/*.ts",
-    "types/**/*.d.ts"
-  ],
   "exclude": ["coverage", "dist", "node_modules"]
 }

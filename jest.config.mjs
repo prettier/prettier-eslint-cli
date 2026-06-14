@@ -1,6 +1,13 @@
-import type { Config } from 'jest';
+// @ts-check
 
-const config: Config = {
+/**
+ * @import { Config } from 'jest';
+ */
+
+/**
+ * @type {Config}
+ */
+const config = {
   transform: {
     '^.+\\.ts$': '@swc/jest',
   },

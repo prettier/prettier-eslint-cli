@@ -8,7 +8,7 @@ import findUp from 'find-up';
 import { glob } from 'glob';
 import nodeIgnore from 'ignore';
 import memoize from 'lodash.memoize';
-import getLogger from 'loglevel-colored-level-prefix';
+import getLogger, { type LogLevel } from 'loglevel-colored-level-prefix';
 import { bindNodeCallback, from, of, type Observable } from 'rxjs';
 import { catchError, concatAll, distinct, map, mergeMap } from 'rxjs/operators';
 
@@ -19,7 +19,6 @@ const INDENT_COUNT = 4;
 
 const LINE_SEPARATOR_REGEX = /\r|\r?\n/;
 
-type LogLevel = number | string;
 type PrettierOptions = Record<string, unknown>;
 
 export interface FormatFilesArgv extends PrettierOptions {
