@@ -169,9 +169,11 @@ function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
     delete env.FORCE_COLOR;
 
     // eslint-disable-next-line sonarjs/os-command
-    exec(command, { cwd, env }, (_error, stdout, stderr) => {
+    exec(command, { cwd, env }, (error, stdout, stderr) => {
       if (!stderr || stderr.includes('success')) {
         resolve(relativizePath(stdout || stderr));
+      } else if (error) {
+        reject(error);
       } else {
         reject(relativizePath(stderr));
       }
