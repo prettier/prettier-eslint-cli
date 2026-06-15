@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 9.2.0
+
+### Minor Changes
+
+- [#476](https://github.com/prettier/prettier-eslint-cli/pull/476) [`e72f7d5`](https://github.com/prettier/prettier-eslint-cli/commit/e72f7d52a8aff5efb1184b1b9cfc801179683311) Thanks [@JounQin](https://github.com/JounQin)! - refactor: simplify formatting internals
+
 ## 9.1.0
 
 ### Minor Changes
