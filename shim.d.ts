@@ -9,17 +9,3 @@ declare module 'loglevel-colored-level-prefix' {
 
   export default getLogger;
 }
-
-declare module 'spawn-command' {
-  import type {
-    ChildProcessWithoutNullStreams,
-    SpawnOptions,
-  } from 'node:child_process';
-
-  function spawn(
-    command: string,
-    options?: SpawnOptions,
-  ): ChildProcessWithoutNullStreams;
-
-  export = spawn;
-}

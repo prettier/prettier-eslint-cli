@@ -5,7 +5,7 @@ import * as messages from './messages.ts';
 type MessageKey = keyof typeof messages;
 
 interface MessageCase {
-  input: Parameters<(typeof messages)[MessageKey]>[0];
+  input: messages.MessageData;
   output: string;
 }
 

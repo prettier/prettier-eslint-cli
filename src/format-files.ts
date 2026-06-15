@@ -1,4 +1,4 @@
-import fs from 'node:fs';
+import fs from 'node:fs/promises';
 import path from 'node:path';
 import { text } from 'node:stream/consumers';
 
@@ -8,15 +8,12 @@ import { findUpSync } from 'find-up';
 import { glob } from 'glob';
 import nodeIgnore from 'ignore';
 import indentString from 'indent-string';
-import memoize from 'lodash.memoize';
 import type { LogLevelDesc } from 'loglevel';
-import getLogger from 'loglevel-colored-level-prefix';
 import type { Options as PrettierOptions } from 'prettier';
-import { bindNodeCallback, from, of, type Observable } from 'rxjs';
-import { catchError, concatAll, distinct, map, mergeMap } from 'rxjs/operators';
 
+import { logger } from './logger.ts';
 import * as messages from './messages.ts';
-import format from './prettier-eslint.ts';
+import { format } from './prettier-eslint.ts';
 
 const INDENT_COUNT = 4;
 
@@ -74,30 +71,14 @@ interface FormatFilesResult {
   successes: FileInfo[];
 }
 
-const rxReadFile = bindNodeCallback(fs.readFile) as unknown as (
-  _filePath: string,
-  _encoding: BufferEncoding,
-) => Observable<string>;
-const rxWriteFile = bindNodeCallback(fs.writeFile) as unknown as (
-  _filePath: string,
-  _data: string,
-) => Observable<void>;
-const findUpEslintignoreSyncMemoized = memoize(
-  findUpEslintignoreSync,
-  findUpMemoizeResolver,
-);
-const findUpPrettierignoreSyncMemoized = memoize(
-  findUpPrettierignoreSync,
-  findUpMemoizeResolver,
-);
+const eslintignorePathCache = new Map<string, string | undefined>();
+const prettierignorePathCache = new Map<string, string | undefined>();
+const isIgnoredCache = new Map<
+  string,
+  Promise<(_filePath: string) => boolean>
+>();
 
-const getIsIgnoredMemoized = memoize(getIsIgnored);
-
-const logger = getLogger({ prefix: 'prettier-eslint-cli' });
-
-export default formatFilesFromArgv;
-
-function formatFilesFromArgv({
+export async function formatFiles({
   _: fileGlobs = [],
   $0: _$0,
   help: _help,
@@ -176,7 +157,7 @@ async function formatStdin(
   }
 }
 
-function formatFilesFromGlobs({
+async function formatFilesFromGlobs({
   fileGlobs,
   ignoreGlobs,
   cliOptions,
@@ -186,39 +167,32 @@ function formatFilesFromGlobs({
 }: FormatFilesFromGlobsOptions): Promise<FormatFilesResult> {
   const concurrentGlobs = 3;
   const concurrentFormats = 10;
-  return new Promise(resolve => {
-    const successes: FileInfo[] = [];
-    const failures: FileInfo[] = [];
-    const unchanged: FileInfo[] = [];
-    from(fileGlobs)
-      .pipe(
-        mergeMap(
-          fileGlob =>
-            getFilesFromGlob(
-              ignoreGlobs,
-              applyEslintIgnore,
-              applyPrettierIgnore,
-              fileGlob,
-              cliOptions,
-            ),
-          concurrentGlobs,
+  const successes: FileInfo[] = [];
+  const failures: FileInfo[] = [];
+  const unchanged: FileInfo[] = [];
+
+  try {
+    const filePathGroups = await mapLimit(
+      fileGlobs,
+      concurrentGlobs,
+      fileGlob =>
+        getFilesFromGlob(
+          ignoreGlobs,
+          applyEslintIgnore,
+          applyPrettierIgnore,
+          fileGlob,
+          cliOptions,
         ),
-        concatAll(),
-        distinct(),
-        mergeMap(filePathToFormatted, concurrentFormats),
-      )
-      .subscribe({
-        complete: onComplete,
-        error: onError,
-        next: onNext,
-      });
+    );
+    const filePaths = [...new Set(filePathGroups.flat())];
+    const formattedFiles = await mapLimit(
+      filePaths,
+      concurrentFormats,
+      filePath =>
+        formatFile(path.resolve(filePath), prettierESLintOptions, cliOptions),
+    );
 
-    function filePathToFormatted(filePath: string): Observable<FileInfo> {
-      const absoluteFilePath = path.resolve(filePath);
-      return formatFile(absoluteFilePath, prettierESLintOptions, cliOptions);
-    }
-
-    function onNext(info: FileInfo): void {
+    for (const info of formattedFiles) {
       if (info.error) {
         failures.push(info);
       } else if (info.unchanged) {
@@ -227,206 +201,211 @@ function formatFilesFromGlobs({
         successes.push(info);
       }
     }
+  } catch (error) {
+    logger.error(
+      'There was an unhandled error while formatting the files',
+      `\n${indentString((error as Error).stack!, INDENT_COUNT)}`,
+    );
+    process.exitCode = 1;
+    return { error, successes, failures };
+  }
 
-    function onError(error: Error): void {
-      logger.error(
-        'There was an unhandled error while formatting the files',
-        `\n${indentString(error.stack!, INDENT_COUNT)}`,
+  const isSilent =
+    logger.getLevel() === logger.levels.SILENT || cliOptions.listDifferent;
+
+  /* use console.error directly here because
+   * - we don't want these messages prefixed
+   * - we want them to go to stderr, not stdout
+   */
+  if (!isSilent) {
+    if (successes.length > 0) {
+      console.error(
+        messages.success({
+          success: chalk.green('success'),
+          count: successes.length,
+          countString: chalk.bold(successes.length),
+        }),
       );
+    }
+    if (failures.length > 0) {
       process.exitCode = 1;
-      resolve({ error, successes, failures });
+      console.error(
+        messages.failure({
+          failure: chalk.red('failure'),
+          count: failures.length,
+          countString: chalk.bold(failures.length),
+        }),
+      );
     }
-
-    function onComplete(): void {
-      const isSilent =
-        logger.getLevel() === logger.levels.SILENT || cliOptions.listDifferent;
-
-      /* use console.error directly here because
-       * - we don't want these messages prefixed
-       * - we want them to go to stderr, not stdout
-       */
-      if (!isSilent) {
-        if (successes.length > 0) {
-          console.error(
-            messages.success({
-              success: chalk.green('success'),
-              count: successes.length,
-              countString: chalk.bold(successes.length),
-            }),
-          );
-        }
-        if (failures.length > 0) {
-          process.exitCode = 1;
-          console.error(
-            messages.failure({
-              failure: chalk.red('failure'),
-              count: failures.length,
-              countString: chalk.bold(failures.length),
-            }),
-          );
-        }
-        if (unchanged.length > 0) {
-          console.error(
-            messages.unchanged({
-              unchanged: chalk.gray('unchanged'),
-              count: unchanged.length,
-              countString: chalk.bold(unchanged.length),
-            }),
-          );
-        }
-      }
-      resolve({ successes, failures });
+    if (unchanged.length > 0) {
+      console.error(
+        messages.unchanged({
+          unchanged: chalk.gray('unchanged'),
+          count: unchanged.length,
+          countString: chalk.bold(unchanged.length),
+        }),
+      );
     }
-  });
+  }
+
+  return { successes, failures };
 }
 
-function getFilesFromGlob(
+async function getFilesFromGlob(
   ignoreGlobs: string[],
   applyEslintIgnore: boolean,
   applyPrettierIgnore: boolean,
   fileGlob: string,
   cliOptions: CliOptions,
-): Observable<string[]> {
+): Promise<string[]> {
   const globOptions = { dot: cliOptions.includeDotFiles, ignore: ignoreGlobs };
   if (!fileGlob.includes('node_modules')) {
     // basically, we're going to protect you from doing something
     // not smart unless you explicitly include it in your glob
     globOptions.ignore.push('**/node_modules/**');
   }
-  return from(glob(fileGlob, globOptions)).pipe(
-    map(filePaths =>
-      filePaths.filter(filePath => {
-        if (applyEslintIgnore && isFilePathMatchedByEslintignore(filePath)) {
-          return false;
-        }
 
-        return !(
-          applyPrettierIgnore && isFilePathMatchedByPrettierignore(filePath)
-        );
-      }),
-    ),
-  );
+  const filePaths = await glob(fileGlob, globOptions);
+  const filteredFilePaths: string[] = [];
+
+  for (const filePath of filePaths) {
+    if (applyEslintIgnore && (await isFilePathIgnored(filePath, 'eslint'))) {
+      continue;
+    }
+
+    if (
+      applyPrettierIgnore &&
+      (await isFilePathIgnored(filePath, 'prettier'))
+    ) {
+      continue;
+    }
+
+    filteredFilePaths.push(filePath);
+  }
+
+  return filteredFilePaths;
 }
 
-function formatFile(
+async function formatFile(
   filePath: string,
   prettierESLintOptions: FormatOptions,
   cliOptions: CliOptions,
-): Observable<FileInfo> {
+): Promise<FileInfo> {
   const fileInfo: FileInfo = { filePath };
-  let format$ = rxReadFile(filePath, 'utf8').pipe(
-    mergeMap(async text => {
-      fileInfo.text = text;
-      fileInfo.formatted = await format({
-        text,
-        filePath,
-        ...prettierESLintOptions,
-      });
-      fileInfo.unchanged = fileInfo.text === fileInfo.formatted;
-      return fileInfo;
-    }),
-  );
 
-  if (cliOptions.write) {
-    format$ = format$.pipe(
-      mergeMap(info => {
-        if (info.unchanged) {
-          return of(info);
-        }
-        return rxWriteFile(filePath, info.formatted!).pipe(map(() => info));
-      }),
+  try {
+    const text = await fs.readFile(filePath, 'utf8');
+    fileInfo.text = text;
+    fileInfo.formatted = await format({
+      text,
+      filePath,
+      ...prettierESLintOptions,
+    });
+    fileInfo.unchanged = fileInfo.text === fileInfo.formatted;
+
+    if (cliOptions.write) {
+      if (!fileInfo.unchanged) {
+        await fs.writeFile(filePath, fileInfo.formatted);
+      }
+    } else if (cliOptions.listDifferent) {
+      if (!fileInfo.unchanged) {
+        process.exitCode = 1;
+        console.log(fileInfo.filePath);
+      }
+    } else {
+      process.stdout.write(fileInfo.formatted);
+    }
+
+    return fileInfo;
+  } catch (error) {
+    logger.error(
+      `There was an error formatting "${fileInfo.filePath}":`,
+      `\n${indentString((error as Error).stack!, INDENT_COUNT)}`,
     );
-  } else if (cliOptions.listDifferent) {
-    format$ = format$.pipe(
-      map(info => {
-        if (!info.unchanged) {
-          process.exitCode = 1;
-          console.log(info.filePath);
-        }
-        return info;
-      }),
-    );
-  } else {
-    format$ = format$.pipe(
-      map(info => {
-        process.stdout.write(info.formatted!);
-        return info;
-      }),
-    );
+    return { ...fileInfo, error };
   }
+}
 
-  return format$.pipe(
-    catchError((error: Error) => {
-      logger.error(
-        `There was an error formatting "${fileInfo.filePath}":`,
-        `\n${indentString(error.stack!, INDENT_COUNT)}`,
-      );
-      return of({ ...fileInfo, error });
-    }),
+async function mapLimit<T, U>(
+  items: T[],
+  limit: number,
+  mapper: (item: T) => Promise<U>,
+): Promise<U[]> {
+  const results: U[] = [];
+  let index = 0;
+
+  await Promise.all(
+    Array.from(
+      { length: Math.min(limit, items.length) },
+      async (): Promise<void> => {
+        while (index < items.length) {
+          const currentIndex = index;
+          index += 1;
+          results[currentIndex] = await mapper(items[currentIndex]);
+        }
+      },
+    ),
   );
+
+  return results;
 }
 
 function getNearestEslintignorePath(filePath: string): string | undefined {
   const { dir } = path.parse(filePath);
-  return findUpEslintignoreSyncMemoized('.eslintignore', dir);
-}
-
-function isFilePathMatchedByEslintignore(filePath: string): boolean {
-  const eslintignorePath = getNearestEslintignorePath(filePath);
-  if (!eslintignorePath) {
-    return false;
+  if (!eslintignorePathCache.has(dir)) {
+    eslintignorePathCache.set(dir, findUpSync('.eslintignore', { cwd: dir }));
   }
-
-  const eslintignoreDir = path.parse(eslintignorePath).dir;
-  const filePathRelativeToEslintignoreDir = path.relative(
-    eslintignoreDir,
-    filePath,
-  );
-  const isIgnored = getIsIgnoredMemoized(eslintignorePath);
-  return isIgnored(filePathRelativeToEslintignoreDir);
+  return eslintignorePathCache.get(dir);
 }
 
 function getNearestPrettierignorePath(filePath: string): string | undefined {
   const { dir } = path.parse(filePath);
-  return findUpPrettierignoreSyncMemoized('.prettierignore', dir);
+  if (!prettierignorePathCache.has(dir)) {
+    prettierignorePathCache.set(
+      dir,
+      findUpSync('.prettierignore', { cwd: dir }),
+    );
+  }
+  return prettierignorePathCache.get(dir);
 }
 
-function isFilePathMatchedByPrettierignore(filePath: string): boolean {
-  const prettierignorePath = getNearestPrettierignorePath(filePath);
-  if (!prettierignorePath) {
+async function isFilePathIgnored(
+  filePath: string,
+  ignoreType: 'eslint' | 'prettier',
+): Promise<boolean> {
+  const ignorePath =
+    ignoreType === 'eslint'
+      ? getNearestEslintignorePath(filePath)
+      : getNearestPrettierignorePath(filePath);
+
+  if (!ignorePath) {
     return false;
   }
 
-  const prettierignoreDir = path.parse(prettierignorePath).dir;
-  const filePathRelativeToPrettierignoreDir = path.relative(
-    prettierignoreDir,
-    filePath,
-  );
-  const isIgnored = getIsIgnoredMemoized(prettierignorePath);
-  return isIgnored(filePathRelativeToPrettierignoreDir);
+  const ignoreDir = path.parse(ignorePath).dir;
+  const filePathRelativeToIgnoreDir = path.relative(ignoreDir, filePath);
+  const isIgnored = await getIsIgnoredFromCache(ignorePath);
+  return isIgnored(filePathRelativeToIgnoreDir);
 }
 
-function findUpMemoizeResolver(...args: string[]): string {
-  return args.join('::');
+function getIsIgnoredFromCache(
+  filename: string,
+): Promise<(_filePath: string) => boolean> {
+  const cached = isIgnoredCache.get(filename);
+  if (cached) {
+    return cached;
+  }
+
+  const isIgnored = getIsIgnored(filename);
+  isIgnoredCache.set(filename, isIgnored);
+  return isIgnored;
 }
 
-function findUpEslintignoreSync(
-  _filename: string,
-  cwd: string,
-): string | undefined {
-  return findUpSync('.eslintignore', { cwd });
-}
-
-function findUpPrettierignoreSync(
-  _filename: string,
-  cwd: string,
-): string | undefined {
-  return findUpSync('.prettierignore', { cwd });
-}
-
-function getIsIgnored(filename: string): (_filePath: string) => boolean {
-  const ignoreLines = fs
-    .readFileSync(filename, 'utf8')
+async function getIsIgnored(
+  filename: string,
+): Promise<(_filePath: string) => boolean> {
+  const ignoreFile = await fs.readFile(filename, 'utf8');
+  const ignoreLines = ignoreFile
     .split(LINE_SEPARATOR_REGEX)
     .filter(line => Boolean(line.trim()));
   const instance = nodeIgnore();

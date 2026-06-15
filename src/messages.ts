@@ -1,7 +1,4 @@
-import MessageFormat from '@messageformat/core';
-
-interface MessageData {
-  [key: string]: unknown;
+export interface MessageData {
   count: number;
   countString: string;
   failure?: string;
@@ -9,26 +6,22 @@ interface MessageData {
   unchanged?: string;
 }
 
-const mf =
-  new (MessageFormat as unknown as typeof import('@messageformat/core/lib/messageformat.js').default)(
-    'en',
-  );
-
-export function success(data: MessageData): string {
-  const files = '{count, plural, one{file} other{files}}';
-  return mf.compile(
-    `{success} formatting {countString} ${files} with prettier-eslint`,
-  )(data);
+export function success({ count, countString, success }: MessageData): string {
+  return `${success} formatting ${countString} ${pluralize(count, 'file', 'files')} with prettier-eslint`;
 }
 
-export function failure(data: MessageData): string {
-  const files = '{count, plural, one{file} other{files}}';
-  return mf.compile(
-    `{failure} formatting {countString} ${files} with prettier-eslint`,
-  )(data);
+export function failure({ count, countString, failure }: MessageData): string {
+  return `${failure} formatting ${countString} ${pluralize(count, 'file', 'files')} with prettier-eslint`;
 }
 
-export function unchanged(data: MessageData): string {
-  const files = '{count, plural, one{file was} other{files were}}';
-  return mf.compile(`{countString} ${files} {unchanged}`)(data);
+export function unchanged({
+  count,
+  countString,
+  unchanged,
+}: MessageData): string {
+  return `${countString} ${pluralize(count, 'file was', 'files were')} ${unchanged}`;
+}
+
+function pluralize(count: number, singular: string, plural: string): string {
+  return count === 1 ? singular : plural;
 }

@@ -1,4 +1,6 @@
-function normalize(options: Record<string, unknown>): Record<string, unknown> {
+export function normalize(
+  options: Record<string, unknown>,
+): Record<string, unknown> {
   return Object.entries(options).reduce<Record<string, unknown>>(
     (optionsAccumulator, [key, value]) =>
       key.includes('-')
@@ -7,5 +9,3 @@ function normalize(options: Record<string, unknown>): Record<string, unknown> {
     {},
   );
 }
-
-export default normalize;

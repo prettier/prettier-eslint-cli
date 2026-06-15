@@ -1,10 +1,10 @@
 /* eslint no-console:0 */
+import { exec } from 'node:child_process';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { oneLine, stripIndent } from 'common-tags';
-import spawn from 'spawn-command';
 import { vi } from 'vitest';
 
 // this is a bit of a long running test...
@@ -159,8 +159,6 @@ function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
   }
 
   return new Promise((resolve, reject) => {
-    let stdout = '';
-    let stderr = '';
     const command = `${stdin}${nodeCommand} ${PRETTIER_ESLINT_PATH} ${args}`;
 
     // prevent chalk to output colors
@@ -170,31 +168,20 @@ function runPrettierESLintCLI(args = '', stdin = ''): Promise<string> {
     delete env.COLORTERM;
     delete env.FORCE_COLOR;
 
-    const child = spawn(command, { cwd, env });
-
-    child.on('error', error => {
-      reject(error);
-    });
-
-    child.stdout.on('data', data => {
-      stdout += data.toString();
-    });
-
-    child.stderr.on('data', data => {
-      stderr += data.toString();
-    });
-
-    child.on('close', () => {
+    // eslint-disable-next-line sonarjs/os-command
+    exec(command, { cwd, env }, (error, stdout, stderr) => {
       if (!stderr || stderr.includes('success')) {
-        resolve(relativeizePath(stdout || stderr));
+        resolve(relativizePath(stdout || stderr));
+      } else if (error) {
+        reject(error);
       } else {
-        reject(relativeizePath(stderr));
+        reject(relativizePath(stderr));
       }
     });
   });
 }
 
-function relativeizePath(stringWithAbsolutePaths: string): string {
+function relativizePath(stringWithAbsolutePaths: string): string {
   return stringWithAbsolutePaths.replaceAll(
     new RegExp(projectRoot, 'g'),
     '<projectRootDir>',

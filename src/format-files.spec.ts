@@ -1,4 +1,4 @@
-import mockFs from 'node:fs';
+import mockFs from 'node:fs/promises';
 import { text as mockText } from 'node:stream/consumers';
 
 import { findUpSync } from 'find-up';
@@ -6,18 +6,20 @@ import { glob as globMock } from 'glob';
 import getLogger from 'loglevel-colored-level-prefix';
 import { vi, type Mock, type Mocked } from 'vitest';
 
-import formatFiles from './format-files.ts';
-import formatMock from './prettier-eslint.ts';
+import { formatFiles } from './format-files.ts';
+import { format as formatMock } from './prettier-eslint.ts';
 
 const mockedFs = mockFs as Mocked<typeof mockFs>;
 const mockedFormat = formatMock as Mock;
 const mockedText = mockText as Mock;
 
+vi.mock('node:fs/promises');
+
 vi.mock('find-up');
-vi.mock('fs');
 vi.mock('glob');
+
 vi.mock('./prettier-eslint.ts', () => ({
-  default: vi.fn(
+  format: vi.fn(
     ({ text, filePath = '' }: { filePath?: string; text: string }) => {
       if (text === 'MOCK_SYNTAX_ERROR' || filePath.includes('syntax-error')) {
         throw new Error('Mock error for a syntax error');
@@ -54,7 +56,7 @@ test('sanity test', async () => {
   const globs = ['src/**/1*.js', 'src/**/2*.js'];
   await formatFiles({ _: globs });
   expect(globMock).toHaveBeenCalledTimes(globs.length);
-  expect(mockFs.readFile).toHaveBeenCalledTimes(6);
+  expect(mockFs.readFile).toHaveBeenCalledTimes(8);
   expect(formatMock).toHaveBeenCalledTimes(6);
   expect(mockFs.writeFile).toHaveBeenCalledTimes(0);
   expect(process.stdout.write).toHaveBeenCalledTimes(6);
@@ -237,12 +239,10 @@ test('wont modify a file if it is eslint ignored', async () => {
   expect(mockFs.readFile).toHaveBeenCalledWith(
     expect.stringMatching(/applied/),
     'utf8',
-    expect.any(Function),
   );
   expect(mockFs.writeFile).toHaveBeenCalledWith(
     expect.stringMatching(/applied/),
     expect.stringMatching(/MOCK_OUTPUT.*?applied/),
-    expect.any(Function),
   );
   const ignoredOutput = expect.stringMatching(
     /success[^\n\r1\u2028\u2029]*1.*file/,
@@ -271,12 +271,10 @@ test('wont modify a file if it is prettier ignored', async () => {
   expect(mockFs.readFile).toHaveBeenCalledWith(
     expect.stringMatching(/applied/),
     'utf8',
-    expect.any(Function),
   );
   expect(mockFs.writeFile).toHaveBeenCalledWith(
     expect.stringMatching(/applied/),
     expect.stringMatching(/MOCK_OUTPUT.*?applied/),
-    expect.any(Function),
   );
   const ignoredOutput = expect.stringMatching(
     /success[^\n\r1\u2028\u2029]*1.*file/,
