@@ -235,6 +235,7 @@ const parser = yargs()
       "preserve" - Wrap prose as-is. available in v1.9.0+
       `,
     },
+    // eslint-disable-next-line sonarjs/todo-tag
     // TODO: support range-start and range-end
     // would require changes in prettier-eslint
   })

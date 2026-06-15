@@ -8,7 +8,6 @@ import { findUpSync } from 'find-up';
 import { glob } from 'glob';
 import nodeIgnore from 'ignore';
 import indentString from 'indent-string';
-import memoize from 'lodash.memoize';
 import type { LogLevelDesc } from 'loglevel';
 import getLogger from 'loglevel-colored-level-prefix';
 import type { Options as PrettierOptions } from 'prettier';
@@ -72,17 +71,12 @@ interface FormatFilesResult {
   successes: FileInfo[];
 }
 
-const findUpEslintignoreSyncMemoized = memoize(
-  findUpEslintignoreSync,
-  findUpMemoizeResolver,
-);
-
-const findUpPrettierignoreSyncMemoized = memoize(
-  findUpPrettierignoreSync,
-  findUpMemoizeResolver,
-);
-
-const getIsIgnoredMemoized = memoize(getIsIgnored);
+const eslintignorePathCache = new Map<string, string | undefined>();
+const prettierignorePathCache = new Map<string, string | undefined>();
+const isIgnoredCache = new Map<
+  string,
+  Promise<(_filePath: string) => boolean>
+>();
 
 const logger = getLogger({ prefix: 'prettier-eslint-cli' });
 
@@ -362,12 +356,21 @@ async function mapLimit<T, U>(
 
 function getNearestEslintignorePath(filePath: string): string | undefined {
   const { dir } = path.parse(filePath);
-  return findUpEslintignoreSyncMemoized('.eslintignore', dir);
+  if (!eslintignorePathCache.has(dir)) {
+    eslintignorePathCache.set(dir, findUpSync('.eslintignore', { cwd: dir }));
+  }
+  return eslintignorePathCache.get(dir);
 }
 
 function getNearestPrettierignorePath(filePath: string): string | undefined {
   const { dir } = path.parse(filePath);
-  return findUpPrettierignoreSyncMemoized('.prettierignore', dir);
+  if (!prettierignorePathCache.has(dir)) {
+    prettierignorePathCache.set(
+      dir,
+      findUpSync('.prettierignore', { cwd: dir }),
+    );
+  }
+  return prettierignorePathCache.get(dir);
 }
 
 async function isFilePathIgnored(
@@ -385,26 +388,21 @@ async function isFilePathIgnored(
 
   const ignoreDir = path.parse(ignorePath).dir;
   const filePathRelativeToIgnoreDir = path.relative(ignoreDir, filePath);
-  const isIgnored = await getIsIgnoredMemoized(ignorePath);
+  const isIgnored = await getIsIgnoredFromCache(ignorePath);
   return isIgnored(filePathRelativeToIgnoreDir);
 }
 
-function findUpMemoizeResolver(...args: string[]): string {
-  return args.join('::');
-}
+function getIsIgnoredFromCache(
+  filename: string,
+): Promise<(_filePath: string) => boolean> {
+  const cached = isIgnoredCache.get(filename);
+  if (cached) {
+    return cached;
+  }
 
-function findUpEslintignoreSync(
-  _filename: string,
-  cwd: string,
-): string | undefined {
-  return findUpSync('.eslintignore', { cwd });
-}
-
-function findUpPrettierignoreSync(
-  _filename: string,
-  cwd: string,
-): string | undefined {
-  return findUpSync('.prettierignore', { cwd });
+  const isIgnored = getIsIgnored(filename);
+  isIgnoredCache.set(filename, isIgnored);
+  return isIgnored;
 }
 
 async function getIsIgnored(
