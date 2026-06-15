@@ -53,7 +53,6 @@
     "@prettier/eslint": "npm:prettier-eslint@^17.0.1",
     "chalk": "^5.6.2",
     "common-tags": "^1.8.2",
-    "core-js": "^3.49.0",
     "eslint": "^10.5.0",
     "find-up": "^8.0.0",
     "glob": "^13.0.6",
@@ -61,7 +60,6 @@
     "indent-string": "^5.0.0",
     "lodash.memoize": "^4.1.2",
     "loglevel-colored-level-prefix": "^1.0.0",
-    "rxjs": "^7.8.2",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
@@ -86,7 +84,6 @@
     "nps-utils": "^1.7.0",
     "prettier": "^3.8.4",
     "simple-git-hooks": "^2.13.1",
-    "spawn-command": "1.0.0",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.61.0",
     "vitest": "^4.1.8",

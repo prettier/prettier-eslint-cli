@@ -3324,13 +3324,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js@npm:^3.49.0":
-  version: 3.49.0
-  resolution: "core-js@npm:3.49.0"
-  checksum: 10c0/2e42edb47eda38fd5368380131623c8aa5d4a6b42164125b17744bdc08fa5ebbbdd06b4b4aa6ca3663470a560b0f2fba48e18f142dfe264b0039df85bc625694
-  languageName: node
-  linkType: hard
-
 "core-util-is@npm:~1.0.0":
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
@@ -7762,7 +7755,6 @@ __metadata:
     chalk: "npm:^5.6.2"
     clean-pkg-json: "npm:^2.0.0"
     common-tags: "npm:^1.8.2"
-    core-js: "npm:^3.49.0"
     eslint: "npm:^10.5.0"
     eslint-plugin-node-dependencies: "npm:^2.2.0"
     find-up: "npm:^8.0.0"
@@ -7775,9 +7767,7 @@ __metadata:
     nps: "npm:^5.10.0"
     nps-utils: "npm:^1.7.0"
     prettier: "npm:^3.8.4"
-    rxjs: "npm:^7.8.2"
     simple-git-hooks: "npm:^2.13.1"
-    spawn-command: "npm:1.0.0"
     typescript: "npm:^6.0.3"
     typescript-eslint: "npm:^8.61.0"
     vitest: "npm:^4.1.8"
@@ -8523,15 +8513,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.8.2":
-  version: 7.8.2
-  resolution: "rxjs@npm:7.8.2"
-  dependencies:
-    tslib: "npm:^2.1.0"
-  checksum: 10c0/1fcd33d2066ada98ba8f21fcbbcaee9f0b271de1d38dc7f4e256bfbc6ffcdde68c8bfb69093de7eeb46f24b1fb820620bf0223706cff26b4ab99a7ff7b2e2c45
-  languageName: node
-  linkType: hard
-
 "safe-buffer@npm:~5.1.0, safe-buffer@npm:~5.1.1":
   version: 5.1.2
   resolution: "safe-buffer@npm:5.1.2"
@@ -8719,13 +8700,6 @@ __metadata:
     ps-tree: "npm:^1.2.0"
     spawn-command: "npm:^0.0.2-1"
   checksum: 10c0/851e473b9f6dab8e1aced606b4e6515a2e1e4d7917f9d908487cbc009a77a1e47a489ebaefabe947b1e58f9aea22035feecf4fd13951ccb0c93210b5e463f23d
-  languageName: node
-  linkType: hard
-
-"spawn-command@npm:1.0.0":
-  version: 1.0.0
-  resolution: "spawn-command@npm:1.0.0"
-  checksum: 10c0/fbc6be0953493e3d60022cc74125785ccb211b5773e3fe82c7336c82b097a4bb751c750ba27a2ec578a8403229be68e59c07b24dab8e7d79b489e76e81fb57cc
   languageName: node
   linkType: hard
 
@@ -9264,7 +9238,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.1.0, tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.8.1":
+"tslib@npm:^2.4.0, tslib@npm:^2.4.1, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62

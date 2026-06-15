@@ -17,11 +17,17 @@ export default tseslint.config(
     ],
   },
   {
+    plugins: {
+      '@typescript-eslint': tseslint.plugin,
+    },
     rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
       'prettier/prettier': 'off',
       'valid-jsdoc': 'off',
       'max-len': 'off',
-      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       'space-before-function-paren': [
         'error',
         {
