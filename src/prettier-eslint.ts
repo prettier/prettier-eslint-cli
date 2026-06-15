@@ -1,6 +1,8 @@
-import type { Format } from '@prettier/eslint';
+import type { format as format_ } from '@prettier/eslint';
 
 import { logger } from './logger.ts';
+
+type Format = typeof format_;
 
 let formatPromise: Promise<Format> | undefined;
 

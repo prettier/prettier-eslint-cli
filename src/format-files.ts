@@ -1,14 +1,19 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { text } from 'node:stream/consumers';
+import { pathToFileURL } from 'node:url';
 
+import { ConfigArray } from '@eslint/config-array';
+import { hfs } from '@humanfs/node';
 import type { FormatOptions } from '@prettier/eslint';
 import chalk from 'chalk';
+import { ESLint } from 'eslint';
 import { findUpSync } from 'find-up';
-import { glob } from 'glob';
+import globParent from 'glob-parent';
 import nodeIgnore from 'ignore';
 import indentString from 'indent-string';
 import type { LogLevelDesc } from 'loglevel';
+import { Minimatch } from 'minimatch';
 import type { Options as PrettierOptions } from 'prettier';
 
 import { logger } from './logger.ts';
@@ -16,6 +21,8 @@ import * as messages from './messages.ts';
 import { format } from './prettier-eslint.ts';
 
 const INDENT_COUNT = 4;
+
+const DEFAULT_ESLINT_IGNORES = ['**/node_modules/', '.git/'];
 
 const LINE_SEPARATOR_REGEX = /\r|\r?\n/;
 
@@ -43,7 +50,9 @@ export interface FormatFilesArgv extends PrettierOptions {
 }
 
 interface CliOptions {
+  eslintConfigPath?: string;
   includeDotFiles?: boolean;
+  ignoreGlobs: string[];
   listDifferent?: boolean;
   write?: boolean;
 }
@@ -53,7 +62,6 @@ interface FormatFilesFromGlobsOptions {
   applyPrettierIgnore: boolean;
   cliOptions: CliOptions;
   fileGlobs: string[];
-  ignoreGlobs: string[];
   prettierESLintOptions: FormatOptions;
 }
 
@@ -71,7 +79,7 @@ interface FormatFilesResult {
   successes: FileInfo[];
 }
 
-const eslintignorePathCache = new Map<string, string | undefined>();
+const configArrayCache = new Map<string, Promise<ConfigArray>>();
 const prettierignorePathCache = new Map<string, string | undefined>();
 const isIgnoredCache = new Map<
   string,
@@ -116,13 +124,18 @@ export async function formatFiles({
     };
   }
 
-  const cliOptions = { write, listDifferent, includeDotFiles };
+  const cliOptions = {
+    write,
+    listDifferent,
+    includeDotFiles,
+    eslintConfigPath,
+    ignoreGlobs: [...ignoreGlobs],
+  };
   if (stdin) {
     return formatStdin({ filePath: stdinFilepath, ...prettierESLintOptions });
   }
   return formatFilesFromGlobs({
     fileGlobs,
-    ignoreGlobs: [...ignoreGlobs], // make a copy to avoid manipulation
     cliOptions,
     prettierESLintOptions,
     applyEslintIgnore,
@@ -159,7 +172,6 @@ async function formatStdin(
 
 async function formatFilesFromGlobs({
   fileGlobs,
-  ignoreGlobs,
   cliOptions,
   prettierESLintOptions,
   applyEslintIgnore,
@@ -177,7 +189,6 @@ async function formatFilesFromGlobs({
       concurrentGlobs,
       fileGlob =>
         getFilesFromGlob(
-          ignoreGlobs,
           applyEslintIgnore,
           applyPrettierIgnore,
           fileGlob,
@@ -252,34 +263,65 @@ async function formatFilesFromGlobs({
 }
 
 async function getFilesFromGlob(
-  ignoreGlobs: string[],
   applyEslintIgnore: boolean,
   applyPrettierIgnore: boolean,
   fileGlob: string,
   cliOptions: CliOptions,
 ): Promise<string[]> {
-  const globOptions = { dot: cliOptions.includeDotFiles, ignore: ignoreGlobs };
-  if (!fileGlob.includes('node_modules')) {
-    // basically, we're going to protect you from doing something
-    // not smart unless you explicitly include it in your glob
-    globOptions.ignore.push('**/node_modules/**');
+  const absoluteGlob = path.resolve(fileGlob);
+  const basePath = path.resolve(globParent(absoluteGlob));
+  const pattern = path.posix.normalize(path.relative(basePath, absoluteGlob));
+  const matcher = new Minimatch(pattern, { dot: cliOptions.includeDotFiles });
+
+  const configArray = await getConfigArray(
+    cliOptions.eslintConfigPath,
+    cliOptions.ignoreGlobs,
+    applyEslintIgnore,
+  );
+
+  const filePaths: string[] = [];
+
+  try {
+    if (await hfs.isDirectory(basePath)) {
+      for await (const entry of hfs.walk(basePath, {
+        directoryFilter(dirEntry) {
+          const absolutePath = path.resolve(basePath, dirEntry.path);
+          return !configArray.isDirectoryIgnored(absolutePath);
+        },
+        entryFilter(entry) {
+          if (entry.isDirectory) {
+            return false;
+          }
+
+          // eslint-disable-next-line unicorn-x/prefer-regexp-test
+          if (!matcher.match(entry.path)) {
+            return false;
+          }
+
+          const absolutePath = path.resolve(basePath, entry.path);
+          if (configArray.isFileIgnored(absolutePath)) {
+            return false;
+          }
+
+          return true;
+        },
+      })) {
+        filePaths.push(path.resolve(basePath, entry.path));
+      }
+    }
+  } catch {
+    // directory may not exist, return empty
   }
 
-  const filePaths = await glob(fileGlob, globOptions);
+  if (!applyPrettierIgnore) {
+    return filePaths;
+  }
+
   const filteredFilePaths: string[] = [];
-
   for (const filePath of filePaths) {
-    if (applyEslintIgnore && (await isFilePathIgnored(filePath, 'eslint'))) {
+    if (await isFilePathIgnored(filePath)) {
       continue;
     }
-
-    if (
-      applyPrettierIgnore &&
-      (await isFilePathIgnored(filePath, 'prettier'))
-    ) {
-      continue;
-    }
-
     filteredFilePaths.push(filePath);
   }
 
@@ -350,12 +392,72 @@ async function mapLimit<T, U>(
   return results;
 }
 
-function getNearestEslintignorePath(filePath: string): string | undefined {
-  const { dir } = path.parse(filePath);
-  if (!eslintignorePathCache.has(dir)) {
-    eslintignorePathCache.set(dir, findUpSync('.eslintignore', { cwd: dir }));
+async function getConfigArray(
+  eslintConfigPath: string | undefined,
+  ignoreGlobs: string[],
+  applyEslintIgnore: boolean,
+): Promise<ConfigArray> {
+  const cacheKey = JSON.stringify({
+    applyEslintIgnore,
+    cwd: process.cwd(),
+    eslintConfigPath,
+    ignoreGlobs,
+  });
+  const cached = configArrayCache.get(cacheKey);
+  if (cached) {
+    return cached;
   }
-  return eslintignorePathCache.get(dir);
+
+  const configArray = loadConfigArray(
+    eslintConfigPath,
+    ignoreGlobs,
+    applyEslintIgnore,
+  );
+  configArrayCache.set(cacheKey, configArray);
+  return configArray;
+}
+
+async function loadConfigArray(
+  eslintConfigPath: string | undefined,
+  ignoreGlobs: string[],
+  applyEslintIgnore: boolean,
+): Promise<ConfigArray> {
+  const configs: unknown[] = [{ ignores: DEFAULT_ESLINT_IGNORES }];
+  let configBasePath = process.cwd();
+
+  if (applyEslintIgnore) {
+    const configPath = eslintConfigPath
+      ? path.resolve(eslintConfigPath)
+      : await new ESLint().findConfigFile(process.cwd());
+
+    if (configPath) {
+      const resolvedConfigPath = path.resolve(configPath);
+      configBasePath = path.dirname(resolvedConfigPath);
+      const configModule = (await import(
+        pathToFileURL(resolvedConfigPath).href
+      )) as {
+        default?: unknown;
+      };
+      const rawConfig: unknown = configModule.default ?? configModule;
+      const configsToAdd: unknown[] = Array.isArray(rawConfig)
+        ? (rawConfig as unknown[])
+        : [rawConfig];
+      configs.push(...configsToAdd);
+    }
+  }
+
+  if (ignoreGlobs.length > 0) {
+    configs.push({
+      basePath: process.cwd(),
+      ignores: ignoreGlobs,
+    });
+  }
+
+  const array = new ConfigArray(configs, {
+    basePath: configBasePath,
+  });
+  await array.normalize();
+  return array;
 }
 
 function getNearestPrettierignorePath(filePath: string): string | undefined {
@@ -369,14 +471,8 @@ function getNearestPrettierignorePath(filePath: string): string | undefined {
   return prettierignorePathCache.get(dir);
 }
 
-async function isFilePathIgnored(
-  filePath: string,
-  ignoreType: 'eslint' | 'prettier',
-): Promise<boolean> {
-  const ignorePath =
-    ignoreType === 'eslint'
-      ? getNearestEslintignorePath(filePath)
-      : getNearestPrettierignorePath(filePath);
+async function isFilePathIgnored(filePath: string): Promise<boolean> {
+  const ignorePath = getNearestPrettierignorePath(filePath);
 
   if (!ignorePath) {
     return false;
@@ -401,14 +497,17 @@ function getIsIgnoredFromCache(
   return isIgnored;
 }
 
+async function getIgnoreGlobs(filename: string): Promise<string[]> {
+  const ignoreFile = await fs.readFile(filename, 'utf8');
+  return ignoreFile
+    .split(LINE_SEPARATOR_REGEX)
+    .filter(line => Boolean(line.trim()));
+}
+
 async function getIsIgnored(
   filename: string,
 ): Promise<(_filePath: string) => boolean> {
-  const ignoreFile = await fs.readFile(filename, 'utf8');
-  const ignoreLines = ignoreFile
-    .split(LINE_SEPARATOR_REGEX)
-    .filter(line => Boolean(line.trim()));
   const instance = nodeIgnore();
-  instance.add(ignoreLines);
+  instance.add(await getIgnoreGlobs(filename));
   return instance.ignores.bind(instance);
 }

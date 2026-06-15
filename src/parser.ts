@@ -47,7 +47,7 @@ export const parser = yargs()
       type: 'boolean',
       describe: oneLine`
         Only format matching files even if
-        they are not ignored by .eslintignore.
+        they are not ignored by eslint config ignores.
         (can use --no-eslint-ignore to disable this)
       `,
     },
@@ -96,9 +96,8 @@ export const parser = yargs()
     },
     ignore: {
       describe: oneLine`
-        pattern(s) you wish to ignore
-        (can be used multiple times
-        and includes **/node_modules/** automatically)
+        ESLint-style pattern(s) you wish to ignore
+        (can be used multiple times)
       `,
       coerce: arrify,
     },

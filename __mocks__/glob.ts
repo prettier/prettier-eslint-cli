@@ -76,6 +76,21 @@ const glob = vi.fn(async function mockGlob(
     ];
   }
 
+  if (globString.includes('eslint-config-ignored')) {
+    return [
+      'test/eslint-config-ignored/1.js',
+      'test/nested/eslint-config-ignored/2.js',
+      'test/applied4.js',
+    ];
+  }
+
+  if (globString.includes('no-prettier-ignore')) {
+    return [
+      wilmaProject('no-prettier-ignore/1.js'),
+      wilmaProject('no-prettier-ignore/2.js'),
+    ];
+  }
+
   if (globString.includes('eslint-config-error')) {
     return [
       fredProject('eslint-config-error/1.js'),
@@ -97,4 +112,8 @@ function fredProject(filePath: string): string {
 
 function barneyProject(filePath: string): string {
   return `/Users/barneyRubble/Developer/top-secret/tesla/${filePath}`;
+}
+
+function wilmaProject(filePath: string): string {
+  return `/Users/wilmaFlintstone/Developer/top-secret/quarry/${filePath}`;
 }

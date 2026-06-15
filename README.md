@@ -105,8 +105,8 @@ Options:
   --eslint-config-path     Path to the eslint config to use for eslint --fix
   --prettier-path          The path to the prettier module to use [default: "./node_modules/prettier"]
   --config                 Path to the prettier config
-  --ignore                 pattern(s) you wish to ignore (can be used multiple
-                           times and includes **/node_modules/** automatically)
+  --ignore                 ESLint-style pattern(s) you wish to ignore (can be
+                           used multiple times)
   --log-level, -l          The log level to use
         [choices: "silent", "error", "warn", "info", "debug", "trace"] [default:
                                                                          "warn"]
@@ -148,9 +148,7 @@ Options:
 
 #### <globs>
 
-Any number of [globs][glob] you wish to use to match the files you wish to format. By default, `glob` will ignore
-`**/node_modules/**` unless the glob you provide
-includes the string `node_modules`.
+Any number of [globs][glob] you wish to use to match the files you wish to format. ESLint's default ignores are applied, so `node_modules/` and `.git/` entries are skipped unless you explicitly unignore them with `--ignore` negation patterns such as `--ignore '!**/node_modules/'`.
 
 #### --write
 
