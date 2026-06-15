@@ -1,5 +1,3 @@
-import { MessageFormat } from 'messageformat';
-
 export interface MessageData {
   count: number;
   countString: string;
@@ -8,38 +6,22 @@ export interface MessageData {
   unchanged?: string;
 }
 
-function formatMessage(message: string, data: MessageData): string {
-  return new MessageFormat('en', message, { bidiIsolation: 'none' }).format(
-    data as unknown as Record<string, unknown>,
-  );
+export function success({ count, countString, success }: MessageData): string {
+  return `${success} formatting ${countString} ${pluralize(count, 'file', 'files')} with prettier-eslint`;
 }
 
-export function success(data: MessageData): string {
-  return formatMessage(
-    `.input {$count :number select=cardinal}
-.match $count
-one {{{$success} formatting {$countString} file with prettier-eslint}}
-* {{{$success} formatting {$countString} files with prettier-eslint}}`,
-    data,
-  );
+export function failure({ count, countString, failure }: MessageData): string {
+  return `${failure} formatting ${countString} ${pluralize(count, 'file', 'files')} with prettier-eslint`;
 }
 
-export function failure(data: MessageData): string {
-  return formatMessage(
-    `.input {$count :number select=cardinal}
-.match $count
-one {{{$failure} formatting {$countString} file with prettier-eslint}}
-* {{{$failure} formatting {$countString} files with prettier-eslint}}`,
-    data,
-  );
+export function unchanged({
+  count,
+  countString,
+  unchanged,
+}: MessageData): string {
+  return `${countString} ${pluralize(count, 'file was', 'files were')} ${unchanged}`;
 }
 
-export function unchanged(data: MessageData): string {
-  return formatMessage(
-    `.input {$count :number select=cardinal}
-.match $count
-one {{{$countString} file was {$unchanged}}}
-* {{{$countString} files were {$unchanged}}}`,
-    data,
-  );
+function pluralize(count: number, singular: string, plural: string): string {
+  return count === 1 ? singular : plural;
 }

@@ -6349,13 +6349,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"messageformat@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "messageformat@npm:4.0.0"
-  checksum: 10c0/bc1c8fb3da35f9aee35c164545851ee2ec30bf3e10bc401f9c7acf5c9b84043354ad003c421a8bf6d66bef910e1befde314c7430ed0cd237e0157ff665fcc13a
-  languageName: node
-  linkType: hard
-
 "micromark-core-commonmark@npm:^2.0.0":
   version: 2.0.3
   resolution: "micromark-core-commonmark@npm:2.0.3"
@@ -7684,7 +7677,6 @@ __metadata:
     ignore: "npm:^7.0.5"
     indent-string: "npm:^5.0.0"
     loglevel-colored-level-prefix: "npm:^1.0.0"
-    messageformat: "npm:^4.0.0"
     nano-staged: "npm:^1.0.2"
     nps: "npm:^5.10.0"
     nps-utils: "npm:^1.7.0"

@@ -58,7 +58,6 @@
     "ignore": "^7.0.5",
     "indent-string": "^5.0.0",
     "loglevel-colored-level-prefix": "^1.0.0",
-    "messageformat": "^4.0.0",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
