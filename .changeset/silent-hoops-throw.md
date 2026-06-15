@@ -2,4 +2,4 @@
 "prettier-eslint-cli": minor
 ---
 
-refactor: modernize formatting internals
+refactor: simplify formatting internals
