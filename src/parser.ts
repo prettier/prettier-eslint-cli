@@ -15,7 +15,7 @@ const arrify = <T>(value: T | T[] | null | undefined): T[] => {
   return [value];
 };
 
-const parser = yargs()
+export const parser = yargs()
   .usage(
     stripIndent`
       Usage: $0 <globs>... [--option-1 option-1-value --option-2]
@@ -240,8 +240,6 @@ const parser = yargs()
     // would require changes in prettier-eslint
   })
   .strictOptions();
-
-export default parser;
 
 function coercePath(input: string): string {
   return path.isAbsolute(input) ? input : path.join(process.cwd(), input);

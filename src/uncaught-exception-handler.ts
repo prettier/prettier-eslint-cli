@@ -1,11 +1,8 @@
 import { oneLine, oneLineTrim } from 'common-tags';
-import getLogger from 'loglevel-colored-level-prefix';
 
-const logger = getLogger({ prefix: 'prettier-eslint-cli' });
+import { logger } from './logger.ts';
 
-export default onUncaughtException;
-
-function onUncaughtException(err: Error): never {
+export function onUncaughtException(err: Error): never {
   const level = logger.getLevel();
   const isTrace = level === 0;
   const traceResolution = oneLine`

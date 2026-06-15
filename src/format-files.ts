@@ -9,11 +9,11 @@ import { glob } from 'glob';
 import nodeIgnore from 'ignore';
 import indentString from 'indent-string';
 import type { LogLevelDesc } from 'loglevel';
-import getLogger from 'loglevel-colored-level-prefix';
 import type { Options as PrettierOptions } from 'prettier';
 
+import { logger } from './logger.ts';
 import * as messages from './messages.ts';
-import format from './prettier-eslint.ts';
+import { format } from './prettier-eslint.ts';
 
 const INDENT_COUNT = 4;
 
@@ -78,11 +78,7 @@ const isIgnoredCache = new Map<
   Promise<(_filePath: string) => boolean>
 >();
 
-const logger = getLogger({ prefix: 'prettier-eslint-cli' });
-
-export default formatFilesFromArgv;
-
-function formatFilesFromArgv({
+export async function formatFiles({
   _: fileGlobs = [],
   $0: _$0,
   help: _help,

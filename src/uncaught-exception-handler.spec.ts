@@ -1,7 +1,7 @@
 import getLoggerMock from 'loglevel-colored-level-prefix';
 import { vi, type Mock } from 'vitest';
 
-import onUncaughtException from './uncaught-exception-handler.ts';
+import { onUncaughtException } from './uncaught-exception-handler.ts';
 
 interface MockLogger {
   debug: Mock;
