@@ -1,9 +1,6 @@
 export default [
   {
-    ignores: ['magic-ignored/**'],
-  },
-  {
-    ignores: ['!magic-ignored/keep'],
+    ignores: ['magic-ignored/**/*', '!magic-ignored/keep.js'],
   },
   {
     basePath: 'subdir',

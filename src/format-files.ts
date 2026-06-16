@@ -87,6 +87,12 @@ const isIgnoredCache = new Map<
   Promise<(_filePath: string) => boolean>
 >();
 
+export function clearFormatFilesCaches() {
+  configArrayCache.clear();
+  prettierignorePathCache.clear();
+  isIgnoredCache.clear();
+}
+
 export async function formatFiles({
   _: fileGlobs = [],
   $0: _$0,
@@ -326,15 +332,8 @@ async function getFilesFromGlob(
     return filePaths;
   }
 
-  const filteredFilePaths: string[] = [];
-  for (const filePath of filePaths) {
-    if (await isFilePathIgnored(filePath)) {
-      continue;
-    }
-    filteredFilePaths.push(filePath);
-  }
-
-  return filteredFilePaths;
+  const ignoredStatuses = await Promise.all(filePaths.map(isFilePathIgnored));
+  return filePaths.filter((_, index) => !ignoredStatuses[index]);
 }
 
 function normalizePathForGlob(filePath: string): string {
@@ -412,12 +411,12 @@ async function getConfigArray(
   ignoreGlobs: string[],
   applyEslintIgnore: boolean,
 ): Promise<ConfigArray> {
-  const cacheKey = JSON.stringify({
+  const cacheKey = [
+    process.cwd(),
     applyEslintIgnore,
-    cwd: process.cwd(),
-    eslintConfigPath,
-    ignoreGlobs,
-  });
+    eslintConfigPath ?? '',
+    ...ignoreGlobs,
+  ].join('\0');
   const cached = configArrayCache.get(cacheKey);
   if (cached) {
     return cached;
@@ -437,17 +436,18 @@ async function loadConfigArray(
   ignoreGlobs: string[],
   applyEslintIgnore: boolean,
 ): Promise<ConfigArray> {
-  const configs: unknown[] = [{ ignores: DEFAULT_ESLINT_IGNORES }];
-  let configBasePath = process.cwd();
+  const configs: unknown[] = [];
 
   if (applyEslintIgnore) {
+    configs.push({ ignores: DEFAULT_ESLINT_IGNORES });
+
     const configPath = eslintConfigPath
       ? path.resolve(eslintConfigPath)
       : await new ESLint().findConfigFile(process.cwd());
 
     if (configPath) {
       const resolvedConfigPath = path.resolve(configPath);
-      configBasePath = path.dirname(resolvedConfigPath);
+      const configBasePath = path.dirname(resolvedConfigPath);
       const configModule = (await import(
         pathToFileURL(resolvedConfigPath).href
       )) as {
@@ -459,7 +459,11 @@ async function loadConfigArray(
       const configsToAdd: unknown[] = Array.isArray(rawConfig)
         ? (rawConfig as unknown[])
         : [rawConfig];
-      configs.push(...configsToAdd);
+      configs.push(
+        ...configsToAdd.map(config =>
+          applyConfigBasePath(config, configBasePath),
+        ),
+      );
     }
   }
 
@@ -471,10 +475,27 @@ async function loadConfigArray(
   }
 
   const array = new ConfigArray(configs, {
-    basePath: configBasePath,
+    basePath: process.cwd(),
   });
   await array.normalize();
   return array;
+}
+
+function applyConfigBasePath(config: unknown, configBasePath: string): unknown {
+  if (!config || typeof config !== 'object' || Array.isArray(config)) {
+    return config;
+  }
+
+  if (!Object.hasOwn(config, 'basePath')) {
+    return { basePath: configBasePath, ...config };
+  }
+
+  const { basePath } = config as { basePath: unknown };
+  if (typeof basePath === 'string' && !path.isAbsolute(basePath)) {
+    return { ...config, basePath: path.resolve(configBasePath, basePath) };
+  }
+
+  return config;
 }
 
 function getNearestPrettierignorePath(filePath: string): string | undefined {

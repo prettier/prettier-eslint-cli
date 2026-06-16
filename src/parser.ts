@@ -46,8 +46,8 @@ export const parser = yargs()
       default: true,
       type: 'boolean',
       describe: oneLine`
-        Only format matching files even if
-        they are not ignored by eslint config ignores.
+        Only format matching files when
+        they are not ignored by ESLint config or default ignores.
         (can use --no-eslint-ignore to disable this)
       `,
     },

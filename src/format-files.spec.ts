@@ -8,7 +8,7 @@ import { findUpSync } from 'find-up';
 import getLogger from 'loglevel-colored-level-prefix';
 import { vi, type Mocked } from 'vitest';
 
-import { formatFiles } from './format-files.ts';
+import { formatFiles, clearFormatFilesCaches } from './format-files.ts';
 import { format as formatMock } from './prettier-eslint.ts';
 
 const mockedFs = mockFs as Mocked<typeof mockFs>;
@@ -95,6 +95,7 @@ function getFormattedFiles(): string[] {
 }
 
 beforeEach(() => {
+  clearFormatFilesCaches();
   process.stdout.write = vi.fn();
   process.stdin.isTTY = undefined as unknown as boolean;
   console.error = vi.fn();
@@ -231,6 +232,16 @@ test('eslint config falls back to module exports when no default', async () => {
     eslintConfigPath: 'test/eslint-named-export-config.js',
   });
   expect(getFormattedFiles()).toEqual(['test/keep.js']);
+});
+
+test('eslint config preserves invalid array entries', async () => {
+  walkEntries = [{ isDirectory: false, path: 'keep.js' }];
+  const result = await formatFiles({
+    _: ['test/**/*.js'],
+    eslintConfigPath: 'test/eslint-null-entry-config.js',
+  });
+  expect(result).toMatchObject({ error: expect.any(Error) });
+  expect(getFormattedFiles()).toEqual([]);
 });
 
 test('cli ignore globs still apply when eslint config ignores are disabled', async () => {
@@ -415,12 +426,29 @@ test('dirs are pruned via directoryFilter when ConfigArray is loaded', async () 
   expect(mockFs.readFile).toHaveBeenCalledTimes(2);
 });
 
-test('eslintIgnore=false skips config loading', async () => {
+test('eslintIgnore=false skips config and default ignores', async () => {
+  walkEntries = [
+    { isDirectory: false, path: 'node_modules/pkg/a.js' },
+    { isDirectory: false, path: 'src/b.js' },
+  ];
   await formatFiles({
-    _: ['src/**/*.js'],
+    _: ['**/*.js'],
     eslintIgnore: false,
   });
   expect(findConfigFileMock).not.toHaveBeenCalled();
+  expect(getFormattedFiles()).toEqual(['node_modules/pkg/a.js', 'src/b.js']);
+});
+
+test('auto-discovered config path may be absent', async () => {
+  findConfigFileMock.mockResolvedValue(undefined);
+  walkEntries = [{ isDirectory: false, path: 'keep.js' }];
+  await formatFiles({
+    _: ['coverage-test/**/*.js'],
+    prettierIgnore: false,
+    ignore: ['coverage-unique-glob'],
+  });
+  expect(findConfigFileMock).toHaveBeenCalled();
+  expect(getFormattedFiles()).toEqual(['coverage-test/keep.js']);
 });
 
 test('explicit eslintConfigPath supports array configs', async () => {
@@ -431,6 +459,56 @@ test('explicit eslintConfigPath supports array configs', async () => {
   await formatFiles({
     _: ['test/**/*.js'],
     eslintConfigPath: 'test/eslint-ignore-config.js',
+  });
+  expect(getFormattedFiles()).toEqual(['test/keep.js']);
+});
+
+test('eslint config base path does not prune cwd globs outside config dir', async () => {
+  walkEntries = [
+    { isDirectory: true, path: 'subdir' },
+    { isDirectory: false, path: 'subdir/keep.js' },
+  ];
+  await formatFiles({
+    _: ['src/**/*.js'],
+    eslintConfigPath: 'test/eslint-ignore-config.js',
+  });
+  expect(getFormattedFiles()).toEqual(['src/subdir/keep.js']);
+});
+
+test('eslint config entry basePath stays relative to config file', async () => {
+  walkEntries = [
+    { isDirectory: false, path: 'build-output/skip.js' },
+    { isDirectory: false, path: 'test/build-output/keep.js' },
+  ];
+  await formatFiles({
+    _: ['**/*.js'],
+    eslintConfigPath: 'test/eslint-cwd-config.js',
+  });
+  expect(getFormattedFiles()).toEqual(['test/build-output/keep.js']);
+});
+
+test('eslint config supports negation, scoped basePath, and non-global ignores', async () => {
+  walkEntries = [
+    { isDirectory: false, path: 'magic-ignored/drop.js' },
+    { isDirectory: false, path: 'magic-ignored/keep.js' },
+    { isDirectory: false, path: 'subdir/scoped-ignore/drop.js' },
+    { isDirectory: false, path: 'not-a-global-ignore/keep.js' },
+  ];
+  await formatFiles({
+    _: ['test/**/*.js'],
+    eslintConfigPath: 'test/eslint-edge-config.js',
+  });
+  expect(getFormattedFiles()).toEqual([
+    'test/magic-ignored/keep.js',
+    'test/not-a-global-ignore/keep.js',
+  ]);
+});
+
+test('eslint config preserves absolute basePath', async () => {
+  walkEntries = [{ isDirectory: false, path: 'keep.js' }];
+  await formatFiles({
+    _: ['test/**/*.js'],
+    eslintConfigPath: 'test/eslint-absolute-base-path-config.js',
   });
   expect(getFormattedFiles()).toEqual(['test/keep.js']);
 });
@@ -490,7 +568,10 @@ test('handles non-TTY stdin', async () => {
 test('wont save file if contents did not change', async () => {
   walkEntries = [{ isDirectory: false, path: 'no-change.js' }];
   await formatFiles({ _: ['no-change/*.js'], write: true });
-  expect(mockFs.readFile).toHaveBeenCalledTimes(1);
+  expect(mockedFs.readFile).toHaveBeenCalledWith(
+    expect.stringContaining('no-change.js'),
+    'utf8',
+  );
   expect(mockFs.writeFile).toHaveBeenCalledTimes(0);
 });
 
@@ -519,14 +600,13 @@ test('forwards prettierOptions onto prettier-eslint', async () => {
 });
 
 describe('prettierIgnore', () => {
-  test('prettier ignored files are skipped', async () => {
+  test('prettier ignored files are skipped when writing', async () => {
     vi.mocked(findUpSync).mockImplementation(
       filename => `/${String(filename)}`,
     );
-    walkEntries = [{ isDirectory: false, path: 'index.js' }];
-    // mock readFile returns prettierignore content for paths containing 'prettierignore'
+    walkEntries = [{ isDirectory: false, path: 'prettierignored.js' }];
     await formatFiles({ _: ['src/**/*.js'], write: true });
-    expect(mockFs.writeFile).toHaveBeenCalledTimes(1);
+    expect(mockFs.writeFile).not.toHaveBeenCalled();
   });
 });
 
