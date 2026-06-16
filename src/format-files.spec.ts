@@ -173,12 +173,6 @@ test('glob walk errors are reported', async () => {
   expect(getFormattedFiles()).toEqual([]);
 });
 
-test('windows-style walk entry paths match globs', async () => {
-  walkEntries = [{ isDirectory: false, path: String.raw`nested\b.js` }];
-  await formatFiles({ _: ['src/**/*.js'], prettierIgnore: false });
-  expect(getFormattedFiles()).toEqual(['src/nested/b.js']);
-});
-
 test('prettier ignore can be disabled', async () => {
   walkEntries = [{ isDirectory: false, path: 'prettierignored.js' }];
   await formatFiles({ _: ['src/**/*.js'], prettierIgnore: false });
@@ -509,6 +503,15 @@ test('eslint config preserves absolute basePath', async () => {
   await formatFiles({
     _: ['test/**/*.js'],
     eslintConfigPath: 'test/eslint-absolute-base-path-config.js',
+  });
+  expect(getFormattedFiles()).toEqual(['test/keep.js']);
+});
+
+test('eslint config with files but no ignores does not filter files', async () => {
+  walkEntries = [{ isDirectory: false, path: 'keep.js' }];
+  await formatFiles({
+    _: ['test/**/*.js'],
+    eslintConfigPath: 'test/eslint-files-only-config.js',
   });
   expect(getFormattedFiles()).toEqual(['test/keep.js']);
 });

@@ -22,6 +22,8 @@ import { format } from './prettier-eslint.ts';
 
 const INDENT_COUNT = 4;
 
+// basically, we're going to protect you from doing something
+// not smart unless you explicitly include it in your glob
 const DEFAULT_ESLINT_IGNORES = ['**/node_modules/', '.git/'];
 
 const LINE_SEPARATOR_REGEX = /\r|\r?\n/;
@@ -136,7 +138,7 @@ export async function formatFiles({
     listDifferent,
     includeDotFiles,
     eslintConfigPath,
-    ignoreGlobs: [...ignoreGlobs],
+    ignoreGlobs: [...ignoreGlobs], // make a copy to avoid manipulation
   };
   if (stdin) {
     return formatStdin({ filePath: stdinFilepath, ...prettierESLintOptions });
@@ -276,7 +278,7 @@ async function getFilesFromGlob(
   cliOptions: CliOptions,
 ): Promise<string[]> {
   const absoluteGlob = path.resolve(fileGlob);
-  const basePath = path.resolve(globParent(absoluteGlob));
+  const basePath = globParent(absoluteGlob);
   const pattern = normalizePathForGlob(path.relative(basePath, absoluteGlob));
   const matcher = new Minimatch(pattern, { dot: cliOptions.includeDotFiles });
 
@@ -292,8 +294,7 @@ async function getFilesFromGlob(
     if (await hfs.isDirectory(basePath)) {
       for await (const entry of hfs.walk(basePath, {
         directoryFilter(dirEntry) {
-          const dirEntryPath = normalizePathForGlob(dirEntry.path);
-          const absolutePath = path.resolve(basePath, dirEntryPath);
+          const absolutePath = path.resolve(basePath, dirEntry.path);
           return !configArray.isDirectoryIgnored(absolutePath);
         },
         entryFilter(entry) {
@@ -301,14 +302,12 @@ async function getFilesFromGlob(
             return false;
           }
 
-          const entryPath = normalizePathForGlob(entry.path);
-
           // eslint-disable-next-line unicorn-x/prefer-regexp-test
-          if (!matcher.match(entryPath)) {
+          if (!matcher.match(entry.path)) {
             return false;
           }
 
-          const absolutePath = path.resolve(basePath, entryPath);
+          const absolutePath = path.resolve(basePath, entry.path);
           if (configArray.isFileIgnored(absolutePath)) {
             return false;
           }
@@ -316,9 +315,7 @@ async function getFilesFromGlob(
           return true;
         },
       })) {
-        filePaths.push(
-          path.resolve(basePath, normalizePathForGlob(entry.path)),
-        );
+        filePaths.push(path.resolve(basePath, entry.path));
       }
     }
   } catch (error) {
@@ -443,22 +440,17 @@ async function loadConfigArray(
 
     const configPath = eslintConfigPath
       ? path.resolve(eslintConfigPath)
-      : await new ESLint().findConfigFile(process.cwd());
+      : await new ESLint().findConfigFile();
 
     if (configPath) {
-      const resolvedConfigPath = path.resolve(configPath);
-      const configBasePath = path.dirname(resolvedConfigPath);
-      const configModule = (await import(
-        pathToFileURL(resolvedConfigPath).href
-      )) as {
+      const configBasePath = path.dirname(configPath);
+      const configModule = (await import(pathToFileURL(configPath).href)) as {
         default?: unknown;
       };
-      const rawConfig: unknown = Object.hasOwn(configModule, 'default')
+      const rawConfig = Object.hasOwn(configModule, 'default')
         ? configModule.default
         : configModule;
-      const configsToAdd: unknown[] = Array.isArray(rawConfig)
-        ? (rawConfig as unknown[])
-        : [rawConfig];
+      const configsToAdd = Array.isArray(rawConfig) ? rawConfig : [rawConfig];
       configs.push(
         ...configsToAdd.map(config =>
           applyConfigBasePath(config, configBasePath),
@@ -469,14 +461,11 @@ async function loadConfigArray(
 
   if (ignoreGlobs.length > 0) {
     configs.push({
-      basePath: process.cwd(),
       ignores: ignoreGlobs,
     });
   }
 
-  const array = new ConfigArray(configs, {
-    basePath: process.cwd(),
-  });
+  const array = new ConfigArray(configs, { basePath: process.cwd() });
   await array.normalize();
   return array;
 }
@@ -486,16 +475,36 @@ function applyConfigBasePath(config: unknown, configBasePath: string): unknown {
     return config;
   }
 
-  if (!Object.hasOwn(config, 'basePath')) {
-    return { basePath: configBasePath, ...config };
+  const { basePath, files, ignores } = config as {
+    basePath?: unknown;
+    files?: unknown;
+    ignores?: unknown;
+  };
+
+  const ignoreConfig = {} as {
+    basePath?: unknown;
+    files?: unknown;
+    ignores?: unknown;
+  };
+
+  if (files !== undefined) {
+    ignoreConfig.files = files;
   }
 
-  const { basePath } = config as { basePath: unknown };
-  if (typeof basePath === 'string' && !path.isAbsolute(basePath)) {
-    return { ...config, basePath: path.resolve(configBasePath, basePath) };
+  if (ignores !== undefined) {
+    ignoreConfig.ignores = ignores;
   }
 
-  return config;
+  if (Object.hasOwn(config, 'basePath')) {
+    ignoreConfig.basePath =
+      typeof basePath === 'string' && !path.isAbsolute(basePath)
+        ? path.resolve(configBasePath, basePath)
+        : basePath;
+  } else {
+    ignoreConfig.basePath = configBasePath;
+  }
+
+  return ignoreConfig;
 }
 
 function getNearestPrettierignorePath(filePath: string): string | undefined {
