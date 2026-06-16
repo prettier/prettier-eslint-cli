@@ -43,6 +43,7 @@ let walkEntries: WalkEntry[] = [];
 vi.mock('@humanfs/node', () => ({
   hfs: {
     isDirectory: vi.fn(async () => true),
+    isFile: vi.fn(async () => false),
     walk: vi.fn((_bp: string, opts: WalkOptions) => {
       async function* gen() {
         for (const entry of walkEntries) {
@@ -105,6 +106,8 @@ beforeEach(() => {
   mockedFs.readFile.mockClear();
   mockedText.mockClear();
   vi.mocked(hfs.isDirectory).mockClear();
+  vi.mocked(hfs.isFile).mockClear();
+  vi.mocked(hfs.isFile).mockResolvedValue(false);
   vi.mocked(hfs.walk).mockClear();
   vi.mocked(findUpSync).mockImplementation(filename => `/${String(filename)}`);
   findConfigFileMock.mockReset();
@@ -170,6 +173,27 @@ test('glob walk errors are reported', async () => {
   walkEntries = [{ isDirectory: false, path: 'b.js' }];
   const result = await formatFiles({ _: ['src/**/*.js'] });
   expect(result).toMatchObject({ error: expect.any(Error) });
+  expect(getFormattedFiles()).toEqual([]);
+});
+
+test('literal file targets are formatted without walking parent directory', async () => {
+  vi.mocked(hfs.isFile).mockResolvedValueOnce(true);
+  await formatFiles({ _: ['src/a.js'], prettierIgnore: false });
+  expect(hfs.walk).not.toHaveBeenCalled();
+  expect(getFormattedFiles()).toEqual(['src/a.js']);
+});
+
+test('literal file targets still apply ESLint ignores', async () => {
+  vi.mocked(hfs.isFile).mockResolvedValueOnce(true);
+  await formatFiles({ _: ['node_modules/pkg/a.js'], prettierIgnore: false });
+  expect(hfs.walk).not.toHaveBeenCalled();
+  expect(getFormattedFiles()).toEqual([]);
+});
+
+test('literal file targets still apply prettier ignores', async () => {
+  vi.mocked(hfs.isFile).mockResolvedValueOnce(true);
+  await formatFiles({ _: ['src/prettierignored.js'] });
+  expect(hfs.walk).not.toHaveBeenCalled();
   expect(getFormattedFiles()).toEqual([]);
 });
 

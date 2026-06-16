@@ -291,7 +291,11 @@ async function getFilesFromGlob(
   const filePaths: string[] = [];
 
   try {
-    if (await hfs.isDirectory(basePath)) {
+    if (await hfs.isFile(absoluteGlob)) {
+      if (!configArray.isFileIgnored(absoluteGlob)) {
+        filePaths.push(absoluteGlob);
+      }
+    } else if (await hfs.isDirectory(basePath)) {
       for await (const entry of hfs.walk(basePath, {
         directoryFilter(dirEntry) {
           const absolutePath = path.resolve(basePath, dirEntry.path);
