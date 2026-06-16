@@ -453,7 +453,7 @@ async function loadConfigArray(
       const configsToAdd = Array.isArray(rawConfig) ? rawConfig : [rawConfig];
       configs.push(
         ...configsToAdd.map(config =>
-          applyConfigBasePath(config, configBasePath),
+          toIgnoreOnlyConfig(config, configBasePath),
         ),
       );
     }
@@ -470,7 +470,7 @@ async function loadConfigArray(
   return array;
 }
 
-function applyConfigBasePath(config: unknown, configBasePath: string): unknown {
+function toIgnoreOnlyConfig(config: unknown, configBasePath: string): unknown {
   if (!config || typeof config !== 'object' || Array.isArray(config)) {
     return config;
   }
