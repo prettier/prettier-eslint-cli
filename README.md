@@ -88,9 +88,9 @@ Options:
                                                       [boolean] [default: false]
   --stdin                  Read input via stdin       [boolean] [default: false]
   --stdin-filepath         Path to the file to pretend that stdin comes from.
-  --eslint-ignore          Only format matching files even if they are not
-                           ignored by .eslintignore. (can use --no-eslint-ignore
-                           to disable this)            [boolean] [default: true]
+  --eslint-ignore          Only format matching files when they are not ignored
+                           by ESLint config or default ignores. (can use
+                           --no-eslint-ignore to disable this)            [boolean] [default: true]
   --prettier-ignore        Only format matching files even if they are not
                            ignored by .prettierignore. (can use
                            --no-prettier-ignore to disable this)
@@ -198,9 +198,11 @@ Forwarded as `logLevel` option to `prettier-eslint`
 
 #### --no-eslint-ignore
 
-Disables application of `.eslintignore` to the files resolved from the glob. By
-default, `prettier-eslint-cli` will exclude files if they are matched by a
-`.eslintignore`. Add this flag to disable this behavior.
+Disables ESLint config and default ignores for files resolved from the glob. By
+default, `prettier-eslint-cli` excludes files matched by ESLint config ignores,
+plus default ignores like `node_modules/` and `.git/`. Use ESLint-style `--ignore`
+negation patterns such as `--ignore '!**/node_modules/'` to unignore specific
+paths without disabling all ESLint ignore handling.
 
 > Note: You can also set the `LOG_LEVEL` environment variable to control logging in `prettier-eslint`
 

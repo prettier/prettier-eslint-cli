@@ -628,7 +628,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanfs/node@npm:^0.16.6":
+"@humanfs/node@npm:^0.16.6, @humanfs/node@npm:^0.16.8":
   version: 0.16.8
   resolution: "@humanfs/node@npm:0.16.8"
   dependencies:
@@ -4824,7 +4824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:13.0.6, glob@npm:^13.0.6":
+"glob@npm:13.0.6":
   version: 13.0.6
   resolution: "glob@npm:13.0.6"
   dependencies:
@@ -6018,7 +6018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loglevel@npm:^1.4.1":
+"loglevel@npm:^1.4.1, loglevel@npm:^1.9.2":
   version: 1.9.2
   resolution: "loglevel@npm:1.9.2"
   checksum: 10c0/1e317fa4648fe0b4a4cffef6de037340592cee8547b07d4ce97a487abe9153e704b98451100c799b032c72bb89c9366d71c9fb8192ada8703269263ae77acdc7
@@ -7624,6 +7624,8 @@ __metadata:
     "@1stg/tsconfig": "npm:^4.0.0"
     "@changesets/changelog-github": "npm:^0.7.0"
     "@changesets/cli": "npm:^2.31.0"
+    "@eslint/config-array": "npm:^0.23.5"
+    "@humanfs/node": "npm:^0.16.8"
     "@oxc-node/core": "npm:^0.1.0"
     "@prettier/eslint": "npm:prettier-eslint@^17.1.0"
     "@types/common-tags": "npm:^1.8.4"
@@ -7640,10 +7642,12 @@ __metadata:
     eslint: "npm:^10.5.0"
     eslint-plugin-node-dependencies: "npm:^2.2.0"
     find-up: "npm:^8.0.0"
-    glob: "npm:^13.0.6"
+    glob-parent: "npm:^5.1.2"
     ignore: "npm:^7.0.5"
     indent-string: "npm:^5.0.0"
+    loglevel: "npm:^1.9.2"
     loglevel-colored-level-prefix: "npm:^1.0.0"
+    minimatch: "npm:^10.2.5"
     nano-staged: "npm:^1.0.2"
     nps: "npm:^5.10.0"
     nps-utils: "npm:^1.7.0"

@@ -153,13 +153,29 @@ test('missing glob base returns no files', async () => {
   expect(getFormattedFiles()).toEqual([]);
 });
 
-test('glob walk errors return no files', async () => {
+test('missing glob base walk errors return no files', async () => {
   vi.mocked(hfs.walk).mockImplementationOnce(() => {
-    throw new Error('walk failed');
+    throw Object.assign(new Error('walk failed'), { code: 'ENOENT' });
   });
   walkEntries = [{ isDirectory: false, path: 'b.js' }];
   await formatFiles({ _: ['src/**/*.js'] });
   expect(getFormattedFiles()).toEqual([]);
+});
+
+test('glob walk errors are reported', async () => {
+  vi.mocked(hfs.walk).mockImplementationOnce(() => {
+    throw new Error('walk failed');
+  });
+  walkEntries = [{ isDirectory: false, path: 'b.js' }];
+  const result = await formatFiles({ _: ['src/**/*.js'] });
+  expect(result).toMatchObject({ error: expect.any(Error) });
+  expect(getFormattedFiles()).toEqual([]);
+});
+
+test('windows-style walk entry paths match globs', async () => {
+  walkEntries = [{ isDirectory: false, path: String.raw`nested\b.js` }];
+  await formatFiles({ _: ['src/**/*.js'], prettierIgnore: false });
+  expect(getFormattedFiles()).toEqual(['src/nested/b.js']);
 });
 
 test('prettier ignore can be disabled', async () => {
@@ -169,16 +185,20 @@ test('prettier ignore can be disabled', async () => {
 });
 
 test('prettier ignored status is cached', async () => {
+  const ignorePath = path.join(process.cwd(), 'cache-src/prettier-cache-test');
+  vi.mocked(findUpSync).mockReturnValue(ignorePath);
+  mockedFs.readFile.mockResolvedValueOnce('');
   walkEntries = [
     { isDirectory: false, path: 'a.js' },
     { isDirectory: false, path: 'b.js' },
   ];
-  await formatFiles({ _: ['src/**/*.js'] });
-  expect(mockedFs.readFile).not.toHaveBeenCalledWith(
-    '/.prettierignore',
-    'utf8',
-  );
-  expect(getFormattedFiles()).toEqual(['src/a.js', 'src/b.js']);
+  await formatFiles({ _: ['cache-src/**/*.js'] });
+  expect(
+    mockedFs.readFile.mock.calls.filter(
+      ([filePath]) => filePath === ignorePath,
+    ),
+  ).toHaveLength(1);
+  expect(getFormattedFiles()).toEqual(['cache-src/a.js', 'cache-src/b.js']);
 });
 
 test('missing prettier ignore file formats files', async () => {
@@ -188,16 +208,29 @@ test('missing prettier ignore file formats files', async () => {
   expect(getFormattedFiles()).toEqual(['src/a.js']);
 });
 
-test('eslint config defaults to module export when no default is present', async () => {
+test('eslint config preserves explicit null module exports', async () => {
   walkEntries = [
     { isDirectory: false, path: 'keep.js' },
     { isDirectory: false, path: 'other.js' },
   ];
-  await formatFiles({
+  const result = await formatFiles({
     _: ['test/**/*.js'],
     eslintConfigPath: 'test/eslint-cjs-no-default.cjs',
   });
-  expect(getFormattedFiles()).toEqual(['test/keep.js', 'test/other.js']);
+  expect(result).toMatchObject({ error: expect.any(Error) });
+  expect(getFormattedFiles()).toEqual([]);
+});
+
+test('eslint config falls back to module exports when no default', async () => {
+  walkEntries = [
+    { isDirectory: false, path: 'keep.js' },
+    { isDirectory: false, path: 'esm-named-ignored/skip.js' },
+  ];
+  await formatFiles({
+    _: ['test/**/*.js'],
+    eslintConfigPath: 'test/eslint-named-export-config.js',
+  });
+  expect(getFormattedFiles()).toEqual(['test/keep.js']);
 });
 
 test('cli ignore globs still apply when eslint config ignores are disabled', async () => {

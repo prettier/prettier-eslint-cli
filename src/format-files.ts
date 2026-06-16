@@ -25,6 +25,7 @@ const INDENT_COUNT = 4;
 const DEFAULT_ESLINT_IGNORES = ['**/node_modules/', '.git/'];
 
 const LINE_SEPARATOR_REGEX = /\r|\r?\n/;
+const WINDOWS_PATH_SEPARATOR_REGEX = /\\/g;
 
 export interface FormatFilesArgv extends PrettierOptions {
   $0?: string;
@@ -270,7 +271,7 @@ async function getFilesFromGlob(
 ): Promise<string[]> {
   const absoluteGlob = path.resolve(fileGlob);
   const basePath = path.resolve(globParent(absoluteGlob));
-  const pattern = path.posix.normalize(path.relative(basePath, absoluteGlob));
+  const pattern = normalizePathForGlob(path.relative(basePath, absoluteGlob));
   const matcher = new Minimatch(pattern, { dot: cliOptions.includeDotFiles });
 
   const configArray = await getConfigArray(
@@ -285,7 +286,8 @@ async function getFilesFromGlob(
     if (await hfs.isDirectory(basePath)) {
       for await (const entry of hfs.walk(basePath, {
         directoryFilter(dirEntry) {
-          const absolutePath = path.resolve(basePath, dirEntry.path);
+          const dirEntryPath = normalizePathForGlob(dirEntry.path);
+          const absolutePath = path.resolve(basePath, dirEntryPath);
           return !configArray.isDirectoryIgnored(absolutePath);
         },
         entryFilter(entry) {
@@ -293,12 +295,14 @@ async function getFilesFromGlob(
             return false;
           }
 
+          const entryPath = normalizePathForGlob(entry.path);
+
           // eslint-disable-next-line unicorn-x/prefer-regexp-test
-          if (!matcher.match(entry.path)) {
+          if (!matcher.match(entryPath)) {
             return false;
           }
 
-          const absolutePath = path.resolve(basePath, entry.path);
+          const absolutePath = path.resolve(basePath, entryPath);
           if (configArray.isFileIgnored(absolutePath)) {
             return false;
           }
@@ -306,11 +310,16 @@ async function getFilesFromGlob(
           return true;
         },
       })) {
-        filePaths.push(path.resolve(basePath, entry.path));
+        filePaths.push(
+          path.resolve(basePath, normalizePathForGlob(entry.path)),
+        );
       }
     }
-  } catch {
-    // directory may not exist, return empty
+  } catch (error) {
+    const code = (error as NodeJS.ErrnoException).code;
+    if (code !== 'ENOENT' && code !== 'ENOTDIR') {
+      throw error;
+    }
   }
 
   if (!applyPrettierIgnore) {
@@ -326,6 +335,12 @@ async function getFilesFromGlob(
   }
 
   return filteredFilePaths;
+}
+
+function normalizePathForGlob(filePath: string): string {
+  return path.posix.normalize(
+    filePath.replaceAll(WINDOWS_PATH_SEPARATOR_REGEX, '/'),
+  );
 }
 
 async function formatFile(
@@ -438,7 +453,9 @@ async function loadConfigArray(
       )) as {
         default?: unknown;
       };
-      const rawConfig: unknown = configModule.default ?? configModule;
+      const rawConfig: unknown = Object.hasOwn(configModule, 'default')
+        ? configModule.default
+        : configModule;
       const configsToAdd: unknown[] = Array.isArray(rawConfig)
         ? (rawConfig as unknown[])
         : [rawConfig];
