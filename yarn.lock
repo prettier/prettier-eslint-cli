@@ -4815,7 +4815,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob-parent@npm:^6.0.2":
+"glob-parent@npm:^6.0.0, glob-parent@npm:^6.0.2":
   version: 6.0.2
   resolution: "glob-parent@npm:6.0.2"
   dependencies:
@@ -7642,7 +7642,7 @@ __metadata:
     eslint: "npm:^10.5.0"
     eslint-plugin-node-dependencies: "npm:^2.2.0"
     find-up: "npm:^8.0.0"
-    glob-parent: "npm:^5.1.2"
+    glob-parent: "npm:^6.0.0"
     ignore: "npm:^7.0.5"
     indent-string: "npm:^5.0.0"
     loglevel: "npm:^1.9.2"
