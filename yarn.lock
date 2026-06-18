@@ -619,13 +619,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@esm2cjs/indent-string@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@esm2cjs/indent-string@npm:5.0.0"
-  checksum: 10c0/f85de690549882687e1e92567f5161a4e61e9ac5dddf65ae113f006af749ca2600a4955ef1754dc36e71b318ddb82bd7a56aed30718bbe0767238b47ef99d11f
-  languageName: node
-  linkType: hard
-
 "@humanfs/core@npm:^0.19.2":
   version: 0.19.2
   resolution: "@humanfs/core@npm:0.19.2"
@@ -635,7 +628,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanfs/node@npm:^0.16.6":
+"@humanfs/node@npm:^0.16.6, @humanfs/node@npm:^0.16.8":
   version: 0.16.8
   resolution: "@humanfs/node@npm:0.16.8"
   dependencies:
@@ -702,15 +695,6 @@ __metadata:
   dependencies:
     minipass: "npm:^7.0.4"
   checksum: 10c0/c25b6dc1598790d5b55c0947a9b7d111cfa92594db5296c3b907e2f533c033666f692a3939eadac17b1c7c40d362d0b0635dc874cbfe3e70db7c2b07cc97a5d2
-  languageName: node
-  linkType: hard
-
-"@jest/schemas@npm:30.4.1":
-  version: 30.4.1
-  resolution: "@jest/schemas@npm:30.4.1"
-  dependencies:
-    "@sinclair/typebox": "npm:^0.34.0"
-  checksum: 10c0/96f388ebfc1974457fcbde2ad36c40a0b549cba3f624fe8d9d6e5903a152dc75e4043f4ac9ac7668622f2ecb0f9a4dcb9a38edf3bc0d52b82045b2bb2b69b72a
   languageName: node
   linkType: hard
 
@@ -1356,20 +1340,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prettier/eslint@npm:prettier-eslint@^17.0.1":
-  version: 17.0.1
-  resolution: "prettier-eslint@npm:17.0.1"
+"@prettier/eslint@npm:prettier-eslint@^17.1.0":
+  version: 17.1.0
+  resolution: "prettier-eslint@npm:17.1.0"
   dependencies:
-    "@esm2cjs/indent-string": "npm:^5.0.0"
     "@typescript-eslint/parser": "npm:^8.61.0"
     common-tags: "npm:^1.8.2"
-    dlv: "npm:^1.1.3"
     eslint: "npm:^10.5.0"
-    lodash.merge: "npm:^4.6.2"
+    indent-string: "npm:^5.0.0"
     loglevel-colored-level-prefix: "npm:^1.0.0"
     prettier: "npm:^3.8.4"
-    pretty-format: "npm:^30.4.1"
-    require-relative: "npm:^0.8.7"
     tslib: "npm:^2.8.1"
     vue-eslint-parser: "npm:^10.4.1"
   peerDependencies:
@@ -1380,7 +1360,7 @@ __metadata:
       optional: true
     svelte-eslint-parser:
       optional: true
-  checksum: 10c0/735ff98eeb918a9189a78f7efc58d9a94e98db4b9933ac283428b67cd402509eca8ac34162bff3af8d27ff54e32b0d8db7777a73b97b9ed4163e315dd47e56f8
+  checksum: 10c0/57abe8fcf99979a1ae9514ef4f0abeacf553605e71498394bd2c34be56ca6acb35801b0f2486896c32dc15c6d98f62f89f1127c3499b795ae54bc0e6979fc544
   languageName: node
   linkType: hard
 
@@ -1538,13 +1518,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinclair/typebox@npm:^0.34.0":
-  version: 0.34.49
-  resolution: "@sinclair/typebox@npm:0.34.49"
-  checksum: 10c0/16b7d87f039a49b68c10bb4cdcae2ce5242b2472228851fd6483731616aba4ef977690aa517b230a8d20da8185bb416eb34e326f30568b3963c1cf26b05d1ad8
-  languageName: node
-  linkType: hard
-
 "@sindresorhus/base62@npm:^1.0.0":
   version: 1.0.0
   resolution: "@sindresorhus/base62@npm:1.0.0"
@@ -1688,6 +1661,13 @@ __metadata:
   version: 1.0.9
   resolution: "@types/estree@npm:1.0.9"
   checksum: 10c0/3ad3286ca2988cd550dafb8f2ad599c8474868e954fa601a36655bdfefd8039f7c714b8c1c7f2ae219ffbd58bd4660e66fa7479a0120fc02d4777057d4865387
+  languageName: node
+  linkType: hard
+
+"@types/glob-parent@npm:^5.1.3":
+  version: 5.1.3
+  resolution: "@types/glob-parent@npm:5.1.3"
+  checksum: 10c0/2693128ec997f7c490cbd824957b35180815faf5fe01168f4d7abc2c196a29b26546e1f78d2edd913ea8fb476332667ef091cd6693b5014bacdba334e09a4ef4
   languageName: node
   linkType: hard
 
@@ -2549,13 +2529,6 @@ __metadata:
   dependencies:
     color-convert: "npm:^2.0.1"
   checksum: 10c0/895a23929da416f2bd3de7e9cb4eabd340949328ab85ddd6e484a637d8f6820d485f53933446f5291c3b760cbc488beb8e88573dd0f9c7daf83dccc8fe81b041
-  languageName: node
-  linkType: hard
-
-"ansi-styles@npm:^5.2.0":
-  version: 5.2.0
-  resolution: "ansi-styles@npm:5.2.0"
-  checksum: 10c0/9c4ca80eb3c2fb7b33841c210d2f20807f40865d27008d7c3f707b7f95cab7d67462a565e2388ac3285b71cb3d9bb2173de8da37c57692a362885ec34d6e27df
   languageName: node
   linkType: hard
 
@@ -3564,13 +3537,6 @@ __metadata:
   dependencies:
     path-type: "npm:^4.0.0"
   checksum: 10c0/dcac00920a4d503e38bb64001acb19df4efc14536ada475725e12f52c16777afdee4db827f55f13a908ee7efc0cb282e2e3dbaeeb98c0993dd93d1802d3bf00c
-  languageName: node
-  linkType: hard
-
-"dlv@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "dlv@npm:1.1.3"
-  checksum: 10c0/03eb4e769f19a027fd5b43b59e8a05e3fd2100ac239ebb0bf9a745de35d449e2f25cfaf3aa3934664551d72856f4ae8b7822016ce5c42c2d27c18ae79429ec42
   languageName: node
   linkType: hard
 
@@ -4858,7 +4824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:13.0.6, glob@npm:^13.0.6":
+"glob@npm:13.0.6":
   version: 13.0.6
   resolution: "glob@npm:13.0.6"
   dependencies:
@@ -6052,7 +6018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loglevel@npm:^1.4.1":
+"loglevel@npm:^1.4.1, loglevel@npm:^1.9.2":
   version: 1.9.2
   resolution: "loglevel@npm:1.9.2"
   checksum: 10c0/1e317fa4648fe0b4a4cffef6de037340592cee8547b07d4ce97a487abe9153e704b98451100c799b032c72bb89c9366d71c9fb8192ada8703269263ae77acdc7
@@ -7658,9 +7624,12 @@ __metadata:
     "@1stg/tsconfig": "npm:^4.0.0"
     "@changesets/changelog-github": "npm:^0.7.0"
     "@changesets/cli": "npm:^2.31.0"
+    "@eslint/config-array": "npm:^0.23.5"
+    "@humanfs/node": "npm:^0.16.8"
     "@oxc-node/core": "npm:^0.1.0"
-    "@prettier/eslint": "npm:prettier-eslint@^17.0.1"
+    "@prettier/eslint": "npm:prettier-eslint@^17.1.0"
     "@types/common-tags": "npm:^1.8.4"
+    "@types/glob-parent": "npm:^5.1.3"
     "@types/node": "npm:^25.9.3"
     "@types/yargs": "npm:^17.0.35"
     "@unts/patch-package": "npm:^8.1.1"
@@ -7673,10 +7642,12 @@ __metadata:
     eslint: "npm:^10.5.0"
     eslint-plugin-node-dependencies: "npm:^2.2.0"
     find-up: "npm:^8.0.0"
-    glob: "npm:^13.0.6"
+    glob-parent: "npm:^5.1.2"
     ignore: "npm:^7.0.5"
     indent-string: "npm:^5.0.0"
+    loglevel: "npm:^1.9.2"
     loglevel-colored-level-prefix: "npm:^1.0.0"
+    minimatch: "npm:^10.2.5"
     nano-staged: "npm:^1.0.2"
     nps: "npm:^5.10.0"
     nps-utils: "npm:^1.7.0"
@@ -7823,18 +7794,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^30.4.1":
-  version: 30.4.1
-  resolution: "pretty-format@npm:30.4.1"
-  dependencies:
-    "@jest/schemas": "npm:30.4.1"
-    ansi-styles: "npm:^5.2.0"
-    react-is-18: "npm:react-is@^18.3.1"
-    react-is-19: "npm:react-is@^19.2.5"
-  checksum: 10c0/c7e6633740cd2f6d382f188c00c8b4b3f2bee3cda16db6753471c6bb4b94f76531358d3a7793062a0fb00d72ebfb934e8ae1d4f5ced6bb34c8e7f60996f90076
-  languageName: node
-  linkType: hard
-
 "proc-log@npm:^4.0.0, proc-log@npm:^4.2.0":
   version: 4.2.0
   resolution: "proc-log@npm:4.2.0"
@@ -7972,20 +7931,6 @@ __metadata:
   bin:
     rc: ./cli.js
   checksum: 10c0/24a07653150f0d9ac7168e52943cc3cb4b7a22c0e43c7dff3219977c2fdca5a2760a304a029c20811a0e79d351f57d46c9bde216193a0f73978496afc2b85b15
-  languageName: node
-  linkType: hard
-
-"react-is-18@npm:react-is@^18.3.1":
-  version: 18.3.1
-  resolution: "react-is@npm:18.3.1"
-  checksum: 10c0/f2f1e60010c683479e74c63f96b09fb41603527cd131a9959e2aee1e5a8b0caf270b365e5ca77d4a6b18aae659b60a86150bb3979073528877029b35aecd2072
-  languageName: node
-  linkType: hard
-
-"react-is-19@npm:react-is@^19.2.5":
-  version: 19.2.7
-  resolution: "react-is@npm:19.2.7"
-  checksum: 10c0/419fe54d5bd7fdf5414a5bb7bd9a1e0e36f9fae28ffb4cb73290fbe342bde15d8584a90d1db62547f6aa03018dce517b178a041abb522136cd4b4b51b4e94c83
   languageName: node
   linkType: hard
 
@@ -8210,13 +8155,6 @@ __metadata:
   version: 2.0.0
   resolution: "require-main-filename@npm:2.0.0"
   checksum: 10c0/db91467d9ead311b4111cbd73a4e67fa7820daed2989a32f7023785a2659008c6d119752d9c4ac011ae07e537eb86523adff99804c5fdb39cd3a017f9b401bb6
-  languageName: node
-  linkType: hard
-
-"require-relative@npm:^0.8.7":
-  version: 0.8.7
-  resolution: "require-relative@npm:0.8.7"
-  checksum: 10c0/b2d36d20cb849c26fb8134064048162e029ebbf373c915e6d31b2d5caa9e9b599c7b3e70700c019c28c9347369e85ecbcf139956788ece2774d8cb355d24c36f
   languageName: node
   linkType: hard
 
