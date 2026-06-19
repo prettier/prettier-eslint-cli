@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 9.2.1
+
+### Patch Changes
+
+- [#478](https://github.com/prettier/prettier-eslint-cli/pull/478) [`cf3522a`](https://github.com/prettier/prettier-eslint-cli/commit/cf3522ad011d1bedbb604108064f51bb0abdf371) Thanks [@JounQin](https://github.com/JounQin)! - Align file discovery with ESLint ignore semantics, including config/default ignores and basePath handling.
+
 ## 9.2.0
 
 ### Minor Changes
