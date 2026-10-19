@@ -1,3 +1,8 @@
+---
+"prettier-eslint-cli": patch
+---
+
+Align file discovery with ESLint ignore semantics, including config/default ignores and basePath handling.
 # CHANGELOG
 
 ## 9.2.0
