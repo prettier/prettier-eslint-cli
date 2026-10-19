@@ -7,9 +7,9 @@ exports[`prettier-eslint --version > stdout: --version 1`] = `
 
 exports[`prettier-eslint test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore > file contents: prettier-eslint test/fixtures/example*.js --write --no-eslint-ignore --no-prettier-ignore 1`] = `
 {
-  "example1Result": "const { example1 } = baz.bar;
+  "example1Resultado": "const { example1 } = baz.bar;
 ",
-  "example2Result": "function example2(thing) {
+  "example2Resultado": "function example2(thing) {
   return thing;
 }
 ",
